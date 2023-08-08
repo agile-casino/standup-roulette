@@ -1,0 +1,49 @@
+const path = require("path");
+const pkg = require('./package.json');
+const TerserPlugin = require('terser-webpack-plugin');
+
+const banner = `
+// ==UserScript==
+// @name         Standup Roulette
+// @namespace    https://ados/
+// @version      ${pkg.version}
+// @downloadURL  https://archerax.blob.core.windows.net/apps/standup-roulette/index.user.js
+// @description  Standup Roulette
+// @author       archerax
+// @match        https://ados/WirelineRnD_Collection/WirelineRnD*
+// @icon         https://ados/favicon.ico
+// @grant        none
+// ==/UserScript==
+`;
+
+module.exports = {
+  entry: "./src/index.tsx",
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  optimization:{
+    minimizer: [
+      new TerserPlugin({
+        extractComments: false,
+        terserOptions: {
+          output: {
+            preamble: banner.trim()
+          }
+        }
+      })
+    ]
+  },
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"],
+  },
+  output: {
+    filename: "index.user.js",
+    path: path.resolve(__dirname, "dist"),
+  },
+};

@@ -1,0 +1,56 @@
+{
+  "name": "ados-helper",
+  "version": "0.11.1",
+  "description": "ados-helper",
+  "main": "index.js",
+  "scripts": {
+    "analyze": "webpack --mode=production --profile --json > stats.json && webpack-bundle-analyzer stats.json",
+    "build": "webpack --mode=production",
+    "build:watch": "webpack --mode=development --watch",
+    "lint": "eslint . --ext .ts,.tsx",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/archerax/ados-helper.git"
+  },
+  "author": "archerax",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/archerax/ados-helper/issues"
+  },
+  "homepage": "https://github.com/archerax/ados-helper#readme",
+  "devDependencies": {
+    "@babel/core": "^7.20.12",
+    "@testing-library/react": "^14.0.0",
+    "@types/jest": "^29.2.5",
+    "@types/lodash": "^4.14.182",
+    "@types/react": "^18.0.10",
+    "@types/react-dom": "^18.0.10",
+    "@typescript-eslint/eslint-plugin": "^6.2.1",
+    "@typescript-eslint/parser": "^6.2.1",
+    "eslint": "^8.31.0",
+    "eslint-plugin-react": "^7.30.0",
+    "jest": "^29.3.1",
+    "jest-environment-jsdom": "^29.3.1",
+    "jsdom": "^22.1.0",
+    "ts-jest": "^29.0.3",
+    "ts-loader": "^9.3.0",
+    "typescript": "^5.1.6",
+    "webpack": "^5.76.0",
+    "webpack-bundle-analyzer": "^4.5.0",
+    "webpack-cli": "^5.0.1"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "chart.js": "^4.1.2",
+    "lodash": "^4.17.21",
+    "react": "^18.1.0",
+    "react-chartjs-2": "^5.1.0",
+    "react-custom-roulette": "^1.4.1",
+    "react-dom": "^18.1.0",
+    "xlsx-js-style": "^1.2.0"
+  }
+}
