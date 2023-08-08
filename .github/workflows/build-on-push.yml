@@ -1,0 +1,40 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: lts/*
+
+    - name: Build Code
+      run: |
+        npm ci
+        npm run build
+        npm run test
+
+    - name: Publish Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist
+        path: dist/
+
+    - name: Release
+      uses: bacongobbler/azure-blob-storage-upload@main
+      with:
+        source_dir: dist
+        container_name: apps
+        extra_args: '--destination-path standup-roulette'
+        connection_string: ${{ secrets.BLOB_CONNECTION_STRING }}
+        overwrite: 'true'
