@@ -54,6 +54,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
 
     const onResetClicked = () => {
         setSpinning(false);
+        const colours = getColourScheme(allNames.length);
         setRemainingUsers(allNames.map(name => ({ name: name, colour: colours.shift() } as User)));
         setRemoveItemOnNextSpin(false);
     };
