@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { SettingsDialog } from "./SettingsDialog";
+import { RouletteDialog } from "./RouletteDialog";
 
-export const App = () => {
+export function App() {
     const [url, setUrl] = useState(window.location.href);
     const [origin, setOrigin] = useState(window.location.origin);
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -26,7 +26,7 @@ export const App = () => {
         return (
             <>
                 <button onClick={() => setDialogOpen(!dialogOpen)} style={{ height: "32px", margin: "auto 8px", background: "none", border: "1px solid rgb(234,234,234)" }}>Standup Roulette</button>
-                <SettingsDialog origin={origin} collection={collection} project={project} team={team} sprint={sprint} open={dialogOpen} onCloseClicked={() => setDialogOpen(!dialogOpen)} />
+                <RouletteDialog origin={origin} collection={collection} project={project} team={team} sprint={sprint} open={dialogOpen} onCloseClicked={() => setDialogOpen(!dialogOpen)} />
             </>
         );
     }
