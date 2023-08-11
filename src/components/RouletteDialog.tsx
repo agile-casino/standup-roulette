@@ -170,14 +170,14 @@ export function RouletteDialog(props: SettingsDialogProps) {
                                     <tr key={index}>
                                         <td style={{ verticalAlign: "middle" }}>
                                             <div className="core-fields-checkbox">
-                                                <input type="checkbox" id="showId" checked={user.checked} onChange={() => onUserToggle(index)} />
+                                                <input type="checkbox" checked={user.checked} onChange={() => { onUserToggle(index); }} />
                                             </div>
                                         </td>
                                         <td>
-                                            <input type="text" value={user.name} onChange={event => onNameChange(index, event)} />
+                                            <input type="text" value={user.name} onChange={event => { onNameChange(index, event); }} />
                                         </td>
                                         <td style={{ verticalAlign: "middle" }}>
-                                            <i role="button" className="icon bowtie-icon bowtie-math-multiply" style={{ marginBottom: 0 }} onClick={() => onRemoveUser(index)}></i>
+                                            <i role="button" className="icon bowtie-icon bowtie-math-multiply" style={{ marginBottom: 0 }} onClick={() => { onRemoveUser(index); }}></i>
                                         </td>
                                     </tr>
                                 ))}
