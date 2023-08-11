@@ -1,7 +1,7 @@
 {
-  "name": "ados-helper",
+  "name": "standup-roulette",
   "version": "0.11.1",
-  "description": "ados-helper",
+  "description": "standup-roulette",
   "main": "index.js",
   "scripts": {
     "analyze": "webpack --mode=production --profile --json > stats.json && webpack-bundle-analyzer stats.json",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/archerax/ados-helper.git"
+    "url": "git+https://github.com/archerax/standup-roulette.git"
   },
   "author": "archerax",
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/archerax/ados-helper/issues"
+    "url": "https://github.com/archerax/standup-roulette/issues"
   },
-  "homepage": "https://github.com/archerax/ados-helper#readme",
+  "homepage": "https://github.com/archerax/standup-roulette#readme",
   "devDependencies": {
     "@babel/core": "^7.20.12",
     "@testing-library/react": "^14.0.0",
