@@ -149,7 +149,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
                     <div className="info-text-wrapper" style={{ fontSize: "large", padding: "0.5em" }}>Standup Roulette</div>
                 </div>
                 <div className="bowtie-style" style={{ maxHeight: "calc(100% - 42px)", overflowY: "auto" }}>
-                    <div style={{ float: "left", overflow: "hidden" }}>
+                    <div css={wheelContainerStyle}>
                         <If condition={!!data.length}>
                             <Wheel
                                 data={data}
@@ -159,8 +159,10 @@ export function RouletteDialog(props: SettingsDialogProps) {
                                 onStopSpinning={onStopSpinning}
                             />
                             <div style={{ fontSize: "200%" }}>Winner: {winningName}</div>
-                            <button disabled={spinning} onClick={onSpinClicked} css={buttonStyle}>Spin</button>
-                            <button disabled={spinning} onClick={onResetClicked} css={buttonStyle}>Reset</button>
+                            <div>
+                                <button disabled={spinning} onClick={onSpinClicked} css={buttonStyle}>Spin</button>
+                                <button disabled={spinning} onClick={onResetClicked} css={buttonStyle}>Reset</button>
+                            </div>
                         </If>
                     </div>
                     <div style={{ float: "right" }}>
@@ -201,6 +203,14 @@ export function RouletteDialog(props: SettingsDialogProps) {
         return null;
     }
 };
+
+const wheelContainerStyle = css({
+    "float": "left",
+    "overflow": "hidden",
+    "display": "inline-flex",
+    "flex-direction": "column",
+    "align-items": "center"
+});
 
 const buttonStyle = css({
     margin: "5px"
