@@ -32,7 +32,7 @@ async function selectTeam(name: string) {
     const teamNameDropdownResults = document.evaluate("//span[starts-with(text(),'Team ')]", document);
     const teamNameDropdown = teamNameDropdownResults.iterateNext() as HTMLElement | undefined;
 
-    if (!teamNameDropdown) {
+    if (!teamNameDropdown || teamNameDropdown.textContent == name) {
         return;
     }
 
