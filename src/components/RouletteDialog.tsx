@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Wheel, WheelDataType } from "react-custom-roulette";
 import { getColourScheme } from "../utils/colourScheme";
 import { If } from "./If";
@@ -29,8 +29,11 @@ function deepCopy<T>(data: T): T {
 export function RouletteDialog(props: SettingsDialogProps) {
 
     const [spinning, setSpinning] = useState(false);
+
     const [winningIndex, setWinningIndex] = useState<number>(0);
-    const [removeItemOnNextSpin, setRemoveItemOnNextSpin] = useState(false);
+    const [winningName, setWinningName] = useState("");
+
+    const [removeUserOnNextSpin, setRemoveItemOnNextSpin] = useState(false);
 
     const [allUsers, setAllUsers] = useLocalStorage<User[]>("standup-roulette:allUsers", []);
     const [remainingUsers, setRemainingUsers] = useLocalStorage<User[]>("standup-roulette:remainingUsers", []);
@@ -40,27 +43,30 @@ export function RouletteDialog(props: SettingsDialogProps) {
     const reset = (withUsers?: User[]) => {
         const users = (withUsers ?? allUsers).filter(u => u.checked);
         setRemainingUsers(users);
+        setWinningName("");
         setRemoveItemOnNextSpin(false);
     };
-
-    useEffect(() => {
-        if (!remainingUsers.length) {
-            reset();
-            const newPrizeNumber = Math.floor(Math.random() * data.length);
-            setWinningIndex(newPrizeNumber);
-        }
-    }, [allUsers]);
 
     const onSpinClicked = () => {
         if (spinning) {
             return;
         }
-        if (removeItemOnNextSpin) {
-            setRemainingUsers(remainingUsers.filter((_,i) => i !== winningIndex));
+
+        if (removeUserOnNextSpin) {
+            const newRemainingUsers = remainingUsers.filter((_,i) => i !== winningIndex);
+            setRemainingUsers(newRemainingUsers);
+            setWinningIndex(Math.floor(Math.random() * newRemainingUsers.length));
         }
-        setWinningIndex(Math.floor(Math.random() * data.length));
+        else {
+            setWinningIndex(Math.floor(Math.random() * remainingUsers.length));
+        }
+        
+        setWinningName("");
         setRemoveItemOnNextSpin(true);
-        setSpinning(true);
+
+        setTimeout(() => {
+            setSpinning(true);
+        }, 1);
     };
 
     const onResetClicked = () => {
@@ -69,6 +75,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
 
     const onStopSpinning = () => {
         setSpinning(false);
+        setWinningName(remainingUsers[winningIndex]?.name);
     };
 
     const onNameChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,18 +110,17 @@ export function RouletteDialog(props: SettingsDialogProps) {
     };
 
     const onRemoveUser = (index: number) => {
-        setAllUsers(names => {
-            const newUsers = names.slice();
-            newUsers.splice(index, 1);
-            return newUsers;
-        });
+        const newUsers = allUsers.slice();
+        newUsers.splice(index, 1);
+        setAllUsers(newUsers);
+
     };
 
     const onUserToggle = (index: number) => {
-            const newUsers = deepCopy(allUsers);
-            newUsers[index].checked = !newUsers[index].checked;
-            setAllUsers(newUsers);
-            reset(newUsers);
+        const newUsers = deepCopy(allUsers);
+        newUsers[index].checked = !newUsers[index].checked;
+        setAllUsers(newUsers);
+        reset(newUsers);
     };
 
     const data = remainingUsers.map(user => ({
@@ -123,19 +129,10 @@ export function RouletteDialog(props: SettingsDialogProps) {
     } as WheelDataType));
 
     const dialogStyles = css`
-        //left: 50%;
-        //top: 50%;
-        //transform: translate(-50%, -50%);
-
-        // position: fixed !important;
-        // left: 0px;
-        // bottom: 0px;
-
         zoom: 25%;
         transition-property: zoom;
         transition-duration: 1s;
         &:hover {
-        //     left: 50%;
             zoom: 100%;
         }
     `;
@@ -161,6 +158,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
                                 mustStartSpinning={spinning}
                                 onStopSpinning={onStopSpinning}
                             />
+                            <div style={{ fontSize: "200%" }}>Winner: {winningName}</div>
                             <button disabled={spinning} onClick={onSpinClicked} css={buttonStyle}>Spin</button>
                             <button disabled={spinning} onClick={onResetClicked} css={buttonStyle}>Reset</button>
                         </If>
