@@ -25,7 +25,7 @@ export function App() {
         const sprint = decodeURI(matches.groups.sprint);
         return (
             <>
-                <button onClick={() => { setDialogOpen(!dialogOpen); }} style={{ height: "32px", margin: "auto 8px", background: "none", border: "1px solid rgb(234,234,234)" }}>Standup Roulette</button>
+                <button onClick={() => { setDialogOpen(!dialogOpen); }} style={{ height: "32px", margin: "auto 8px", background: dialogOpen ? "#CCFFAA" : "none", border: "1px solid rgb(234,234,234)" }}>Standup Roulette</button>
                 <RouletteDialog origin={origin} collection={collection} project={project} team={team} sprint={sprint} open={dialogOpen} onCloseClicked={() => { setDialogOpen(!dialogOpen); }} />
             </>
         );
