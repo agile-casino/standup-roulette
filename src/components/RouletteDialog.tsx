@@ -5,9 +5,11 @@ import { If } from "./If";
 import { css } from "@emotion/react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { orderBy } from "../utils/orderBy";
+import { delay } from "../utils/delay";
 
 interface User {
     name: string;
+    team?: string;
     colour?: string;
     checked?: boolean;
 }
@@ -24,6 +26,27 @@ export interface SettingsDialogProps {
 
 function deepCopy<T>(data: T): T {
     return JSON.parse(JSON.stringify(data)) as T;
+}
+
+async function selectTeam(name: string) {
+    const teamNameDropdownResults = document.evaluate("//span[starts-with(text(),'Team ')]", document);
+    const teamNameDropdown = teamNameDropdownResults.iterateNext() as HTMLElement | undefined;
+
+    if (!teamNameDropdown) {
+        return;
+    }
+
+    teamNameDropdown.click();
+    await delay(50);
+
+    const teamNameOptionResults = document.evaluate(`//span[text()='${name}']`, document);
+    const teamNameOption = teamNameOptionResults.iterateNext() as HTMLElement | undefined;
+
+    if (!teamNameOption) {
+        return;
+    }
+
+    teamNameOption.click();
 }
 
 export function RouletteDialog(props: SettingsDialogProps) {
@@ -74,9 +97,17 @@ export function RouletteDialog(props: SettingsDialogProps) {
     };
 
     const onStopSpinning = () => {
+        const winningUser = remainingUsers[winningIndex];
+
         setSpinning(false);
-        setWinningName(remainingUsers[winningIndex]?.name);
+        setWinningName(winningUser.name);
+
+        if (winningUser.team) {
+            selectTeam(`Team ${winningUser.team}`).catch(console.log);
+        }
     };
+
+
 
     const onNameChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
         setAllUsers(users => {
@@ -85,8 +116,15 @@ export function RouletteDialog(props: SettingsDialogProps) {
             reset(newUsers);
             return newUsers;
         });
-        event.stopPropagation();
-        event.preventDefault();
+    }
+
+    const onTeamChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
+        setAllUsers(users => {
+            const newUsers = deepCopy(users);
+            newUsers[index].team = event.target.value;
+            reset(newUsers);
+            return newUsers;
+        });
     }
 
     const onNewNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -178,6 +216,9 @@ export function RouletteDialog(props: SettingsDialogProps) {
                                         <td>
                                             <input type="text" value={user.name} onChange={event => { onNameChange(index, event); }} />
                                         </td>
+                                        <td>
+                                            <input type="text" value={user.team} onChange={event => { onTeamChange(index, event); }} />
+                                        </td>
                                         <td style={{ verticalAlign: "middle" }}>
                                             <i role="button" className="icon bowtie-icon bowtie-math-multiply" style={{ marginBottom: 0 }} onClick={() => { onRemoveUser(index); }}></i>
                                         </td>
@@ -188,6 +229,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
                                     <td>
                                         <input type="text" value={newName} onChange={onNewNameChange} />
                                     </td>
+                                    <td></td>
                                     <td style={{ verticalAlign: "middle" }}>
                                         <i className="icon bowtie-icon bowtie-math-plus" onClick={onAddUser}></i>
                                     </td>
@@ -208,8 +250,8 @@ const wheelContainerStyle = css({
     "float": "left",
     "overflow": "hidden",
     "display": "inline-flex",
-    "flex-direction": "column",
-    "align-items": "center"
+    "flexDirection": "column",
+    "alignItems": "center"
 });
 
 const buttonStyle = css({
