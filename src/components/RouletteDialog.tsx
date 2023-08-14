@@ -6,6 +6,7 @@ import { css } from "@emotion/react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { orderBy } from "../utils/orderBy";
 import { delay } from "../utils/delay";
+import { formatName } from "../utils/formatName";
 
 interface User {
     name: string;
@@ -28,12 +29,17 @@ function deepCopy<T>(data: T): T {
     return JSON.parse(JSON.stringify(data)) as T;
 }
 
-async function selectTeam(name: string) {
+async function selectTeam(name: string): Promise<boolean> {
     const teamNameDropdownResults = document.evaluate("//span[starts-with(text(),'Team ')]", document);
     const teamNameDropdown = teamNameDropdownResults.iterateNext() as HTMLElement | undefined;
 
-    if (!teamNameDropdown || teamNameDropdown.textContent == name) {
-        return;
+    if (!teamNameDropdown) {
+        console.log("Could not find team name dropdown.");
+        return false;
+    }
+
+    if (teamNameDropdown.textContent == name) {
+        return true;
     }
 
     teamNameDropdown.click();
@@ -43,20 +49,87 @@ async function selectTeam(name: string) {
     const teamNameOption = teamNameOptionResults.iterateNext() as HTMLElement | undefined;
 
     if (!teamNameOption) {
-        return;
+        return false;
     }
 
     teamNameOption.click();
+    return true;
+}
+
+async function selectPerson(name: string) {
+
+    let personNameDropdown: HTMLElement | undefined;
+    for (let i = 0; i < 30; i++) {
+        try {
+            const personNameDropdownResults = document.evaluate("//span[starts-with(text(),'Person: ')]", document);
+            if (personNameDropdown = personNameDropdownResults.iterateNext() as HTMLElement | undefined) {
+                break;
+            }
+        }
+        catch {
+        }
+
+        await delay(100);
+    }
+
+    if (!personNameDropdown) {
+        console.log("Could not find person name dropdown.");
+        return;
+    }
+
+    personNameDropdown.click();
+    await delay(100);
+
+    const personNameOptionResults = document.evaluate(`//span[@class='vss-PickList--selectableElementButton-text']`, document);
+
+    let allOption: HTMLElement | undefined;
+    const personNameOptions: HTMLElement[] = [];
+
+    let personNameOption: HTMLElement | undefined;
+    while (personNameOption = personNameOptionResults.iterateNext() as HTMLElement | undefined) {
+        switch (personNameOption.textContent) {
+            case "@Me":
+                break;
+            case "Unassigned":
+                break;
+            case "All":
+                allOption = personNameOption;
+                break;
+            default:
+                personNameOptions.push(personNameOption);
+                break;
+        }
+    }
+
+    let best: HTMLElement | undefined;
+    for (const person of personNameOptions) {
+        const name1 = formatName(name);
+        const name2 = formatName(person.textContent);
+
+        console.log(name1);
+        console.log(name2);
+
+        if (name2.startsWith(name1)) {
+            best = person;
+        }
+    }
+
+    if (best) {
+        best.click();
+    }
+    else {
+        allOption?.click();
+    }
 }
 
 export function RouletteDialog(props: SettingsDialogProps) {
 
     const [spinning, setSpinning] = useState(false);
 
-    const [winningIndex, setWinningIndex] = useState<number>(0);
-    const [winningName, setWinningName] = useState("");
+    const [winningIndex, setWinningIndex] = useLocalStorage<number>("standup-roulette:setWinningIndex", 0);
+    const [winningName, setWinningName] = useLocalStorage("standup-roulette:setWinningName", "");
 
-    const [removeUserOnNextSpin, setRemoveItemOnNextSpin] = useState(false);
+    const [removeUserOnNextSpin, setRemoveItemOnNextSpin] = useLocalStorage("standup-roulette:removeUserOnNextSpin", false);
 
     const [allUsers, setAllUsers] = useLocalStorage<User[]>("standup-roulette:allUsers", []);
     const [remainingUsers, setRemainingUsers] = useLocalStorage<User[]>("standup-roulette:remainingUsers", []);
@@ -65,6 +138,10 @@ export function RouletteDialog(props: SettingsDialogProps) {
 
     const reset = (withUsers?: User[]) => {
         const users = (withUsers ?? allUsers).filter(u => u.checked);
+        const colours = getColourScheme(users.length);
+        for (let i = 0; i < colours.length; i++) {
+            users[i].colour = colours[i];
+        }
         setRemainingUsers(users);
         setWinningName("");
         setRemoveItemOnNextSpin(false);
@@ -103,11 +180,15 @@ export function RouletteDialog(props: SettingsDialogProps) {
         setWinningName(winningUser.name);
 
         if (winningUser.team) {
-            selectTeam(`Team ${winningUser.team}`).catch(console.log);
+            selectTeam(`Team ${winningUser.team}`)
+            .then(selectedTeam => {
+                if (selectedTeam) {
+                    selectPerson(winningUser.name).catch(console.log)
+                }
+            })
+            .catch(console.log);
         }
     };
-
-
 
     const onNameChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
         setAllUsers(users => {
@@ -135,12 +216,6 @@ export function RouletteDialog(props: SettingsDialogProps) {
         setAllUsers(users => {
             const newUser = { name: newName } as User;
             const newUsers = [...users, newUser].sort(orderBy(u => u.name));
-
-            const colours = getColourScheme(newUsers.length);
-            for (let i = 0; i < colours.length; i++) {
-                newUsers[i].colour = colours[i];
-            }
-
             reset(newUsers);
             return newUsers;
         });
@@ -151,7 +226,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
         const newUsers = allUsers.slice();
         newUsers.splice(index, 1);
         setAllUsers(newUsers);
-
+        reset(newUsers);
     };
 
     const onUserToggle = (index: number) => {
@@ -167,17 +242,21 @@ export function RouletteDialog(props: SettingsDialogProps) {
     } as WheelDataType));
 
     const dialogStyles = css`
-        zoom: 25%;
-        transition-property: zoom;
-        transition-duration: 1s;
+        left: 0;
+        bottom: 0;
+        zIndex: 10002;
+        transform: scale(25%);
+        transform-origin: bottom left;
+        transition-property: transform;
+        transition-duration: 0.3s;
         &:hover {
-            zoom: 100%;
+            transform: scale(100%);
         }
     `;
 
     if (props.open) {
         return (
-            <div className="ui-dialog  workitem-dialog ui-dialog-legacy" css={dialogStyles} style={{ zIndex: 10002, width: "1000px", height: "650px", position: "fixed", left: 0, bottom: 0 }}>
+            <div className="ui-dialog  workitem-dialog ui-dialog-legacy" css={dialogStyles} style={{ position: "fixed", width: "1000px", height: "650px" }}>
                 <div className="ui-dialog-titlebar">
                     <button type="button" className="ui-button ui-button-icon-only ui-dialog-titlebar-close" style={{ margin: "0.5em", width: "27px" }} onClick={props.onCloseClicked}>
                         <span className="ui-button-icon-primary ui-icon ui-icon-closethick"></span>
@@ -197,11 +276,13 @@ export function RouletteDialog(props: SettingsDialogProps) {
                                 onStopSpinning={onStopSpinning}
                             />
                             <div style={{ fontSize: "200%" }}>Winner: {winningName}</div>
-                            <div>
-                                <button disabled={spinning} onClick={onSpinClicked} css={buttonStyle}>Spin</button>
-                                <button disabled={spinning} onClick={onResetClicked} css={buttonStyle}>Reset</button>
-                            </div>
                         </If>
+                        <div>
+                            <If condition={data.length > 2 || !winningName}>
+                                <button disabled={spinning} onClick={onSpinClicked} css={buttonStyle}>Spin</button>
+                            </If>
+                            <button disabled={spinning} onClick={onResetClicked} css={buttonStyle}>Reset</button>
+                        </div>
                     </div>
                     <div style={{ float: "right" }}>
                         <table>
