@@ -1,6 +1,6 @@
 {
   "name": "standup-roulette",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "standup-roulette",
   "main": "index.js",
   "scripts": {
@@ -47,6 +47,7 @@
     "@emotion/styled": "^11.8.1",
     "chart.js": "^4.1.2",
     "lodash": "^4.17.21",
+    "natural": "^6.5.0",
     "react": "^18.1.0",
     "react-chartjs-2": "^5.1.0",
     "react-custom-roulette": "^1.4.1",
