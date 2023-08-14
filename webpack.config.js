@@ -1,6 +1,6 @@
 const path = require("path");
-const pkg = require('./package.json');
-const TerserPlugin = require('terser-webpack-plugin');
+const pkg = require("./package.json");
+const TerserPlugin = require("terser-webpack-plugin");
 
 const banner = `
 // ==UserScript==
@@ -23,11 +23,11 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: "ts-loader",
-        exclude: /node_modules/,
-      },
-    ],
+        exclude: /node_modules/
+      }
+    ]
   },
-  optimization:{
+  optimization: {
     minimizer: [
       new TerserPlugin({
         extractComments: false,
@@ -40,10 +40,10 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: [".tsx", ".ts", ".js"]
   },
   output: {
     filename: "index.user.js",
-    path: path.resolve(__dirname, "dist"),
-  },
+    path: path.resolve(__dirname, "dist")
+  }
 };
