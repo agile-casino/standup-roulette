@@ -57,15 +57,20 @@ async function selectTeam(name: string): Promise<boolean> {
 }
 
 async function selectPerson(name: string) {
+  const maxRetries = 30;
   let personNameDropdown: HTMLElement | undefined;
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < maxRetries; i++) {
     try {
       const personNameDropdownResults = document.evaluate("//span[starts-with(text(),'Person: ')]", document);
-      if (personNameDropdown = personNameDropdownResults.iterateNext() as HTMLElement | undefined) {
+      personNameDropdown = personNameDropdownResults.iterateNext() as HTMLElement | undefined
+      if (personNameDropdown) {
         break;
       }
     }
-    catch {
+    catch (e) {
+      if (i == maxRetries - 1) {
+        console.log(e);
+      }
     }
 
     await delay(100);
@@ -84,8 +89,8 @@ async function selectPerson(name: string) {
   let allOption: HTMLElement | undefined;
   const personNameOptions: HTMLElement[] = [];
 
-  let personNameOption: HTMLElement | undefined;
-  while (personNameOption = personNameOptionResults.iterateNext() as HTMLElement | undefined) {
+  let personNameOption = personNameOptionResults.iterateNext() as HTMLElement | undefined;
+  while (personNameOption) {
     switch (personNameOption.textContent) {
       case "@Me":
         break;
@@ -98,6 +103,7 @@ async function selectPerson(name: string) {
         personNameOptions.push(personNameOption);
         break;
     }
+    personNameOption = personNameOptionResults.iterateNext() as HTMLElement | undefined;
   }
 
   let best: HTMLElement | undefined;
