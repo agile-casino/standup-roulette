@@ -278,11 +278,9 @@ export function RouletteDialog(props: SettingsDialogProps) {
               <div style={{ fontSize: "200%" }}>Winner: {winningName}</div>
             </If>
             <div>
-              <If condition={data.length > 2 || !winningName}>
-                <button disabled={spinning} onClick={onSpinClicked} css={buttonStyle}>
-                  Spin
-                </button>
-              </If>
+              <button disabled={spinning} onClick={onSpinClicked} css={buttonStyle}>
+                Spin
+              </button>
               <button disabled={spinning} onClick={onResetClicked} css={buttonStyle}>
                 Reset
               </button>
