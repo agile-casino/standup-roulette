@@ -111,9 +111,6 @@ async function selectPerson(name: string) {
     const name1 = formatName(name);
     const name2 = formatName(person.textContent);
 
-    console.log(name1);
-    console.log(name2);
-
     if (name2.startsWith(name1)) {
       best = person;
     }
