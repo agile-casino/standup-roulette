@@ -1,10 +1,26 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Wheel, WheelDataType } from "react-custom-roulette";
 import { If } from "./If";
 import { css } from "@emotion/react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { addUser, beginSpin, endSpin, prepareSpin, removeUser, reset, selectAllUsers, selectRemainingUsers, selectSpinning, selectWinningIndex, selectWinningName, setUserName, setUserTeam, toggleUser } from "../store/roulette/rouletteSlice";
+import {
+  addUser,
+  beginSpin,
+  endSpin,
+  prepareSpin,
+  removeUser,
+  reset,
+  selectAllUsers,
+  selectRemainingUsers,
+  selectSpinning,
+  selectWinningIndex,
+  selectWinningName,
+  setUserName,
+  setUserTeam,
+  toggleUser
+} from "../store/roulette/rouletteSlice";
 import { selectPerson, selectTeam } from "../utils/adosHelper";
+import { User } from "../store/roulette/User";
 
 export interface SettingsDialogProps {
   origin: string;
@@ -43,25 +59,17 @@ export function RouletteDialog(props: SettingsDialogProps) {
   const onStopSpinning = () => {
     dispatch(endSpin());
 
-     const winningUser = remainingUsers[winningIndex ?? 0];
+    const winningUser = remainingUsers[winningIndex ?? 0];
 
     if (winningUser.team) {
       selectTeam(`Team ${winningUser.team}`)
-        .then(selectedTeam => {
+        .then((selectedTeam) => {
           if (selectedTeam) {
             selectPerson(winningUser.name).catch(console.log);
           }
         })
         .catch(console.log);
     }
-  };
-
-  const onNameChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setUserName({ index: index, newUserName: event.target.value }));
-  };
-
-  const onTeamChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setUserTeam({ index: index, newTeamName: event.target.value }));
   };
 
   const onNewNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,31 +81,9 @@ export function RouletteDialog(props: SettingsDialogProps) {
     setNewName("");
   };
 
-  const onRemoveUser = (index: number) => {
-    dispatch(removeUser({ index: index }));
-  };
-
-  const onUserToggle = (index: number) => {
-    dispatch(toggleUser({ index: index }));
-  };
-
-  const data = remainingUsers.map(user => ({
-    option: user.name,
-    style: { backgroundColor: user.colour }
-  } as WheelDataType));
-
-  const dialogStyles = css`
-    left: 0;
-    bottom: 0;
-    zindex: 10002;
-    transform: scale(25%);
-    transform-origin: bottom left;
-    transition-property: transform;
-    transition-duration: 0.3s;
-    &:hover {
-      transform: scale(100%);
-    }
-  `;
+  const data: WheelDataType[] = useMemo(() => {
+    return remainingUsers.map((user) => ({ option: user.name, style: { backgroundColor: user.colour } }));
+  }, remainingUsers);
 
   if (props.open) {
     return (
@@ -115,13 +101,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
         <div className="bowtie-style" style={{ maxHeight: "calc(100% - 42px)", overflowY: "auto" }}>
           <div css={wheelContainerStyle}>
             <If condition={!!data.length}>
-              <Wheel
-                data={data}
-                spinDuration={0.15}
-                prizeNumber={winningIndex ?? 0}
-                mustStartSpinning={spinning}
-                onStopSpinning={onStopSpinning}
-              />
+              <Wheel data={data} spinDuration={0.15} prizeNumber={winningIndex ?? 0} mustStartSpinning={spinning} onStopSpinning={onStopSpinning} />
               <div style={{ fontSize: "200%" }}>Winner: {winningName}</div>
             </If>
             <div>
@@ -135,24 +115,17 @@ export function RouletteDialog(props: SettingsDialogProps) {
           </div>
           <div style={{ float: "right" }}>
             <table>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th style={{ textAlign: "left" }}>Name</th>
+                  <th style={{ textAlign: "left" }}>Sprint Backlog</th>
+                  <th></th>
+                </tr>
+              </thead>
               <tbody>
                 {allUsers.map((user, index) => (
-                  <tr key={index}>
-                    <td style={{ verticalAlign: "middle" }}>
-                      <div className="core-fields-checkbox">
-                        <input type="checkbox" checked={user.checked} onChange={() => { onUserToggle(index); }} />
-                      </div>
-                    </td>
-                    <td>
-                      <input type="text" value={user.name} onChange={event => { onNameChange(index, event); }} />
-                    </td>
-                    <td>
-                      <input type="text" value={user.team} onChange={event => { onTeamChange(index, event); }} />
-                    </td>
-                    <td style={{ verticalAlign: "middle" }}>
-                      <i role="button" className="icon bowtie-icon bowtie-math-multiply" style={{ marginBottom: 0 }} onClick={() => { onRemoveUser(index); }}></i>
-                    </td>
-                  </tr>
+                  <UserEditRow key={index} index={index} user={user} />
                 ))}
                 <tr>
                   <td></td>
@@ -175,6 +148,63 @@ export function RouletteDialog(props: SettingsDialogProps) {
     return null;
   }
 }
+
+interface UserEditRowProps {
+  index: number;
+  user: User;
+}
+
+function UserEditRow({ index, user }: UserEditRowProps) {
+  const dispatch = useAppDispatch();
+
+  const onNameChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setUserName({ index: index, newUserName: event.target.value }));
+  };
+
+  const onTeamChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setUserTeam({ index: index, newTeamName: event.target.value }));
+  };
+
+  const onToggleUser = (index: number) => {
+    dispatch(toggleUser({ index: index }));
+  };
+
+  const onRemoveUser = (index: number) => {
+    dispatch(removeUser({ index: index }));
+  };
+
+  return (
+    <tr>
+      <td style={{ verticalAlign: "middle" }}>
+        <div className="core-fields-checkbox">
+          <input type="checkbox" checked={user.checked} onChange={() => onToggleUser(index)} />
+        </div>
+      </td>
+      <td>
+        <input type="text" value={user.name} onChange={(event) => onNameChange(index, event)} />
+      </td>
+      <td>
+        <input type="text" value={user.team} onChange={(event) => onTeamChange(index, event)} />
+      </td>
+      <td style={{ verticalAlign: "middle" }}>
+        <i role="button" className="icon bowtie-icon bowtie-math-multiply" style={{ marginBottom: 0 }} onClick={() => onRemoveUser(index)}></i>
+      </td>
+    </tr>
+  );
+}
+
+const dialogStyles = css`
+  left: 0;
+  bottom: 0;
+  zindex: 10002;
+  transform: scale(25%);
+  transform-origin: bottom left;
+  transition-property: transform;
+  transition-duration: 0.3s;
+  &:hover {
+    transform: scale(100%);
+  }
+`;
 
 const wheelContainerStyle = css({
   float: "left",
