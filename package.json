@@ -45,6 +45,7 @@
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
+    "@reduxjs/toolkit": "^1.9.5",
     "chart.js": "^4.1.2",
     "lodash": "^4.17.21",
     "natural": "^6.5.0",
@@ -52,6 +53,7 @@
     "react-chartjs-2": "^5.1.0",
     "react-custom-roulette": "^1.4.1",
     "react-dom": "^18.1.0",
+    "react-redux": "^8.1.2",
     "xlsx-js-style": "^1.2.0"
   }
 }
