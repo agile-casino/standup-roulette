@@ -1,5 +1,5 @@
 export async function waitForElement(selector: string): Promise<Element> {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const interval = setInterval(() => {
       const element = document.querySelector(selector);
       if (element) {

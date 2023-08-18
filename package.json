@@ -7,7 +7,7 @@
     "analyze": "webpack --mode=production --profile --json > stats.json && webpack-bundle-analyzer stats.json",
     "build": "webpack --mode=production",
     "build:watch": "webpack --mode=development --watch",
-    "lint": "eslint . --ext .ts,.tsx",
+    "lint": "npx prettier . --write && npx eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch"
   },
