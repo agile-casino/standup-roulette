@@ -14,6 +14,9 @@
     "project": "./tsconfig.json"
   },
   "rules": {
+    "brace-style":  ["error", "stroustrup"],
+    "indent": ["error", 2],
+    "@typescript-eslint/no-confusing-void-expression": ["error", { "ignoreArrowShorthand": true }],
     "react/no-unknown-property": ["error", { "ignore": ["css"] }]
   },
   "settings": {
