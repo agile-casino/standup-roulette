@@ -83,7 +83,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
 
   const data: WheelDataType[] = useMemo(() => {
     return remainingUsers.map((user) => ({ option: user.name, style: { backgroundColor: user.colour } }));
-  }, remainingUsers);
+  }, [remainingUsers]);
 
   if (props.open) {
     return (
@@ -124,8 +124,8 @@ export function RouletteDialog(props: SettingsDialogProps) {
                 </tr>
               </thead>
               <tbody>
-                {allUsers.map((user, index) => (
-                  <UserEditRow key={index} index={index} user={user} />
+                {allUsers.map((user) => (
+                  <UserEditRow key={user.id} user={user} />
                 ))}
                 <tr>
                   <td></td>
@@ -149,45 +149,40 @@ export function RouletteDialog(props: SettingsDialogProps) {
   }
 }
 
-interface UserEditRowProps {
-  index: number;
-  user: User;
-}
-
-function UserEditRow({ index, user }: UserEditRowProps) {
+function UserEditRow({ user }: { user: User }) {
   const dispatch = useAppDispatch();
 
-  const onNameChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setUserName({ index: index, newUserName: event.target.value }));
+  const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setUserName({ id: user.id, newUserName: event.target.value }));
   };
 
-  const onTeamChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setUserTeam({ index: index, newTeamName: event.target.value }));
+  const onTeamChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setUserTeam({ id: user.id, newTeamName: event.target.value }));
   };
 
-  const onToggleUser = (index: number) => {
-    dispatch(toggleUser({ index: index }));
+  const onToggleUser = () => {
+    dispatch(toggleUser({ id: user.id }));
   };
 
-  const onRemoveUser = (index: number) => {
-    dispatch(removeUser({ index: index }));
+  const onRemoveUser = () => {
+    dispatch(removeUser({ id: user.id }));
   };
 
   return (
     <tr>
       <td style={{ verticalAlign: "middle" }}>
         <div className="core-fields-checkbox">
-          <input type="checkbox" checked={user.checked} onChange={() => onToggleUser(index)} />
+          <input type="checkbox" checked={user.checked} onChange={onToggleUser} />
         </div>
       </td>
       <td>
-        <input type="text" value={user.name} onChange={(event) => onNameChange(index, event)} />
+        <input type="text" value={user.name} onChange={onNameChange} />
       </td>
       <td>
-        <input type="text" value={user.team} onChange={(event) => onTeamChange(index, event)} />
+        <input type="text" value={user.team} onChange={onTeamChange} />
       </td>
       <td style={{ verticalAlign: "middle" }}>
-        <i role="button" className="icon bowtie-icon bowtie-math-multiply" style={{ marginBottom: 0 }} onClick={() => onRemoveUser(index)}></i>
+        <i role="button" className="icon bowtie-icon bowtie-math-multiply" style={{ marginBottom: 0 }} onClick={onRemoveUser}></i>
       </td>
     </tr>
   );
