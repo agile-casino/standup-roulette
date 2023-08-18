@@ -1,19 +1,10 @@
 import { useState } from "react";
 import { Wheel, WheelDataType } from "react-custom-roulette";
-import { getColourScheme } from "../utils/colourScheme";
 import { If } from "./If";
 import { css } from "@emotion/react";
-import { useLocalStorage } from "../hooks/useLocalStorage";
-import { orderBy } from "../utils/orderBy";
-import { delay } from "../utils/delay";
-import { formatName } from "../utils/formatName";
-
-interface User {
-  name: string;
-  team?: string;
-  colour?: string;
-  checked?: boolean;
-}
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { addUser, beginSpin, endSpin, prepareSpin, removeUser, reset, selectAllUsers, selectRemainingUsers, selectSpinning, selectWinningIndex, selectWinningName, setUserName, setUserTeam, toggleUser } from "../store/roulette/rouletteSlice";
+import { selectPerson, selectTeam } from "../utils/adosHelper";
 
 export interface SettingsDialogProps {
   origin: string;
@@ -25,160 +16,34 @@ export interface SettingsDialogProps {
   onCloseClicked: () => void;
 }
 
-function deepCopy<T>(data: T): T {
-  return JSON.parse(JSON.stringify(data)) as T;
-}
-
-async function selectTeam(name: string): Promise<boolean> {
-  const teamNameDropdownResults = document.evaluate("//span[starts-with(text(),'Team ')]", document);
-  const teamNameDropdown = teamNameDropdownResults.iterateNext() as HTMLElement | undefined;
-
-  if (!teamNameDropdown) {
-    console.log("Could not find team name dropdown.");
-    return false;
-  }
-
-  if (teamNameDropdown.textContent == name) {
-    return true;
-  }
-
-  teamNameDropdown.click();
-  await delay(50);
-
-  const teamNameOptionResults = document.evaluate(`//span[text()='${name}']`, document);
-  const teamNameOption = teamNameOptionResults.iterateNext() as HTMLElement | undefined;
-
-  if (!teamNameOption) {
-    return false;
-  }
-
-  teamNameOption.click();
-  return true;
-}
-
-async function selectPerson(name: string) {
-  const maxRetries = 30;
-  let personNameDropdown: HTMLElement | undefined;
-  for (let i = 0; i < maxRetries; i++) {
-    try {
-      const personNameDropdownResults = document.evaluate("//span[starts-with(text(),'Person: ')]", document);
-      personNameDropdown = personNameDropdownResults.iterateNext() as HTMLElement | undefined
-      if (personNameDropdown) {
-        break;
-      }
-    }
-    catch (e) {
-      if (i == maxRetries - 1) {
-        console.log(e);
-      }
-    }
-
-    await delay(100);
-  }
-
-  if (!personNameDropdown) {
-    console.log("Could not find person name dropdown.");
-    return;
-  }
-
-  personNameDropdown.click();
-  await delay(100);
-
-  const personNameOptionResults = document.evaluate(`//span[@class='vss-PickList--selectableElementButton-text']`, document);
-
-  let allOption: HTMLElement | undefined;
-  const personNameOptions: HTMLElement[] = [];
-
-  let personNameOption = personNameOptionResults.iterateNext() as HTMLElement | undefined;
-  while (personNameOption) {
-    switch (personNameOption.textContent) {
-      case "@Me":
-        break;
-      case "Unassigned":
-        break;
-      case "All":
-        allOption = personNameOption;
-        break;
-      default:
-        personNameOptions.push(personNameOption);
-        break;
-    }
-    personNameOption = personNameOptionResults.iterateNext() as HTMLElement | undefined;
-  }
-
-  let best: HTMLElement | undefined;
-  for (const person of personNameOptions) {
-    const name1 = formatName(name);
-    const name2 = formatName(person.textContent);
-
-    if (name2.startsWith(name1)) {
-      best = person;
-    }
-  }
-
-  if (best) {
-    best.click();
-  }
-  else {
-    allOption?.click();
-  }
-}
-
 export function RouletteDialog(props: SettingsDialogProps) {
-  const [spinning, setSpinning] = useState(false);
+  const dispatch = useAppDispatch();
 
-  const [winningIndex, setWinningIndex] = useLocalStorage<number>("standup-roulette:setWinningIndex", 0);
-  const [winningName, setWinningName] = useLocalStorage("standup-roulette:setWinningName", "");
+  const spinning = useAppSelector(selectSpinning);
 
-  const [removeUserOnNextSpin, setRemoveItemOnNextSpin] = useLocalStorage("standup-roulette:removeUserOnNextSpin", false);
+  const winningIndex = useAppSelector(selectWinningIndex);
+  const winningName = useAppSelector(selectWinningName);
 
-  const [allUsers, setAllUsers] = useLocalStorage<User[]>("standup-roulette:allUsers", []);
-  const [remainingUsers, setRemainingUsers] = useLocalStorage<User[]>("standup-roulette:remainingUsers", []);
+  const allUsers = useAppSelector(selectAllUsers);
+  const remainingUsers = useAppSelector(selectRemainingUsers);
 
   const [newName, setNewName] = useState("");
 
-  const reset = (withUsers?: User[]) => {
-    const users = (withUsers ?? allUsers).filter(u => u.checked);
-    const colours = getColourScheme(users.length);
-    for (let i = 0; i < colours.length; i++) {
-      users[i].colour = colours[i];
-    }
-    setRemainingUsers(users);
-    setWinningName("");
-    setRemoveItemOnNextSpin(false);
-  };
-
   const onSpinClicked = () => {
-    if (spinning) {
-      return;
-    }
-
-    if (removeUserOnNextSpin) {
-      const newRemainingUsers = remainingUsers.filter((_, i) => i !== winningIndex);
-      setRemainingUsers(newRemainingUsers);
-      setWinningIndex(Math.floor(Math.random() * newRemainingUsers.length));
-    }
-    else {
-      setWinningIndex(Math.floor(Math.random() * remainingUsers.length));
-    }
-
-    setWinningName("");
-    setRemoveItemOnNextSpin(true);
-
+    dispatch(prepareSpin());
     setTimeout(() => {
-      setSpinning(true);
-    }, 1);
+      dispatch(beginSpin());
+    }, 50);
   };
 
   const onResetClicked = () => {
-    reset();
+    dispatch(reset());
   };
 
   const onStopSpinning = () => {
-    const winningUser = remainingUsers[winningIndex];
+    dispatch(endSpin());
 
-    setSpinning(false);
-    setWinningName(winningUser.name);
+     const winningUser = remainingUsers[winningIndex ?? 0];
 
     if (winningUser.team) {
       selectTeam(`Team ${winningUser.team}`)
@@ -192,21 +57,11 @@ export function RouletteDialog(props: SettingsDialogProps) {
   };
 
   const onNameChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
-    setAllUsers(users => {
-      const newUsers = deepCopy(users);
-      newUsers[index].name = event.target.value;
-      reset(newUsers);
-      return newUsers;
-    });
+    dispatch(setUserName({ index: index, newUserName: event.target.value }));
   };
 
   const onTeamChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
-    setAllUsers(users => {
-      const newUsers = deepCopy(users);
-      newUsers[index].team = event.target.value;
-      reset(newUsers);
-      return newUsers;
-    });
+    dispatch(setUserTeam({ index: index, newTeamName: event.target.value }));
   };
 
   const onNewNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -214,27 +69,16 @@ export function RouletteDialog(props: SettingsDialogProps) {
   };
 
   const onAddUser = () => {
-    setAllUsers(users => {
-      const newUser = { name: newName } as User;
-      const newUsers = [...users, newUser].sort(orderBy(u => u.name));
-      reset(newUsers);
-      return newUsers;
-    });
+    dispatch(addUser({ name: newName }));
     setNewName("");
   };
 
   const onRemoveUser = (index: number) => {
-    const newUsers = allUsers.slice();
-    newUsers.splice(index, 1);
-    setAllUsers(newUsers);
-    reset(newUsers);
+    dispatch(removeUser({ index: index }));
   };
 
   const onUserToggle = (index: number) => {
-    const newUsers = deepCopy(allUsers);
-    newUsers[index].checked = !newUsers[index].checked;
-    setAllUsers(newUsers);
-    reset(newUsers);
+    dispatch(toggleUser({ index: index }));
   };
 
   const data = remainingUsers.map(user => ({
@@ -274,7 +118,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
               <Wheel
                 data={data}
                 spinDuration={0.15}
-                prizeNumber={winningIndex}
+                prizeNumber={winningIndex ?? 0}
                 mustStartSpinning={spinning}
                 onStopSpinning={onStopSpinning}
               />
