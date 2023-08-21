@@ -13,7 +13,7 @@ import {
   selectAllUsers,
   selectRemainingUsers,
   selectSpinning,
-  selectWinningIndex,
+  selectWinningId,
   selectWinningName,
   setUserName,
   setUserTeam,
@@ -37,7 +37,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
 
   const spinning = useAppSelector(selectSpinning);
 
-  const winningIndex = useAppSelector(selectWinningIndex);
+  const winningId = useAppSelector(selectWinningId);
   const winningName = useAppSelector(selectWinningName);
 
   const allUsers = useAppSelector(selectAllUsers);
@@ -59,9 +59,9 @@ export function RouletteDialog(props: SettingsDialogProps) {
   const onStopSpinning = () => {
     dispatch(endSpin());
 
-    const winningUser = remainingUsers[winningIndex ?? 0];
+    const winningUser = remainingUsers.find(u => u.id === winningId);
 
-    if (winningUser.team) {
+    if (winningUser?.team) {
       selectTeam(`Team ${winningUser.team}`)
         .then((selectedTeam) => {
           if (selectedTeam) {
