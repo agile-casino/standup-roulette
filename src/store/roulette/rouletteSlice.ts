@@ -13,17 +13,22 @@ export interface RouletteState {
   allUsers: User[];
   remainingUsers: User[];
   spinning: boolean;
-  winningIndex: number | null;
+  winningId: string | null;
   winningName: string | null;
 }
 
 function importLegacyState(): RouletteState {
+  const allUsers = getLocalStorage<User[]>("standup-roulette:allUsers", []);
+  const remainingUsers = getLocalStorage<User[]>("standup-roulette:remainingUsers", []);
+  const winningIndex = getLocalStorage<number | null>("standup-roulette:winningIndex", null);
+  const winningName = getLocalStorage<string | null>("standup-roulette:winningName", null);
+
   const state: RouletteState = {
-    allUsers: getLocalStorage<User[]>("standup-roulette:allUsers", []),
-    remainingUsers: getLocalStorage<User[]>("standup-roulette:remainingUsers", []),
+    allUsers: allUsers,
+    remainingUsers: remainingUsers,
     spinning: false,
-    winningIndex: getLocalStorage<number | null>("standup-roulette:winningIndex", null),
-    winningName: getLocalStorage<string | null>("standup-roulette:winningName", null)
+    winningId: winningIndex !== null && winningIndex < remainingUsers.length ? remainingUsers[winningIndex].id : null,
+    winningName: winningName
   };
 
   for (const user of state.allUsers) {
@@ -89,30 +94,34 @@ export const rouletteSlice = createSlice({
       }
     },
     prepareSpin: (state) => {
-      if (state.winningIndex !== null) {
-        const newRemainingUsers = state.remainingUsers.filter((_, i) => i !== state.winningIndex);
+      if (state.winningId !== null) {
+        const newRemainingUsers = state.remainingUsers.filter(u => u.id !== state.winningId);
         state.remainingUsers = newRemainingUsers;
       }
-      state.winningIndex = Math.floor(Math.random() * state.remainingUsers.length);
+      const winningIndex = Math.floor(Math.random() * state.remainingUsers.length);
+      state.winningId = state.remainingUsers[winningIndex].id;
       setLocalStorage("standup-roulette:remainingUsers", state.remainingUsers);
-      setLocalStorage("standup-roulette:winningIndex", state.winningIndex);
+      setLocalStorage("standup-roulette:winningId", state.winningId);
     },
     beginSpin: (state) => {
       state.spinning = true;
     },
     endSpin: (state) => {
-      if (state.winningIndex !== null) {
-        state.winningName = state.remainingUsers[state.winningIndex].name;
+      if (state.winningId !== null) {
+        const user = state.remainingUsers.find(u => u.id === state.winningId);
+        if (user) {
+          state.winningName = user.name;
+        }
       }
       state.spinning = false;
       setLocalStorage("standup-roulette:winningName", state.winningName);
     },
     reset: (state) => {
       state.remainingUsers = deepCopy(state.allUsers);
-      state.winningIndex = null;
+      state.winningId = null;
       state.winningName = null;
       setLocalStorage("standup-roulette:remainingUsers", state.remainingUsers);
-      setLocalStorage("standup-roulette:winningIndex", state.winningIndex);
+      setLocalStorage("standup-roulette:winningId", state.winningId);
       setLocalStorage("standup-roulette:winningName", state.winningName);
     }
   }
@@ -123,7 +132,7 @@ export const { addUser, removeUser, setUserName, setUserTeam, toggleUser, reset,
 export const selectAllUsers = (state: RootState) => state.roulette.allUsers;
 export const selectRemainingUsers = (state: RootState) => state.roulette.remainingUsers;
 export const selectSpinning = (state: RootState) => state.roulette.spinning;
-export const selectWinningIndex = (state: RootState) => state.roulette.winningIndex;
+export const selectWinningId = (state: RootState) => state.roulette.winningId;
 export const selectWinningName = (state: RootState) => state.roulette.winningName;
 
 export default rouletteSlice.reducer;
