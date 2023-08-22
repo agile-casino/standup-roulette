@@ -43,6 +43,11 @@ export function RouletteDialog(props: SettingsDialogProps) {
   const allUsers = useAppSelector(selectAllUsers);
   const remainingUsers = useAppSelector(selectRemainingUsers);
 
+  const winningIndex = remainingUsers.findIndex(x => x.id === winningId) > 0
+    ? remainingUsers.findIndex(x => x.id === winningId)
+    : 0;
+
+
   const [newName, setNewName] = useState("");
 
   const onSpinClicked = () => {
@@ -101,7 +106,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
         <div className="bowtie-style" style={{ maxHeight: "calc(100% - 42px)", overflowY: "auto" }}>
           <div css={wheelContainerStyle}>
             <If condition={!!data.length}>
-              <Wheel data={data} spinDuration={0.15} prizeNumber={winningIndex ?? 0} mustStartSpinning={spinning} onStopSpinning={onStopSpinning} />
+              <Wheel data={data} spinDuration={0.15} prizeNumber={winningIndex} mustStartSpinning={spinning} onStopSpinning={onStopSpinning} />
               <div style={{ fontSize: "200%" }}>Winner: {winningName}</div>
             </If>
             <div>
