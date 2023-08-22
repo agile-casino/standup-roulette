@@ -3,22 +3,7 @@ import { Wheel, WheelDataType } from "react-custom-roulette";
 import { If } from "./If";
 import { css } from "@emotion/react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import {
-  addUser,
-  beginSpin,
-  endSpin,
-  prepareSpin,
-  removeUser,
-  reset,
-  selectAllUsers,
-  selectRemainingUsers,
-  selectSpinning,
-  selectWinningId,
-  selectWinningName,
-  setUserName,
-  setUserTeam,
-  toggleUser
-} from "../store/roulette/rouletteSlice";
+import { addUser, beginSpin, endSpin, prepareSpin, removeUser, reset, selectAllUsers, selectRemainingUsers, selectSpinning, selectWinningId, selectWinningName, setUserName, setUserTeam, toggleUser } from "../store/roulette/rouletteSlice";
 import { selectPerson, selectTeam } from "../utils/adosHelper";
 import { User } from "../store/roulette/User";
 
@@ -43,10 +28,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
   const allUsers = useAppSelector(selectAllUsers);
   const remainingUsers = useAppSelector(selectRemainingUsers);
 
-  const winningIndex = remainingUsers.findIndex(x => x.id === winningId) > 0
-    ? remainingUsers.findIndex(x => x.id === winningId)
-    : 0;
-
+  const winningIndex = remainingUsers.findIndex((x) => x.id === winningId) > 0 ? remainingUsers.findIndex((x) => x.id === winningId) : 0;
 
   const [newName, setNewName] = useState("");
 
@@ -64,7 +46,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
   const onStopSpinning = () => {
     dispatch(endSpin());
 
-    const winningUser = remainingUsers.find(u => u.id === winningId);
+    const winningUser = remainingUsers.find((u) => u.id === winningId);
 
     if (winningUser?.team) {
       selectTeam(`Team ${winningUser.team}`)

@@ -8,9 +8,7 @@ export function getLocalStorage<T>(key: string, defaultValue: T): T {
 
 export function setLocalStorage<T>(key: string, value: T, exclude?: string[]) {
   if (value !== undefined) {
-    const filter = (key: string, val: unknown) => exclude?.includes(key)
-      ? undefined
-      : val;
+    const filter = (key: string, val: unknown) => (exclude?.includes(key) ? undefined : val);
     const serialised = JSON.stringify(value, filter);
     localStorage.setItem(key, serialised);
   }

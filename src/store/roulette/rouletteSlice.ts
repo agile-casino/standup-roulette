@@ -38,7 +38,7 @@ function importLegacyState(): RouletteState {
   }
 
   for (const user of state.remainingUsers) {
-    const matchingUser = state.allUsers.find(u => u.name === user.name);
+    const matchingUser = state.allUsers.find((u) => u.name === user.name);
     user.id = matchingUser?.id ?? uuid();
   }
 
@@ -64,11 +64,11 @@ export const rouletteSlice = createSlice({
       assignColours(state.allUsers);
     },
     removeUser: (state, action: PayloadAction<{ id: string }>) => {
-      state.allUsers = state.allUsers.filter(u => u.id !== action.payload.id);
+      state.allUsers = state.allUsers.filter((u) => u.id !== action.payload.id);
       assignColours(state.allUsers);
     },
     setUserName: (state, action: PayloadAction<{ id: string; newUserName: string }>) => {
-      const user = state.allUsers.find(u => u.id === action.payload.id);
+      const user = state.allUsers.find((u) => u.id === action.payload.id);
       if (user) {
         user.name = action.payload.newUserName;
         state.allUsers = state.allUsers.sort(orderBy((x) => x.name));
@@ -76,13 +76,13 @@ export const rouletteSlice = createSlice({
       }
     },
     setUserTeam: (state, action: PayloadAction<{ id: string; newTeamName: string }>) => {
-      const user = state.allUsers.find(u => u.id === action.payload.id);
+      const user = state.allUsers.find((u) => u.id === action.payload.id);
       if (user) {
         user.team = action.payload.newTeamName;
       }
     },
     toggleUser: (state, action: PayloadAction<{ id: string }>) => {
-      const user = state.allUsers.find(u => u.id === action.payload.id);
+      const user = state.allUsers.find((u) => u.id === action.payload.id);
       if (user) {
         user.checked = !user.checked;
         assignColours(state.allUsers);
@@ -90,7 +90,7 @@ export const rouletteSlice = createSlice({
     },
     prepareSpin: (state) => {
       if (state.winningId !== null) {
-        const newRemainingUsers = state.remainingUsers.filter(u => u.id !== state.winningId);
+        const newRemainingUsers = state.remainingUsers.filter((u) => u.id !== state.winningId);
         state.remainingUsers = newRemainingUsers;
       }
       const winningIndex = Math.floor(Math.random() * state.remainingUsers.length);
@@ -101,7 +101,7 @@ export const rouletteSlice = createSlice({
     },
     endSpin: (state) => {
       if (state.winningId !== null) {
-        const user = state.remainingUsers.find(u => u.id === state.winningId);
+        const user = state.remainingUsers.find((u) => u.id === state.winningId);
         if (user) {
           state.winningName = user.name;
         }
@@ -109,7 +109,7 @@ export const rouletteSlice = createSlice({
       state.spinning = false;
     },
     reset: (state) => {
-      state.remainingUsers = deepCopy(state.allUsers.filter(x => x.checked));
+      state.remainingUsers = deepCopy(state.allUsers.filter((x) => x.checked));
       state.winningId = null;
       state.winningName = null;
     }
