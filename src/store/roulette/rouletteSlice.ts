@@ -4,7 +4,7 @@ import { getColourScheme } from "../../utils/colourScheme";
 import { orderBy } from "../../utils/orderBy";
 import { deepCopy } from "../../utils/deepCopy";
 import { User } from "./User";
-import { getLocalStorage, setLocalStorage } from "../../utils/localStorage";
+import { getLocalStorage } from "../../utils/localStorage";
 import { v4 as uuidv4 } from "uuid";
 
 const uuid = uuidv4 as () => string;
@@ -62,12 +62,10 @@ export const rouletteSlice = createSlice({
     addUser: (state, action: PayloadAction<{ name: string }>) => {
       state.allUsers = [...state.allUsers, { id: uuid(), name: action.payload.name }].sort(orderBy((x) => x.name));
       assignColours(state.allUsers);
-      setLocalStorage("standup-roulette:allUsers", state.allUsers);
     },
     removeUser: (state, action: PayloadAction<{ id: string }>) => {
       state.allUsers = state.allUsers.filter(u => u.id !== action.payload.id);
       assignColours(state.allUsers);
-      setLocalStorage("standup-roulette:allUsers", state.allUsers);
     },
     setUserName: (state, action: PayloadAction<{ id: string; newUserName: string }>) => {
       const user = state.allUsers.find(u => u.id === action.payload.id);
@@ -75,14 +73,12 @@ export const rouletteSlice = createSlice({
         user.name = action.payload.newUserName;
         state.allUsers = state.allUsers.sort(orderBy((x) => x.name));
         assignColours(state.allUsers);
-        setLocalStorage("standup-roulette:allUsers", state.allUsers);
       }
     },
     setUserTeam: (state, action: PayloadAction<{ id: string; newTeamName: string }>) => {
       const user = state.allUsers.find(u => u.id === action.payload.id);
       if (user) {
         user.team = action.payload.newTeamName;
-        setLocalStorage("standup-roulette:allUsers", state.allUsers);
       }
     },
     toggleUser: (state, action: PayloadAction<{ id: string }>) => {
@@ -90,7 +86,6 @@ export const rouletteSlice = createSlice({
       if (user) {
         user.checked = !user.checked;
         assignColours(state.allUsers);
-        setLocalStorage("standup-roulette:allUsers", state.allUsers);
       }
     },
     prepareSpin: (state) => {
@@ -100,8 +95,6 @@ export const rouletteSlice = createSlice({
       }
       const winningIndex = Math.floor(Math.random() * state.remainingUsers.length);
       state.winningId = state.remainingUsers[winningIndex].id;
-      setLocalStorage("standup-roulette:remainingUsers", state.remainingUsers);
-      setLocalStorage("standup-roulette:winningId", state.winningId);
     },
     beginSpin: (state) => {
       state.spinning = true;
@@ -114,15 +107,11 @@ export const rouletteSlice = createSlice({
         }
       }
       state.spinning = false;
-      setLocalStorage("standup-roulette:winningName", state.winningName);
     },
     reset: (state) => {
       state.remainingUsers = deepCopy(state.allUsers.filter(x => x.checked));
       state.winningId = null;
       state.winningName = null;
-      setLocalStorage("standup-roulette:remainingUsers", state.remainingUsers);
-      setLocalStorage("standup-roulette:winningId", state.winningId);
-      setLocalStorage("standup-roulette:winningName", state.winningName);
     }
   }
 });
