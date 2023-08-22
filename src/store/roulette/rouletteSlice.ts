@@ -117,7 +117,7 @@ export const rouletteSlice = createSlice({
       setLocalStorage("standup-roulette:winningName", state.winningName);
     },
     reset: (state) => {
-      state.remainingUsers = deepCopy(state.allUsers);
+      state.remainingUsers = deepCopy(state.allUsers.filter(x => x.checked));
       state.winningId = null;
       state.winningName = null;
       setLocalStorage("standup-roulette:remainingUsers", state.remainingUsers);
