@@ -13,7 +13,7 @@ export function persist<TState, TAction extends Action>(reducer: Reducer<TState,
       state = getLocalStorage<TState|undefined>(settings.key, undefined);
     }
     const newState = reducer(state, action);
-    setLocalStorage(settings.key, state, excludeStateKeys);
+    setLocalStorage(settings.key, newState, excludeStateKeys);
     return newState;
   }
 }
