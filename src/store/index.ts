@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { rouletteSlice } from "./roulette/rouletteSlice";
+import { persist } from "./persist";
 
 export const store = configureStore({
   reducer: {
-    roulette: rouletteSlice.reducer
+    roulette: persist(rouletteSlice.reducer, { key: "roulette", exclude: ["spinning"] })
   }
 });
 
