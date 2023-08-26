@@ -93,11 +93,15 @@ export const rouletteSlice = createSlice({
         const newRemainingUsers = state.remainingUsers.filter((u) => u.id !== state.winningId);
         state.remainingUsers = newRemainingUsers;
       }
-      const winningIndex = Math.floor(Math.random() * state.remainingUsers.length);
-      state.winningId = state.remainingUsers[winningIndex].id;
+      if (state.remainingUsers.length > 0) {
+        const winningIndex = Math.floor(Math.random() * state.remainingUsers.length);
+        state.winningId = state.remainingUsers[winningIndex].id;
+      }
     },
     beginSpin: (state) => {
-      state.spinning = true;
+      if (state.remainingUsers.length > 0) {
+        state.spinning = true;
+      }
     },
     endSpin: (state) => {
       if (state.winningId !== null) {
