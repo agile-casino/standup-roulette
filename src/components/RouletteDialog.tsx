@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { addUser, beginSpin, endSpin, prepareSpin, removeUser, reset, selectAllUsers, selectRemainingUsers, selectSpinning, selectWinningId, selectWinningName, setUserName, setUserTeam, toggleUser } from "../store/roulette/rouletteSlice";
 import { selectPerson, selectTeam } from "../utils/adosHelper";
 import { User } from "../store/roulette/User";
+import { thatsAllFolks } from "../images/thatsAllFolks";
 
 export interface SettingsDialogProps {
   origin: string;
@@ -91,10 +92,15 @@ export function RouletteDialog(props: SettingsDialogProps) {
               <Wheel data={data} spinDuration={0.15} prizeNumber={winningIndex} mustStartSpinning={spinning} onStopSpinning={onStopSpinning} />
               <div style={{ fontSize: "200%" }}>Winner: {winningName}</div>
             </If>
+            <If condition={!data.length && !!winningName}>
+              <img src={thatsAllFolks} width={445} height={445} />
+            </If>
             <div>
-              <button disabled={spinning} onClick={onSpinClicked} css={buttonStyle}>
-                Spin
-              </button>
+              <If condition={remainingUsers.length > 0}>
+                <button disabled={spinning} onClick={onSpinClicked} css={buttonStyle}>
+                  Spin
+                </button>
+              </If>
               <button disabled={spinning} onClick={onResetClicked} css={buttonStyle}>
                 Reset
               </button>
