@@ -4,12 +4,11 @@ import { getColourScheme } from "../../utils/colourScheme";
 import { orderBy } from "../../utils/orderBy";
 import { deepCopy } from "../../utils/deepCopy";
 import { User } from "./User";
-import { getLocalStorage } from "../../utils/localStorage";
 import { v4 as uuidv4 } from "uuid";
 
 const uuid = uuidv4 as () => string;
 
-export interface RouletteState {
+interface RouletteState {
   allUsers: User[];
   remainingUsers: User[];
   spinning: boolean;
@@ -17,35 +16,13 @@ export interface RouletteState {
   winningName: string | null;
 }
 
-function importLegacyState(): RouletteState {
-  const allUsers = getLocalStorage<User[]>("standup-roulette:allUsers", []);
-  const remainingUsers = getLocalStorage<User[]>("standup-roulette:remainingUsers", []);
-  const winningIndex = getLocalStorage<number | null>("standup-roulette:winningIndex", null);
-  const winningName = getLocalStorage<string | null>("standup-roulette:winningName", null);
-
-  const state: RouletteState = {
-    allUsers: allUsers,
-    remainingUsers: remainingUsers,
-    spinning: false,
-    winningId: winningIndex !== null && winningIndex < remainingUsers.length ? remainingUsers[winningIndex].id : null,
-    winningName: winningName
-  };
-
-  for (const user of state.allUsers) {
-    if (!user.id) {
-      user.id = uuid();
-    }
-  }
-
-  for (const user of state.remainingUsers) {
-    const matchingUser = state.allUsers.find((u) => u.name === user.name);
-    user.id = matchingUser?.id ?? uuid();
-  }
-
-  return state;
-}
-
-const initialState: RouletteState = importLegacyState();
+const initialState: RouletteState = {
+  allUsers: [],
+  remainingUsers: [],
+  spinning: false,
+  winningId: null,
+  winningName: null
+};
 
 function assignColours(users: User[]): void {
   const selectedUsers = users.filter((x) => x.checked);
@@ -127,5 +104,3 @@ export const selectRemainingUsers = (state: RootState) => state.roulette.remaini
 export const selectSpinning = (state: RootState) => state.roulette.spinning;
 export const selectWinningId = (state: RootState) => state.roulette.winningId;
 export const selectWinningName = (state: RootState) => state.roulette.winningName;
-
-export default rouletteSlice.reducer;

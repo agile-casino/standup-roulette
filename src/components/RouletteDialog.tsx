@@ -8,7 +8,7 @@ import { selectPerson, selectTeam } from "../utils/adosHelper";
 import { User } from "../store/roulette/User";
 import { thatsAllFolks } from "../images/thatsAllFolks";
 
-export interface SettingsDialogProps {
+interface SettingsDialogProps {
   origin: string;
   collection: string;
   project: string;

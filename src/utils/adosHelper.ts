@@ -28,6 +28,7 @@ export async function selectTeam(name: string): Promise<boolean> {
   return true;
 }
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export async function selectPerson(name: string) {
   const maxRetries = 30;
   let personNameDropdown: HTMLElement | undefined;
