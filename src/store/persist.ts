@@ -1,7 +1,7 @@
 import { Action, Reducer } from "@reduxjs/toolkit";
 import { getLocalStorage, setLocalStorage } from "../utils/localStorage";
 
-export interface PersistSettings<TState> {
+interface PersistSettings<TState> {
   key: string;
   exclude?: (keyof TState)[];
 }
