@@ -7,6 +7,7 @@ import { addUser, beginSpin, endSpin, prepareSpin, removeUser, reset, selectAllU
 import { selectPerson, selectTeam } from "../utils/adosHelper";
 import { User } from "../store/roulette/User";
 import { thatsAllFolks } from "../images/thatsAllFolks";
+import { getMascot } from "../utils/mascot";
 
 interface SettingsDialogProps {
   origin: string;
@@ -90,7 +91,10 @@ export function RouletteDialog(props: SettingsDialogProps) {
           <div css={wheelContainerStyle}>
             <If condition={!!data.length}>
               <Wheel data={data} spinDuration={0.15} prizeNumber={winningIndex} mustStartSpinning={spinning} onStopSpinning={onStopSpinning} />
-              <div style={{ fontSize: "200%" }}>Winner: {winningName}</div>
+              <div style={{ fontSize: "200%" }}>
+                <span style={{ verticalAlign: "middle" }}>Winner: {winningName}</span>
+                <span style={{ verticalAlign: "middle", paddingLeft: "1em" }}>{winningName && <img src={getMascot(winningName).uri} width={48} height={48} />}</span>
+              </div>
             </If>
             <If condition={!data.length && !!winningName}>
               <img src={thatsAllFolks} width={445} height={445} />
