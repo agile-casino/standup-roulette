@@ -48,6 +48,7 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
+    "@aws-crypto/crc32": "^5.2.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@reduxjs/toolkit": "^1.9.5",
