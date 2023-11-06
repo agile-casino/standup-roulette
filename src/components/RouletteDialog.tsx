@@ -3,7 +3,23 @@ import { Wheel, WheelDataType } from "react-custom-roulette";
 import { If } from "./If";
 import { css } from "@emotion/react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { addUser, beginSpin, endSpin, prepareSpin, removeUser, reset, selectAllUsers, selectRemainingUsers, selectSpinning, selectWinningId, selectWinningName, setUserName, setUserTeam, toggleUser } from "../store/roulette/rouletteSlice";
+import {
+  addUser,
+  beginSpin,
+  endSpin,
+  prepareSpin,
+  removeUser,
+  reset,
+  selectAllUsers,
+  selectRemainingUsers,
+  selectSeed,
+  selectSpinning,
+  selectWinningId,
+  selectWinningName,
+  setUserName,
+  setUserTeam,
+  toggleUser
+} from "../store/roulette/rouletteSlice";
 import { selectPerson, selectTeam } from "../utils/adosHelper";
 import { User } from "../store/roulette/User";
 import { thatsAllFolks } from "../images/thatsAllFolks";
@@ -29,20 +45,21 @@ export function RouletteDialog(props: SettingsDialogProps) {
 
   const allUsers = useAppSelector(selectAllUsers);
   const remainingUsers = useAppSelector(selectRemainingUsers);
+  const seed = useAppSelector(selectSeed);
 
   const winningIndex = remainingUsers.findIndex((x) => x.id === winningId) > 0 ? remainingUsers.findIndex((x) => x.id === winningId) : 0;
 
   const [newName, setNewName] = useState("");
 
   const onSpinClicked = () => {
-    dispatch(prepareSpin());
+    dispatch(prepareSpin({ random: Math.random() }));
     setTimeout(() => {
       dispatch(beginSpin());
     }, 50);
   };
 
   const onResetClicked = () => {
-    dispatch(reset());
+    dispatch(reset({ seed: Math.random() }));
   };
 
   const onStopSpinning = () => {
@@ -93,7 +110,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
               <Wheel data={data} spinDuration={0.15} prizeNumber={winningIndex} mustStartSpinning={spinning} onStopSpinning={onStopSpinning} />
               <div style={{ fontSize: "200%" }}>
                 <span style={{ verticalAlign: "middle" }}>Winner: {winningName}</span>
-                <span style={{ verticalAlign: "middle", paddingLeft: "1em" }}>{winningName && <img src={getMascot(winningName).uri} width={48} height={48} />}</span>
+                <span style={{ verticalAlign: "middle", paddingLeft: "1em" }}>{winningName && <img src={getMascot(winningName, seed).uri} width={48} height={48} />}</span>
               </div>
             </If>
             <If condition={!data.length && !!winningName}>
