@@ -3,7 +3,23 @@ import { Wheel, WheelDataType } from "react-custom-roulette";
 import { If } from "./If";
 import { css } from "@emotion/react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { addUser, beginSpin, endSpin, prepareSpin, removeUser, reset, selectAllUsers, selectRemainingUsers, selectSeed, selectSpinning, selectWinningId, selectWinningName, setUserName, setUserTeam, toggleUser } from "../store/roulette/rouletteSlice";
+import {
+  addUser,
+  beginSpin,
+  endSpin,
+  prepareSpin,
+  removeUser,
+  reset,
+  selectAllUsers,
+  selectRemainingUsers,
+  selectSeed,
+  selectSpinning,
+  selectWinningId,
+  selectWinningName,
+  setUserName,
+  setUserTeam,
+  toggleUser
+} from "../store/roulette/rouletteSlice";
 import { selectPerson, selectTeam } from "../utils/adosHelper";
 import { User } from "../store/roulette/User";
 import { thatsAllFolks } from "../images/thatsAllFolks";

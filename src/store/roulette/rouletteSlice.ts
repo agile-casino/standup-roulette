@@ -95,7 +95,7 @@ export const rouletteSlice = createSlice({
       state.remainingUsers = deepCopy(state.allUsers.filter((x) => x.checked));
       state.winningId = null;
       state.winningName = null;
-      state.seed = action.payload.seed
+      state.seed = action.payload.seed;
     }
   }
 });
