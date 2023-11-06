@@ -14,6 +14,7 @@ interface RouletteState {
   spinning: boolean;
   winningId: string | null;
   winningName: string | null;
+  seed: number;
 }
 
 const initialState: RouletteState = {
@@ -21,7 +22,8 @@ const initialState: RouletteState = {
   remainingUsers: [],
   spinning: false,
   winningId: null,
-  winningName: null
+  winningName: null,
+  seed: 0
 };
 
 function assignColours(users: User[]): void {
@@ -65,13 +67,13 @@ export const rouletteSlice = createSlice({
         assignColours(state.allUsers);
       }
     },
-    prepareSpin: (state) => {
+    prepareSpin: (state, action: PayloadAction<{ random: number }>) => {
       if (state.winningId !== null) {
         const newRemainingUsers = state.remainingUsers.filter((u) => u.id !== state.winningId);
         state.remainingUsers = newRemainingUsers;
       }
       if (state.remainingUsers.length > 0) {
-        const winningIndex = Math.floor(Math.random() * state.remainingUsers.length);
+        const winningIndex = Math.floor(action.payload.random * state.remainingUsers.length);
         state.winningId = state.remainingUsers[winningIndex].id;
       }
     },
@@ -89,10 +91,11 @@ export const rouletteSlice = createSlice({
       }
       state.spinning = false;
     },
-    reset: (state) => {
+    reset: (state, action: PayloadAction<{ seed: number }>) => {
       state.remainingUsers = deepCopy(state.allUsers.filter((x) => x.checked));
       state.winningId = null;
       state.winningName = null;
+      state.seed = action.payload.seed
     }
   }
 });
@@ -104,3 +107,4 @@ export const selectRemainingUsers = (state: RootState) => state.roulette.remaini
 export const selectSpinning = (state: RootState) => state.roulette.spinning;
 export const selectWinningId = (state: RootState) => state.roulette.winningId;
 export const selectWinningName = (state: RootState) => state.roulette.winningName;
+export const selectSeed = (state: RootState) => state.roulette.seed;
