@@ -17,8 +17,12 @@ jobs:
         with:
           node-version: lts/*
 
+      - name: Install Packages
+        run: |
+          corepack enable
+          pnpm install
+
       - name: Build Code
         run: |
-          npm ci
-          npm run build
-          npm run test
+          pnpm run build
+          pnpm run test
