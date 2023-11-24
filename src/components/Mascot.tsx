@@ -1,29 +1,30 @@
 import { useEffect, useState } from "react";
 
 interface MascotData {
-    name: string;
-    sprites: {
-        other: {
-            "official-artwork": {
-                front_default: string
-            }
-        }
-    }
+  name: string;
+  sprites: {
+    other: {
+      "official-artwork": {
+        front_default: string;
+      };
+    };
+  };
 }
 
 interface MascotProps {
-    number: number;
-    width: number;
-    height: number;
+  number: number;
+  width: number;
+  height: number;
 }
 
 export function Mascot({ number, width, height }: MascotProps) {
   const [data, setData] = useState<MascotData | null>(null);
 
   useEffect(() => {
+    setData(null);
     getData(number)
       .then(setData)
-      .catch(console.error)
+      .catch(console.error);
   }, [number]);
 
   return data
