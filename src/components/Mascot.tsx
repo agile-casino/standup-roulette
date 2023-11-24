@@ -21,6 +21,7 @@ export function Mascot({ number, width, height }: MascotProps) {
   const [data, setData] = useState<MascotData | null>(null);
 
   useEffect(() => {
+    setData(null);
     getData(number)
       .then(setData)
       .catch(console.error)
