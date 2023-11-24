@@ -28,4 +28,3 @@ const result = await esbuild.build({
   outfile: "./dist/index.user.js",
   banner: { js: banner }
 });
-
