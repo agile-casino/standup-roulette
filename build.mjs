@@ -9,10 +9,10 @@ const banner = `
 // @name         Standup Roulette
 // @namespace    https://ados/
 // @version      ${pkg.version}
-// @downloadURL  https://archerax.blob.core.windows.net/apps>
+// @downloadURL  https://archerax.blob.core.windows.net/apps/standup-roulette/index.user.js
 // @description  Standup Roulette
 // @author       archerax
-// @match        https://ados/WirelineRnD_Collection/Wirelin>
+// @match        https://ados/WirelineRnD_Collection/WirelineRnD*
 // @icon         https://ados/favicon.ico
 // @grant        none
 // ==/UserScript==
