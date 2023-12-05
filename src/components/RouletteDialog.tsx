@@ -7,10 +7,13 @@ import {
   addUser,
   beginSpin,
   endSpin,
+  nextGame,
   prepareSpin,
+  prevGame,
   removeUser,
   reset,
   selectAllUsers,
+  selectGame,
   selectRemainingUsers,
   selectSeed,
   selectSpinning,
@@ -21,7 +24,7 @@ import {
   toggleUser
 } from "../store/roulette/rouletteSlice";
 import { selectPerson, selectTeam } from "../utils/adosHelper";
-import { User } from "../store/roulette/User";
+import { RouletteUser } from "../store/roulette/state";
 import { thatsAllFolks } from "../images/thatsAllFolks";
 import { getMascot } from "../utils/mascot";
 import { Mascot } from "./Mascot";
@@ -38,6 +41,8 @@ interface SettingsDialogProps {
 
 export function RouletteDialog(props: SettingsDialogProps) {
   const dispatch = useAppDispatch();
+
+  const game = useAppSelector(selectGame);
 
   const spinning = useAppSelector(selectSpinning);
 
@@ -102,7 +107,13 @@ export function RouletteDialog(props: SettingsDialogProps) {
         </div>
         <div className="work-item-form-main-header" style={{ borderLeftColor: "rgb(0, 156, 204)", borderBottom: "1px solid rgb(234, 234, 234)" }}>
           <div className="info-text-wrapper" style={{ fontSize: "large", padding: "0.5em" }}>
-            Standup Roulette
+            <span onClick={() => dispatch(prevGame())}>Standup</span>
+            &nbsp;
+            <span onClick={() => dispatch(nextGame())}>Roulette</span>
+            &nbsp;
+            -
+            &nbsp;
+            <span>Team {game+1}</span>
           </div>
         </div>
         <div className="bowtie-style" style={{ maxHeight: "calc(100% - 42px)", overflowY: "auto" }}>
@@ -164,7 +175,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
   }
 }
 
-function UserEditRow({ user }: { user: User }) {
+function UserEditRow({ user }: { user: RouletteUser }) {
   const dispatch = useAppDispatch();
 
   const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
