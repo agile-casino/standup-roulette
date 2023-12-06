@@ -53,7 +53,8 @@ export async function selectPerson(name: string) {
     console.log("Could not find person name dropdown.");
     return;
   }
-
+  
+  await delay(100);
   personNameDropdown.click();
   await delay(100);
 

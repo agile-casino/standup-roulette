@@ -40,7 +40,7 @@ function load<TState>(key: string, migrations: MigrationSet<TState>): TState | u
 function migrate<TState>(loaded: Persisted, migrations: MigrationSet<TState>): TState {
   const migration = migrations[loaded.version];
   if (migration) {
-    return migration(loaded.state);
+    return migration(loaded.version ? loaded.state : loaded);
   }
   return loaded.state as TState;
 }

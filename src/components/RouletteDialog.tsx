@@ -205,7 +205,7 @@ function UserEditRow({ user }: { user: RouletteUser }) {
         <input type="text" value={user.name} onChange={onNameChange} />
       </td>
       <td>
-        <input type="text" value={user.team} onChange={onTeamChange} />
+        <input type="text" value={user.team ?? ""} onChange={onTeamChange} />
       </td>
       <td style={{ verticalAlign: "middle" }}>
         <i role="button" className="icon bowtie-icon bowtie-math-multiply" style={{ marginBottom: 0 }} onClick={onRemoveUser}></i>
