@@ -1,4 +1,4 @@
-import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../index";
 import { getColourScheme } from "../../utils/colourScheme";
 import { orderBy } from "../../utils/orderBy";
@@ -11,14 +11,16 @@ const uuid = uuidv4 as () => string;
 
 const initialState: RouletteState = {
   currentGame: 0,
-  games: [{
-    allUsers: [],
-    remainingUsers: [],
-    spinning: false,
-    winningId: null,
-    winningName: null,
-    seed: 0
-  }]
+  games: [
+    {
+      allUsers: [],
+      remainingUsers: [],
+      spinning: false,
+      winningId: null,
+      winningName: null,
+      seed: 0
+    }
+  ]
 };
 
 function assignColours(users: RouletteUser[]): void {

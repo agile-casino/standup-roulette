@@ -2,10 +2,10 @@ import { Action, Reducer } from "@reduxjs/toolkit";
 import { persist } from "../../src/store/persist";
 
 interface TestState {
-    hello: string;
+  hello: string;
 }
 
-type TestReducer = Reducer<TestState, Action<string>>;
+type TestReducer = Reducer<TestState, Action>;
 
 describe("persist", () => {
   describe("when state is undefined", () => {
