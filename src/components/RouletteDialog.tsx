@@ -107,13 +107,16 @@ export function RouletteDialog(props: SettingsDialogProps) {
         </div>
         <div className="work-item-form-main-header" style={{ borderLeftColor: "rgb(0, 156, 204)", borderBottom: "1px solid rgb(234, 234, 234)" }}>
           <div className="info-text-wrapper" style={{ fontSize: "large", padding: "0.5em" }}>
-            <span onClick={() => dispatch(prevGame())}>Standup</span>
-            &nbsp;
-            <span onClick={() => dispatch(nextGame())}>Roulette</span>
-            &nbsp;
-            -
-            &nbsp;
-            <span>Team {game+1}</span>
+            <span>Standup Roulette</span>
+            <span>
+              <button className="ui-button" style={{ width: "24px", margin: "0 0.5em 0 2em" }} onClick={() => dispatch(prevGame())}>
+                &lsaquo;
+              </button>
+              Team {game + 1}
+              <button className="ui-button" style={{ width: "24px", margin: "0 2em 0 0.5em" }} onClick={() => dispatch(nextGame())}>
+                &rsaquo;
+              </button>
+            </span>
           </div>
         </div>
         <div className="bowtie-style" style={{ maxHeight: "calc(100% - 42px)", overflowY: "auto" }}>
