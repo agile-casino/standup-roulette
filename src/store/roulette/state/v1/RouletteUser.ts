@@ -1,4 +1,4 @@
-export interface User {
+export interface RouletteUser {
   id: string;
   name: string;
   team?: string;

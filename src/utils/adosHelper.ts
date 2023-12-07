@@ -54,6 +54,7 @@ export async function selectPerson(name: string) {
     return;
   }
 
+  await delay(100);
   personNameDropdown.click();
   await delay(100);
 
