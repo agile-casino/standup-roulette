@@ -23,7 +23,7 @@
   "homepage": "https://github.com/archerax/standup-roulette#readme",
   "devDependencies": {
     "@babel/core": "^7.23.5",
-    "@happy-dom/jest-environment": "^12.10.3",
+    "@happy-dom/jest-environment": "^13.0.0",
     "@testing-library/react": "^14.1.2",
     "@types/jest": "^29.5.11",
     "@types/lodash": "^4.14.202",
