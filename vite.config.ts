@@ -30,8 +30,11 @@ export default defineConfig({
       input: "src/index.tsx",
       output: {
         entryFileNames: "index.user.js",
-        manualChunks: undefined,
-      },
-    },
+        manualChunks: undefined
+      }
+    }
+  },
+  test: {
+    setupFiles: "tests/setup.ts"
   },
 });
