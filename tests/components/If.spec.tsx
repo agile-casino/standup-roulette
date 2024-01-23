@@ -4,7 +4,7 @@ import { test, expect } from "vitest";
 import { render } from "@testing-library/react";
 import { If } from "../../src/components/If";
 
-test("If_WhenConditionIsFalse_DoesNotRenderChild", () => {
+test("If_WhenConditionIsTrue_RendersChild", () => {
   const { queryByTestId } = render(
     <If condition={true}>
       <div data-testid="test-div"></div>
