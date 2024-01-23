@@ -1,3 +1,6 @@
+// @vitest-environment happy-dom
+
+import { describe, expect, it, vi } from "vitest";
 import { Action, Reducer } from "@reduxjs/toolkit";
 import { persist } from "../../src/store/persist";
 
@@ -10,8 +13,8 @@ type TestReducer = Reducer<TestState, Action>;
 describe("persist", () => {
   describe("when state is undefined", () => {
     it("loads state", () => {
-      const reducer: TestReducer = jest.fn().mockImplementation((x: TestState) => x);
-      jest.spyOn(window.localStorage, "getItem").mockReturnValue('{ "version": "1", "state": { "hello": "world" } }');
+      const reducer: TestReducer = vi.fn().mockImplementation((x: TestState) => x);
+      vi.spyOn(window.localStorage, "getItem").mockReturnValue('{ "version": "1", "state": { "hello": "world" } }');
       const persisted = persist(reducer, { key: "test", version: 1 });
 
       const result = persisted(undefined, { type: "" });
@@ -21,14 +24,13 @@ describe("persist", () => {
   });
 
   describe("when state is not undefined", () => {
-    xit("does not load state", () => {
-      const reducer: TestReducer = jest.fn().mockImplementation((x: TestState) => x);
-      const localStorageSpy = jest.spyOn(window.localStorage, "getItem");
+    it("does not load state", () => {
+      const reducer: TestReducer = vi.fn().mockImplementation((x: TestState) => x);
+      const localStorageSpy = vi.spyOn(window.localStorage, "getItem");
       const persisted = persist(reducer, { key: "test", version: 1 });
 
       persisted({ hello: "world" }, { type: "" });
 
-      console.log(localStorageSpy.mock.calls);
       expect(localStorageSpy).not.toHaveBeenCalled();
     });
   });
