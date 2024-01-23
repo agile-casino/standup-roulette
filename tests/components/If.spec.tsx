@@ -1,22 +1,25 @@
+// @vitest-environment happy-dom
+
+import { test, expect } from "vitest";
 import { render } from "@testing-library/react";
 import { If } from "../../src/components/If";
 
 test("If_WhenConditionIsFalse_DoesNotRenderChild", () => {
-  const result = render(
+  const { queryByTestId } = render(
     <If condition={true}>
       <div data-testid="test-div"></div>
     </If>
   );
 
-  expect(result.queryAllByTestId("test-div").length).toEqual(1);
+  expect(queryByTestId("test-div")).toBeTruthy();
 });
 
 test("If_WhenConditionIsFalse_DoesNotRenderChild", () => {
-  const result = render(
+  const { queryByTestId } = render(
     <If condition={false}>
       <div data-testid="test-div"></div>
     </If>
   );
 
-  expect(result.queryAllByTestId("test-div").length).toEqual(0);
+  expect(queryByTestId("test-div")).toBeNull();
 });
