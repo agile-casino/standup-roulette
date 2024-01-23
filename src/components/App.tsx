@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { RouletteDialog } from "./RouletteDialog";
 import { store } from "../store";
 import { Provider } from "react-redux";
+import { MantineProvider } from "@mantine/core";
 
 export function App() {
   const [url, setUrl] = useState(window.location.href);
@@ -43,17 +44,19 @@ export function App() {
           Standup Roulette
         </button>
         <Provider store={store}>
-          <RouletteDialog
-            origin={origin}
-            collection={collection}
-            project={project}
-            team={team}
-            sprint={sprint}
-            open={dialogOpen}
-            onCloseClicked={() => {
-              setDialogOpen(!dialogOpen);
-            }}
-          />
+          <MantineProvider>
+            <RouletteDialog
+              origin={origin}
+              collection={collection}
+              project={project}
+              team={team}
+              sprint={sprint}
+              open={dialogOpen}
+              onCloseClicked={() => {
+                setDialogOpen(!dialogOpen);
+              }}
+            />
+          </MantineProvider>
         </Provider>
       </>
     );

@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { Wheel, WheelDataType } from "react-custom-roulette";
 import { If } from "./If";
-import { css } from "@emotion/react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import {
   addUser,
@@ -10,7 +9,6 @@ import {
   nextGame,
   prepareSpin,
   prevGame,
-  removeUser,
   reset,
   selectAllUsers,
   selectGame,
@@ -18,16 +16,16 @@ import {
   selectSeed,
   selectSpinning,
   selectWinningId,
-  selectWinningName,
-  setUserName,
-  setUserTeam,
-  toggleUser
+  selectWinningName
 } from "../store/roulette/rouletteSlice";
 import { selectPerson, selectTeam } from "../utils/adosHelper";
-import { RouletteUser } from "../store/roulette/state";
 import { thatsAllFolks } from "../images/thatsAllFolks";
+import { ActionIcon, Button, Center, Dialog, Input, Table, Title } from "@mantine/core";
+import { IconArrowLeft, IconArrowRight, IconCirclePlus } from "@tabler/icons-react";
+import { UserEditRow } from "./UserEditRow";
+import { WinnerControl } from "./WinnerControl";
 import { getMascot } from "../utils/mascot";
-import { Mascot } from "./Mascot";
+import styles from "./RouletteDialog.module.css";
 
 interface SettingsDialogProps {
   origin: string;
@@ -84,7 +82,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
     }
   };
 
-  const onNewNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onNewNameChange = (event: { target: HTMLInputElement }) => {
     setNewName(event.target.value);
   };
 
@@ -99,145 +97,73 @@ export function RouletteDialog(props: SettingsDialogProps) {
 
   if (props.open) {
     return (
-      <div className="ui-dialog  workitem-dialog ui-dialog-legacy" css={dialogStyles} style={{ position: "fixed", width: "1000px", height: "650px" }}>
-        <div className="ui-dialog-titlebar">
-          <button type="button" className="ui-button ui-button-icon-only ui-dialog-titlebar-close" style={{ margin: "0.5em", width: "27px" }} onClick={props.onCloseClicked}>
-            <span className="ui-button-icon-primary ui-icon ui-icon-closethick"></span>
-          </button>
-        </div>
-        <div className="work-item-form-main-header" style={{ borderLeftColor: "rgb(0, 156, 204)", borderBottom: "1px solid rgb(234, 234, 234)" }}>
-          <div className="info-text-wrapper" style={{ fontSize: "large", padding: "0.5em" }}>
-            <span>Standup Roulette</span>
-            <span>
-              <button className="ui-button" style={{ width: "24px", margin: "0 0.5em 0 2em" }} onClick={() => dispatch(prevGame())}>
-                &lsaquo;
-              </button>
-              Team {game + 1}
-              <button className="ui-button" style={{ width: "24px", margin: "0 2em 0 0.5em" }} onClick={() => dispatch(nextGame())}>
-                &rsaquo;
-              </button>
-            </span>
-          </div>
-        </div>
-        <div className="bowtie-style" style={{ maxHeight: "calc(100% - 42px)", overflowY: "auto" }}>
-          <div css={wheelContainerStyle}>
+      <Dialog opened={true} className={styles.dialog} position={{ bottom: 0, left: 0 }} w={1000} h={650} withBorder={true} withCloseButton={true} onClose={props.onCloseClicked}>
+        <Title order={4} fw={400} style={{ marginBottom: "1rem" }}>
+          <span>Standup Roulette</span>
+          <ActionIcon style={{ margin: "0 1rem", verticalAlign: "bottom" }}  onClick={() => dispatch(prevGame())}>
+            <IconArrowLeft />
+          </ActionIcon>
+          <span>Team {game + 1}</span>
+          <ActionIcon style={{ margin: "0 1rem", verticalAlign: "bottom" }} onClick={() => dispatch(nextGame())}>
+            <IconArrowRight />
+          </ActionIcon>
+        </Title>
+        <div>
+          <div style={{ float: "left" }}>
             <If condition={!!data.length}>
               <Wheel data={data} spinDuration={0.15} prizeNumber={winningIndex} mustStartSpinning={spinning} onStopSpinning={onStopSpinning} />
-              <div style={{ fontSize: "200%" }}>
-                <span style={{ verticalAlign: "middle" }}>Winner: {winningName}</span>
-                <span style={{ verticalAlign: "middle", paddingLeft: "1em" }}>{winningName && <Mascot number={getMascot(winningName, seed)} width={48} height={48} />}</span>
-              </div>
+              <Center>
+                <WinnerControl name={winningName ?? ""} mascotNumber={getMascot(winningName ?? "", seed)} />
+              </Center>
             </If>
             <If condition={!data.length && !!winningName}>
               <img src={thatsAllFolks} width={445} height={445} />
             </If>
-            <div>
+            <Center>
               <If condition={remainingUsers.length > 0}>
-                <button disabled={spinning} onClick={onSpinClicked} css={buttonStyle}>
+                <Button variant="filled" disabled={spinning} style={{ width: "5rem", margin: "0.2rem" }} onClick={onSpinClicked}>
                   Spin
-                </button>
+                </Button>
               </If>
-              <button disabled={spinning} onClick={onResetClicked} css={buttonStyle}>
+              <Button variant="filled" disabled={spinning} style={{ width: "5rem", margin: "0.2rem" }} onClick={onResetClicked}>
                 Reset
-              </button>
-            </div>
+              </Button>
+            </Center>
           </div>
           <div style={{ float: "right" }}>
-            <table>
-              <thead>
-                <tr>
-                  <th></th>
-                  <th style={{ textAlign: "left" }}>Name</th>
-                  <th style={{ textAlign: "left" }}>Sprint Backlog</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
+            <Table horizontalSpacing="3px" verticalSpacing="3px" highlightOnHover={true} withRowBorders={false}>
+              <Table.Thead>
+                <Table.Tr>
+                  <Table.Th></Table.Th>
+                  <Table.Th>Name</Table.Th>
+                  <Table.Th>Sprint Backlog</Table.Th>
+                  <Table.Th></Table.Th>
+                </Table.Tr>
+              </Table.Thead>
+              <Table.Tbody>
                 {allUsers.map((user) => (
                   <UserEditRow key={user.id} user={user} />
                 ))}
-                <tr>
-                  <td></td>
-                  <td>
-                    <input type="text" value={newName} onChange={onNewNameChange} />
-                  </td>
-                  <td></td>
-                  <td style={{ verticalAlign: "middle" }}>
-                    <i className="icon bowtie-icon bowtie-math-plus" onClick={onAddUser}></i>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                <Table.Tr>
+                  <Table.Td></Table.Td>
+                  <Table.Td>
+                    <Input value={newName} onChange={onNewNameChange} />
+                  </Table.Td>
+                  <Table.Td></Table.Td>
+                  <Table.Td style={{ verticalAlign: "middle" }}>
+                    <ActionIcon onClick={onAddUser}>
+                      <IconCirclePlus />
+                    </ActionIcon>
+                  </Table.Td>
+                </Table.Tr>
+              </Table.Tbody>
+            </Table>
           </div>
         </div>
-      </div>
+      </Dialog>
     );
   }
   else {
     return null;
   }
 }
-
-function UserEditRow({ user }: { user: RouletteUser }) {
-  const dispatch = useAppDispatch();
-
-  const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setUserName({ id: user.id, newUserName: event.target.value }));
-  };
-
-  const onTeamChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setUserTeam({ id: user.id, newTeamName: event.target.value }));
-  };
-
-  const onToggleUser = () => {
-    dispatch(toggleUser({ id: user.id }));
-  };
-
-  const onRemoveUser = () => {
-    dispatch(removeUser({ id: user.id }));
-  };
-
-  return (
-    <tr>
-      <td style={{ verticalAlign: "middle" }}>
-        <div className="core-fields-checkbox">
-          <input type="checkbox" checked={user.checked} onChange={onToggleUser} />
-        </div>
-      </td>
-      <td>
-        <input type="text" value={user.name} onChange={onNameChange} />
-      </td>
-      <td>
-        <input type="text" value={user.team ?? ""} onChange={onTeamChange} />
-      </td>
-      <td style={{ verticalAlign: "middle" }}>
-        <i role="button" className="icon bowtie-icon bowtie-math-multiply" style={{ marginBottom: 0 }} onClick={onRemoveUser}></i>
-      </td>
-    </tr>
-  );
-}
-
-const dialogStyles = css`
-  left: 0;
-  bottom: 0;
-  zindex: 10002;
-  transform: scale(25%);
-  transform-origin: bottom left;
-  transition-property: transform;
-  transition-duration: 0.3s;
-  &:hover {
-    transform: scale(100%);
-  }
-`;
-
-const wheelContainerStyle = css({
-  float: "left",
-  overflow: "hidden",
-  display: "inline-flex",
-  flexDirection: "column",
-  alignItems: "center"
-});
-
-const buttonStyle = css({
-  margin: "5px"
-});
