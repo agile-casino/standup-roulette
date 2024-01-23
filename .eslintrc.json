@@ -10,7 +10,8 @@
     "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/strict-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked",
-    "plugin:sonarjs/recommended"
+    "plugin:sonarjs/recommended",
+    "plugin:vitest/recommended"
   ],
   "parserOptions": {
     "project": "./tsconfig.json"
