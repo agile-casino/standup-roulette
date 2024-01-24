@@ -98,8 +98,8 @@ devDependencies:
     specifier: ^0.10.3
     version: 0.10.3
   typed-css-modules:
-    specifier: ^0.8.1
-    version: 0.8.1
+    specifier: ^0.9.0
+    version: 0.9.0
   typescript:
     specifier: ^5.3.3
     version: 5.3.3
@@ -3895,8 +3895,8 @@ packages:
       is-typed-array: 1.1.12
     dev: true
 
-  /typed-css-modules@0.8.1:
-    resolution: {integrity: sha512-OhM5FntBI+BvwXHvnApyzUYxFLEU2qxta24FPmz00Qp2nPQsdl+TB7a3vvGa89Z8ug1E2bqIOkSPA3iUaT3UGw==}
+  /typed-css-modules@0.9.0:
+    resolution: {integrity: sha512-MqO7S562EYBkTTs4asjZke/exHX1DvhpuT5fo8h9S+mizYxAkGsWusJfoGmROgC+CTRLHBsQllWz63Gj4z2lmQ==}
     engines: {node: '>=18.0.0'}
     hasBin: true
     dependencies:
