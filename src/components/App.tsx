@@ -3,11 +3,26 @@ import { RouletteDialog } from "./RouletteDialog";
 import { store } from "../store";
 import { Provider } from "react-redux";
 import { MantineProvider } from "@mantine/core";
+import { useColorScheme } from "@mantine/hooks";
 
 export function App() {
   const [url, setUrl] = useState(window.location.href);
   const [origin, setOrigin] = useState(window.location.origin);
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  let colorScheme = useColorScheme();
+  const activeForegroundColour = "black";
+  const activeBackgroundColour = colorScheme === "dark" ? "silver" : "#CCFFAA";
+  const inactiveForegroundColour = "unset";
+  const inactiveBackgroundColour = "unset";
+
+  const navMenu = document.querySelector(".project-navigation");
+  if (navMenu) {
+    const navMenuStyle = getComputedStyle(navMenu);
+    if (navMenuStyle.backgroundColor === "rgb(59, 58, 57)") {
+      colorScheme = "dark";
+    }
+  }
 
   function onUrlChange() {
     setUrl(window.location.href);
@@ -37,14 +52,15 @@ export function App() {
           style={{
             height: "32px",
             margin: "auto 8px",
-            background: dialogOpen ? "#CCFFAA" : "none",
-            border: "1px solid rgb(234,234,234)"
+            background: dialogOpen ? activeBackgroundColour : inactiveBackgroundColour,
+            border: "1px solid rgb(234,234,234)",
+            color: dialogOpen ? activeForegroundColour : inactiveForegroundColour,
           }}
         >
           Standup Roulette
         </button>
         <Provider store={store}>
-          <MantineProvider>
+          <MantineProvider defaultColorScheme={colorScheme}>
             <RouletteDialog
               origin={origin}
               collection={collection}
