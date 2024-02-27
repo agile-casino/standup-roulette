@@ -23,6 +23,9 @@
   },
   "homepage": "https://github.com/archerax/standup-roulette#readme",
   "packageManager": "pnpm@8.15.4",
+  "renovate": {
+    "bumpVersion": "patch"
+  },
   "devDependencies": {
     "@happy-dom/jest-environment": "^13.6.2",
     "@testing-library/react": "^14.2.1",
