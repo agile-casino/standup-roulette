@@ -12,6 +12,8 @@ const banner = `
 // @description  Standup Roulette
 // @author       archerax
 // @match        https://ados/WirelineRnD_Collection/WirelineRnD*
+// @match        https://dev.azure.com/ADOS-WirelineRnD-Collection/WirelineRnD*
+// @match        https://dev.azure.com/ADOS-WirelineRnD-Collection-dryrun/WirelineRnD*
 // @icon         https://ados/favicon.ico
 // @grant        none
 // ==/UserScript==
