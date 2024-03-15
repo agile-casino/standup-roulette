@@ -14,7 +14,7 @@ const banner = `
 // @match        https://ados/WirelineRnD_Collection/WirelineRnD*
 // @match        https://dev.azure.com/ADOS-WirelineRnD-Collection/WirelineRnD*
 // @match        https://dev.azure.com/ADOS-WirelineRnD-Collection-dryrun/WirelineRnD*
-// @icon         https://ados/favicon.ico
+// @icon         https://cdn.vsassets.io/content/icons/favicon.ico
 // @grant        none
 // ==/UserScript==
 `.trim();
