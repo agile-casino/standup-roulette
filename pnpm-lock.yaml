@@ -45,7 +45,7 @@ dependencies:
 devDependencies:
   '@happy-dom/jest-environment':
     specifier: ^13.8.6
-    version: 13.8.6
+    version: 13.9.0
   '@testing-library/react':
     specifier: ^14.2.1
     version: 14.2.1(react-dom@18.2.0)(react@18.2.0)
@@ -443,14 +443,14 @@ packages:
     resolution: {integrity: sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==}
     dev: false
 
-  /@happy-dom/jest-environment@13.8.6:
-    resolution: {integrity: sha512-ne6G2DT1gZgFQRaQ8MMI6TRtQKpjZnLfa8MjetILngRueCHbIyGBmN8ZOmRl8YAuN4z/nOwvmho7peY/AkYStw==}
+  /@happy-dom/jest-environment@13.9.0:
+    resolution: {integrity: sha512-V/3X5/OZd+jwm5p6HFdtFfHrfjrDeZldOn6Iee9H/xaGMAsPSMev4U2JLA5c2bAn6mIawdiHqawZuLHlFgoHMQ==}
     engines: {node: '>=16.0.0'}
     dependencies:
       '@jest/environment': 29.7.0
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
-      happy-dom: 13.8.6
+      happy-dom: 13.9.0
       jest-mock: 29.7.0
       jest-util: 29.7.0
     dev: true
@@ -2191,8 +2191,8 @@ packages:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
     dev: true
 
-  /happy-dom@13.8.6:
-    resolution: {integrity: sha512-Urcv2jvNel19QirWimOwYTW3slpEYGS8PLtzEwAlpTWpnKycXF8s0I7xUBK9fPvWAIc8uZf/CnV2cIwWE8jptw==}
+  /happy-dom@13.9.0:
+    resolution: {integrity: sha512-hMzsFn2x+B61TF7wsJ3La/exaxW9AWZePlNGzAkMvoVYXI3pMqPSGTT1qXTwcsVLB+44TM8KjHuoQLLx4EX9Vg==}
     engines: {node: '>=16.0.0'}
     dependencies:
       entities: 4.5.0
