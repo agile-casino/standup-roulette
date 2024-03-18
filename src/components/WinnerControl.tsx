@@ -23,28 +23,28 @@ interface WinnerControlProps {
 export function WinnerControl({ name, mascotNumber: number }: WinnerControlProps) {
   const [data, setData] = useState<MascotData | null>(null);
 
-  useEffect(() => {
-    setData(null);
-    getData(number)
-      .then(setData)
-      .catch(console.error);
-  }, [number]);
+  // useEffect(() => {
+  //   setData(null);
+  //   getData(number)
+  //     .then(setData)
+  //     .catch(console.error);
+  // }, [number]);
 
   const src = data?.sprites.other.home?.front_default
     ?? data?.sprites.other["official-artwork"]?.front_default;
   
-  if (name && data && src) {
+  // if (name && data && src) {
     return (
       <div className="winner" style={{ display: "inline-grid" }}>
         <Text fz="xl" style={{ gridColumn: 1 }}>Winner:&nbsp;</Text>
         <div style={{ gridColumn: 3, gridRow: "1 / span 2" }}>
-          <img src={src} alt={data.name} title={data.name} width={50} height={50} />
+          {/*<img src={src} alt={data.name} title={data.name} width={50} height={50} />*/}
         </div>
         <Text fz="xl" style={{ gridColumn: 2 }}>{name}</Text>
-        <Text fz="md" lh="xs" style={{ gridColumn: 2 }}>{data.name}</Text>
+        {/*<Text fz="md" lh="xs" style={{ gridColumn: 2 }}>{data.name}</Text>*/}
       </div>
     );
-  }
+  // }
 
   return null;
 }
