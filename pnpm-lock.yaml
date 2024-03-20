@@ -58,6 +58,9 @@ devDependencies:
   '@types/react-dom':
     specifier: ^18.2.22
     version: 18.2.22
+  '@types/tampermonkey':
+    specifier: ^5.0.2
+    version: 5.0.2
   '@types/uuid':
     specifier: ^9.0.8
     version: 9.0.8
@@ -860,6 +863,10 @@ packages:
 
   /@types/stack-utils@2.0.3:
     resolution: {integrity: sha512-9aEbYZ3TbYMznPdcdr3SmIrLXwC/AKZXQeCf9Pgao5CKb8CyHuEX5jzWPTkvregvhRJHcpRO6BFoGW9ycaOkYw==}
+    dev: true
+
+  /@types/tampermonkey@5.0.2:
+    resolution: {integrity: sha512-keKnYemqWts68wO2+TBdEg84iQd5vymK5SEQGxitI9uOfOnjm/ZskBoK9ZH3mnSYp79HidZMA/Y7ODQtiA/VIg==}
     dev: true
 
   /@types/use-sync-external-store@0.0.3:
