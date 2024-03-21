@@ -27,7 +27,7 @@
     "bumpVersion": "patch"
   },
   "devDependencies": {
-    "@happy-dom/jest-environment": "^13.10.1",
+    "@happy-dom/jest-environment": "^14.0.0",
     "@testing-library/react": "^14.2.2",
     "@types/lodash": "^4.17.0",
     "@types/react": "^18.2.67",
