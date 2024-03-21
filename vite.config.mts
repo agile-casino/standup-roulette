@@ -26,6 +26,7 @@ export default defineConfig({
     manifest: true,
     target: "chrome118",
     chunkSizeWarningLimit: 1024,
+    minify: false,
     rollupOptions: {
       input: "src/index.tsx",
       output: {

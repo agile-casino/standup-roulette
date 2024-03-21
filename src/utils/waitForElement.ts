@@ -1,10 +1,36 @@
-export async function waitForElement(selector: string): Promise<Element> {
-  return new Promise((resolve) => {
+export async function waitFor<T>(action: () => T | null, maxWaitMilliseconds = 5000): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const startTime = new Date().getTime();
     const interval = setInterval(() => {
-      const element = document.querySelector(selector);
+      const result = action();
+      if (result) {
+        clearInterval(interval);
+        resolve(result);
+      }
+      else {
+        const currentTime = new Date().getTime();
+        if (currentTime - startTime > maxWaitMilliseconds) {
+          reject(new Error(`Timed out.`));
+        }
+      }
+    }, 100);
+  });
+}
+
+export async function waitForElement(parent: HTMLElement, selector: string, maxWaitMilliseconds = 5000): Promise<Element> {
+  return new Promise((resolve, reject) => {
+    const startTime = new Date().getTime();
+    const interval = setInterval(() => {
+      const element = parent.querySelector(selector);
       if (element) {
         clearInterval(interval);
         resolve(element);
+      }
+      else {
+        const currentTime = new Date().getTime();
+        if (currentTime - startTime > maxWaitMilliseconds) {
+          reject(new Error(`Could not find element for selector ${selector} in ${maxWaitMilliseconds} milliseconds.`));
+        }
       }
     }, 100);
   });

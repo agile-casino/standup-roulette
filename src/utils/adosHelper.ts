@@ -1,99 +1,86 @@
 import { delay } from "./delay";
 import { formatName } from "./formatName";
+import { waitFor, waitForElement } from "./waitForElement";
+
+const defaultTimeoutMilliseconds = 2500;
 
 export async function selectTeam(name: string): Promise<boolean> {
-  const teamNameDropdownResults = document.evaluate("//span[starts-with(text(),'Team ')]", document);
-  const teamNameDropdown = teamNameDropdownResults.iterateNext() as HTMLElement | undefined;
+  try {
+    const teamNameDropdown = await waitForElement(document.body, ".directory-selector-dropdown", defaultTimeoutMilliseconds) as HTMLElement;
 
-  if (!teamNameDropdown) {
-    console.log("Could not find team name dropdown.");
-    return false;
-  }
+    if (teamNameDropdown.textContent?.toLowerCase() === name.toLowerCase()) {
+      return true; // correct team name is already selected
+    }
+    
+    const teamNameDropdown2Button = await waitForElement(teamNameDropdown, ".bolt-button", defaultTimeoutMilliseconds) as HTMLElement;
+    teamNameDropdown2Button.click();
 
-  if (teamNameDropdown.textContent == name) {
+    const row = await waitFor<HTMLElement>(() => {
+      const rows = document.querySelectorAll(".directory-dropdown-link");
+      return Array.from(rows).find(x => x.textContent?.toLowerCase() === name.toLowerCase()) as HTMLElement;
+    }, defaultTimeoutMilliseconds);
+
+    row.click();
+    await delay(1000);
+
     return true;
   }
-
-  teamNameDropdown.click();
-  await delay(50);
-
-  const teamNameOptionResults = document.evaluate(`//span[text()='${name}']`, document);
-  const teamNameOption = teamNameOptionResults.iterateNext() as HTMLElement | undefined;
-
-  if (!teamNameOption) {
+  catch {
     return false;
   }
-
-  teamNameOption.click();
-  return true;
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export async function selectPerson(name: string) {
-  const maxRetries = 30;
-  let personNameDropdown: HTMLElement | undefined;
-  for (let i = 0; i < maxRetries; i++) {
-    try {
-      const personNameDropdownResults = document.evaluate("//span[starts-with(text(),'Person: ')]", document);
-      personNameDropdown = personNameDropdownResults.iterateNext() as HTMLElement | undefined;
-      if (personNameDropdown) {
+  try {
+    const personNameDropdown = await waitFor<HTMLElement>(() => {
+      const results = document.evaluate("//div[starts-with(text(),'Person: ')]", document);
+      return results.iterateNext() as HTMLElement | null;
+    });
+
+    personNameDropdown.click();
+
+    const rows = await waitFor<HTMLElement[]>(() => {
+      const results = Array.from(document.querySelectorAll(".bolt-list-row"));
+      return results.length ? results as HTMLElement[] : null;
+    });
+
+    let allOption: HTMLElement | undefined;
+    const personNameOptions: HTMLElement[] = [];
+
+    for (const personNameOption of rows) {
+      switch (personNameOption.textContent) {
+      case "@Me":
+        break;
+      case "Unassigned":
+        break;
+      case "All":
+        allOption = personNameOption;
+        break;
+      default:
+        personNameOptions.push(personNameOption);
         break;
       }
     }
-    catch (e) {
-      if (i == maxRetries - 1) {
-        console.log(e);
+    
+    let best: HTMLElement | undefined;
+    for (const person of personNameOptions) {
+      const name1 = formatName(name);
+      const name2 = formatName(person.textContent);
+  
+      if (name2.startsWith(name1)) {
+        best = person;
       }
     }
-
-    await delay(100);
-  }
-
-  if (!personNameDropdown) {
-    console.log("Could not find person name dropdown.");
-    return;
-  }
-
-  await delay(100);
-  personNameDropdown.click();
-  await delay(100);
-
-  const personNameOptionResults = document.evaluate(`//span[@class='vss-PickList--selectableElementButton-text']`, document);
-
-  let allOption: HTMLElement | undefined;
-  const personNameOptions: HTMLElement[] = [];
-
-  let personNameOption = personNameOptionResults.iterateNext() as HTMLElement | undefined;
-  while (personNameOption) {
-    switch (personNameOption.textContent) {
-    case "@Me":
-      break;
-    case "Unassigned":
-      break;
-    case "All":
-      allOption = personNameOption;
-      break;
-    default:
-      personNameOptions.push(personNameOption);
-      break;
+  
+    if (best) {
+      best.click();
     }
-    personNameOption = personNameOptionResults.iterateNext() as HTMLElement | undefined;
-  }
-
-  let best: HTMLElement | undefined;
-  for (const person of personNameOptions) {
-    const name1 = formatName(name);
-    const name2 = formatName(person.textContent);
-
-    if (name2.startsWith(name1)) {
-      best = person;
+    else {
+      allOption?.click();
     }
   }
-
-  if (best) {
-    best.click();
-  }
-  else {
-    allOption?.click();
+  catch {
+    return false;
   }
 }
