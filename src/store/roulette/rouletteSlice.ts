@@ -6,6 +6,7 @@ import { deepCopy } from "../../utils/deepCopy";
 import { RouletteState } from "./state";
 import { RouletteUser } from "./state";
 import { v4 as uuidv4 } from "uuid";
+import { commentate } from "../../utils/narrator";
 
 const uuid = uuidv4 as () => string;
 
@@ -118,6 +119,10 @@ export const rouletteSlice = createSlice({
         const user = state.games[state.currentGame].remainingUsers.find((u) => u.id === state.games[state.currentGame].winningId);
         if (user) {
           state.games[state.currentGame].winningName = user.name;
+
+          if (state.narrator) {
+            commentate(user.name, state.games[state.currentGame].allUsers.length - state.games[state.currentGame].remainingUsers.length,  state.games[state.currentGame].allUsers.length);
+          }
         }
       }
       state.games[state.currentGame].spinning = false;
@@ -127,11 +132,14 @@ export const rouletteSlice = createSlice({
       state.games[state.currentGame].winningId = null;
       state.games[state.currentGame].winningName = null;
       state.games[state.currentGame].seed = action.payload.seed;
+    },
+    toggleNarrator: (state) => {
+      state.narrator = !state.narrator;
     }
   }
 });
 
-export const { prevGame, nextGame, addUser, removeUser, setUserName, setUserTeam, toggleUser, reset, prepareSpin, beginSpin, endSpin } = rouletteSlice.actions;
+export const { prevGame, nextGame, addUser, removeUser, setUserName, setUserTeam, toggleUser, reset, prepareSpin, beginSpin, endSpin, toggleNarrator } = rouletteSlice.actions;
 
 export const selectGame = (state: RootState) => state.roulette.currentGame;
 export const selectAllUsers = (state: RootState) => state.roulette.games[state.roulette.currentGame].allUsers;
@@ -140,3 +148,4 @@ export const selectSpinning = (state: RootState) => state.roulette.games[state.r
 export const selectWinningId = (state: RootState) => state.roulette.games[state.roulette.currentGame].winningId;
 export const selectWinningName = (state: RootState) => state.roulette.games[state.roulette.currentGame].winningName;
 export const selectSeed = (state: RootState) => state.roulette.games[state.roulette.currentGame].seed;
+export const selectNarrator = (state: RootState) => !!state.roulette.narrator;

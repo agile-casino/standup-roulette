@@ -12,15 +12,17 @@ import {
   reset,
   selectAllUsers,
   selectGame,
+  selectNarrator,
   selectRemainingUsers,
   selectSeed,
   selectSpinning,
   selectWinningId,
-  selectWinningName
+  selectWinningName,
+  toggleNarrator
 } from "../store/roulette/rouletteSlice";
 import { selectPerson, selectTeam } from "../utils/adosHelper";
 import { thatsAllFolks } from "../images/thatsAllFolks";
-import { ActionIcon, Button, Center, Dialog, Input, Table, Title } from "@mantine/core";
+import { ActionIcon, Button, Center, Checkbox, Dialog, Divider, Input, Table, Title } from "@mantine/core";
 import { IconArrowLeft, IconArrowRight, IconCirclePlus } from "@tabler/icons-react";
 import { UserEditRow } from "./UserEditRow";
 import { WinnerControl } from "./WinnerControl";
@@ -51,6 +53,8 @@ export function RouletteDialog(props: SettingsDialogProps) {
   const remainingUsers = useAppSelector(selectRemainingUsers);
   const seed = useAppSelector(selectSeed);
 
+  const narrator = useAppSelector(selectNarrator);
+
   const winningIndex = remainingUsers.findIndex((x) => x.id === winningId) > 0 ? remainingUsers.findIndex((x) => x.id === winningId) : 0;
 
   const [newName, setNewName] = useState("");
@@ -75,10 +79,10 @@ export function RouletteDialog(props: SettingsDialogProps) {
       selectTeam(`Team ${winningUser.team}`)
         .then((selectedTeam) => {
           if (selectedTeam) {
-            selectPerson(winningUser.name).catch(console.log);
+            selectPerson(winningUser.name).catch((e: unknown) => console.log(e));
           }
         })
-        .catch(console.log);
+        .catch((e: unknown) => console.log(e));
     }
   };
 
@@ -128,6 +132,9 @@ export function RouletteDialog(props: SettingsDialogProps) {
               <Button variant="filled" disabled={spinning} style={{ width: "5rem", margin: "0.2rem" }} onClick={onResetClicked}>
                 Reset
               </Button>
+            </Center>
+            <Center style={{ marginTop: "0.5em" }}>
+              <Checkbox checked={narrator} onChange={() => dispatch(toggleNarrator())} label="Super AI Narration Mode" />
             </Center>
           </div>
           <div style={{ float: "right" }}>

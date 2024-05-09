@@ -20,6 +20,7 @@
     "brace-style":  ["error", "stroustrup"],
     "indent": ["error", 2],
     "@typescript-eslint/no-confusing-void-expression": ["error", { "ignoreArrowShorthand": true }],
+    "@typescript-eslint/restrict-template-expressions": "off",
     "react/no-unknown-property": ["error", { "ignore": ["css"] }]
   },
   "settings": {

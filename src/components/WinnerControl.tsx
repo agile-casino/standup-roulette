@@ -27,7 +27,7 @@ export function WinnerControl({ name, mascotNumber: number }: WinnerControlProps
     setData(null);
     getData(number)
       .then(setData)
-      .catch(console.error);
+      .catch((e: unknown) => console.error(e));
   }, [number]);
 
   const src = data?.sprites.other.home?.front_default
