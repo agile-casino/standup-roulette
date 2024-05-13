@@ -57,7 +57,7 @@ export const rouletteSlice = createSlice({
       if (state.games[state.currentGame].spinning) {
         return;
       }
-      const index = Math.min(state.currentGame + 1, 2);
+      const index = Math.min(state.currentGame + 1, 4);
       if (!state.games[index]) {
         state.games[index] = {
           allUsers: [],
