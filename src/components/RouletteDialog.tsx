@@ -22,7 +22,7 @@ import {
 } from "../store/roulette/rouletteSlice";
 import { selectPerson, selectTeam } from "../utils/adosHelper";
 import { thatsAllFolks } from "../images/thatsAllFolks";
-import { ActionIcon, Button, Center, Checkbox, Dialog, Divider, Input, Table, Title } from "@mantine/core";
+import { ActionIcon, Button, Center, Checkbox, Dialog, Input, Table, Title } from "@mantine/core";
 import { IconArrowLeft, IconArrowRight, IconCirclePlus } from "@tabler/icons-react";
 import { UserEditRow } from "./UserEditRow";
 import { WinnerControl } from "./WinnerControl";
@@ -101,8 +101,8 @@ export function RouletteDialog(props: SettingsDialogProps) {
 
   if (props.open) {
     return (
-      <Dialog opened={true} className={styles.dialog} position={{ bottom: 0, left: 0 }} w={1000} h={700} withBorder={true} withCloseButton={true} onClose={props.onCloseClicked}>
-        <Title order={4} fw={400} style={{ marginBottom: "1rem" }}>
+      <Dialog opened={true} className={styles.dialog} position={{ bottom: 0, left: 0 }} w={1000} h={650} withBorder={true} withCloseButton={true} onClose={props.onCloseClicked}>
+        <Title order={4} fw={400}>
           <span>Standup Roulette</span>
           <ActionIcon style={{ margin: "0 1rem", verticalAlign: "bottom" }}  onClick={() => dispatch(prevGame())}>
             <IconArrowLeft />
@@ -112,8 +112,8 @@ export function RouletteDialog(props: SettingsDialogProps) {
             <IconArrowRight />
           </ActionIcon>
         </Title>
-        <div>
-          <div style={{ float: "left" }}>
+        <div style={{ height: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+          <div>
             <If condition={!!data.length}>
               <Wheel data={data} spinDuration={0.15} prizeNumber={winningIndex} mustStartSpinning={spinning} onStopSpinning={onStopSpinning} />
               <Center>
@@ -137,7 +137,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
               <Checkbox checked={narrator} onChange={() => dispatch(toggleNarrator())} label="Super AI Narration Mode" />
             </Center>
           </div>
-          <div style={{ float: "right" }}>
+          <div style={{ height: "95%", overflowY: "auto" }}>
             <Table horizontalSpacing="3px" verticalSpacing="3px" highlightOnHover={true} withRowBorders={false}>
               <Table.Thead>
                 <Table.Tr>
