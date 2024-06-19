@@ -101,7 +101,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
 
   if (props.open) {
     return (
-      <Dialog opened={true} className={styles.dialog} position={{ bottom: 0, left: 0 }} w={1000} h={650} withBorder={true} withCloseButton={true} onClose={props.onCloseClicked}>
+      <Dialog opened={true} className={styles.dialog} position={{ bottom: 0, left: 0 }} w={1000} h={700} withBorder={true} withCloseButton={true} onClose={props.onCloseClicked}>
         <Title order={4} fw={400}>
           <span>Standup Roulette</span>
           <ActionIcon style={{ margin: "0 1rem", verticalAlign: "bottom" }}  onClick={() => dispatch(prevGame())}>
