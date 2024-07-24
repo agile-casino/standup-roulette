@@ -30,7 +30,6 @@ export async function selectTeam(name: string): Promise<boolean> {
   }
 }
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 export async function selectPerson(name: string) {
   try {
     const personNameDropdown = await waitFor<HTMLElement>(() => {

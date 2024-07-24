@@ -1,5 +1,5 @@
 export async function waitFor<T>(action: () => T | null, maxWaitMilliseconds = 5000): Promise<T> {
-  return new Promise((resolve, reject) => {
+  return await new Promise((resolve, reject) => {
     const startTime = new Date().getTime();
     const interval = setInterval(() => {
       const result = action();
@@ -18,7 +18,7 @@ export async function waitFor<T>(action: () => T | null, maxWaitMilliseconds = 5
 }
 
 export async function waitForElement(parent: HTMLElement, selector: string, maxWaitMilliseconds = 5000): Promise<Element> {
-  return new Promise((resolve, reject) => {
+  return await new Promise((resolve, reject) => {
     const startTime = new Date().getTime();
     const interval = setInterval(() => {
       const element = parent.querySelector(selector);

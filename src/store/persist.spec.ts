@@ -2,7 +2,7 @@
 
 import { describe, expect, it, vi } from "vitest";
 import { Action, Reducer } from "@reduxjs/toolkit";
-import { persist } from "../../src/store/persist";
+import { persist } from "./persist";
 
 interface TestState {
   hello: string;
