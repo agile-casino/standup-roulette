@@ -2,7 +2,7 @@
 
 import { test, expect } from "vitest";
 import { render } from "@testing-library/react";
-import { If } from "../../src/components/If";
+import { If } from "./If";
 
 test("If_WhenConditionIsTrue_RendersChild", () => {
   const { queryByTestId } = render(
