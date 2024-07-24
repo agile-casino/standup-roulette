@@ -77,8 +77,8 @@ devDependencies:
     specifier: ^8.57.0
     version: 8.57.0
   eslint-config-love:
-    specifier: ^53.0.0
-    version: 53.0.0(@typescript-eslint/parser@7.17.0)(eslint@8.57.0)(typescript@5.5.4)
+    specifier: ^59.0.0
+    version: 59.0.0(@typescript-eslint/parser@7.17.0)(eslint@8.57.0)(typescript@5.5.4)
   eslint-plugin-react:
     specifier: ^7.35.0
     version: 7.35.0(eslint@8.57.0)
@@ -1870,8 +1870,8 @@ packages:
       semver: 7.6.3
     dev: true
 
-  /eslint-config-love@53.0.0(@typescript-eslint/parser@7.17.0)(eslint@8.57.0)(typescript@5.5.4):
-    resolution: {integrity: sha512-lvr93SbSbF/JMbTqQFb07kd+7R9fiRGcTrk6mCLQvYClkB4e4avNG1WfGd1YMnZSyuK9UFAbNiVlfhfHEuvSUA==}
+  /eslint-config-love@59.0.0(@typescript-eslint/parser@7.17.0)(eslint@8.57.0)(typescript@5.5.4):
+    resolution: {integrity: sha512-zgrUCOoK2lhv7ubiMDTaV/X6NYwve3r8JR4f0deJovLLGjqgakJDxNb83ZWm2ck4+A1yhtt7L5kRQzCi5B358A==}
     peerDependencies:
       eslint: ^8.0.1
       typescript: '*'
