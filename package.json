@@ -40,7 +40,7 @@
     "@typescript-eslint/parser": "^7.17.0",
     "@vitest/ui": "^2.0.4",
     "eslint": "^8.57.0",
-    "eslint-config-love": "^53.0.0",
+    "eslint-config-love": "^62.0.0",
     "eslint-plugin-perfectionist": "^3.0.0",
     "eslint-plugin-react": "^7.35.0",
     "eslint-plugin-react-hooks": "^4.6.2",
