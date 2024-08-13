@@ -1,12 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../index";
-import { getColourScheme } from "../../utils/colourScheme";
-import { orderBy } from "../../utils/orderBy";
-import { deepCopy } from "../../utils/deepCopy";
-import { RouletteState } from "./state";
-import { RouletteUser } from "./state";
 import { v4 as uuidv4 } from "uuid";
-import { commentate } from "../../utils/narrator";
+import { getColourScheme } from "../../utils/colourScheme";
+import { deepCopy } from "../../utils/deepCopy";
+import { orderBy } from "../../utils/orderBy";
+import { RootState } from "../index";
+import { RouletteState, RouletteUser } from "./state";
 
 const uuid = uuidv4 as () => string;
 
@@ -25,7 +23,7 @@ const initialState: RouletteState = {
 };
 
 function assignColours(users: RouletteUser[]): void {
-  const selectedUsers = users.filter((x) => x.checked);
+  const selectedUsers = users.filter(x => x.checked);
   const colours = getColourScheme(selectedUsers.length);
   for (let i = 0; i < colours.length; i++) {
     selectedUsers[i].colour = colours[i];
@@ -71,29 +69,29 @@ export const rouletteSlice = createSlice({
       state.currentGame = index;
     },
     addUser: (state, action: PayloadAction<{ name: string }>) => {
-      state.games[state.currentGame].allUsers = [...state.games[state.currentGame].allUsers, { id: uuid(), name: action.payload.name }].sort(orderBy((x) => x.name));
+      state.games[state.currentGame].allUsers = [...state.games[state.currentGame].allUsers, { id: uuid(), name: action.payload.name }].sort(orderBy(x => x.name));
       assignColours(state.games[state.currentGame].allUsers);
     },
     removeUser: (state, action: PayloadAction<{ id: string }>) => {
-      state.games[state.currentGame].allUsers = state.games[state.currentGame].allUsers.filter((u) => u.id !== action.payload.id);
+      state.games[state.currentGame].allUsers = state.games[state.currentGame].allUsers.filter(u => u.id !== action.payload.id);
       assignColours(state.games[state.currentGame].allUsers);
     },
     setUserName: (state, action: PayloadAction<{ id: string; newUserName: string }>) => {
-      const user = state.games[state.currentGame].allUsers.find((u) => u.id === action.payload.id);
+      const user = state.games[state.currentGame].allUsers.find(u => u.id === action.payload.id);
       if (user) {
         user.name = action.payload.newUserName;
-        state.games[state.currentGame].allUsers = state.games[state.currentGame].allUsers.sort(orderBy((x) => x.name));
+        state.games[state.currentGame].allUsers = state.games[state.currentGame].allUsers.sort(orderBy(x => x.name));
         assignColours(state.games[state.currentGame].allUsers);
       }
     },
     setUserTeam: (state, action: PayloadAction<{ id: string; newTeamName: string }>) => {
-      const user = state.games[state.currentGame].allUsers.find((u) => u.id === action.payload.id);
+      const user = state.games[state.currentGame].allUsers.find(u => u.id === action.payload.id);
       if (user) {
         user.team = action.payload.newTeamName;
       }
     },
     toggleUser: (state, action: PayloadAction<{ id: string }>) => {
-      const user = state.games[state.currentGame].allUsers.find((u) => u.id === action.payload.id);
+      const user = state.games[state.currentGame].allUsers.find(u => u.id === action.payload.id);
       if (user) {
         user.checked = !user.checked;
         assignColours(state.games[state.currentGame].allUsers);
@@ -101,7 +99,7 @@ export const rouletteSlice = createSlice({
     },
     prepareSpin: (state, action: PayloadAction<{ random: number }>) => {
       if (state.games[state.currentGame].winningId !== null) {
-        const newRemainingUsers = state.games[state.currentGame].remainingUsers.filter((u) => u.id !== state.games[state.currentGame].winningId);
+        const newRemainingUsers = state.games[state.currentGame].remainingUsers.filter(u => u.id !== state.games[state.currentGame].winningId);
         state.games[state.currentGame].remainingUsers = newRemainingUsers;
       }
       if (state.games[state.currentGame].remainingUsers.length > 0) {
@@ -116,25 +114,18 @@ export const rouletteSlice = createSlice({
     },
     endSpin: (state) => {
       if (state.games[state.currentGame].winningId !== null) {
-        const user = state.games[state.currentGame].remainingUsers.find((u) => u.id === state.games[state.currentGame].winningId);
+        const user = state.games[state.currentGame].remainingUsers.find(u => u.id === state.games[state.currentGame].winningId);
         if (user) {
           state.games[state.currentGame].winningName = user.name;
-
-          if (state.narrator) {
-            commentate(user.name, state.games[state.currentGame].allUsers.length - state.games[state.currentGame].remainingUsers.length,  state.games[state.currentGame].allUsers.length);
-          }
         }
       }
       state.games[state.currentGame].spinning = false;
     },
     reset: (state, action: PayloadAction<{ seed: number }>) => {
-      state.games[state.currentGame].remainingUsers = deepCopy(state.games[state.currentGame].allUsers.filter((x) => x.checked));
+      state.games[state.currentGame].remainingUsers = deepCopy(state.games[state.currentGame].allUsers.filter(x => x.checked));
       state.games[state.currentGame].winningId = null;
       state.games[state.currentGame].winningName = null;
       state.games[state.currentGame].seed = action.payload.seed;
-    },
-    toggleNarrator: (state) => {
-      state.narrator = !state.narrator;
     }
   }
 });
@@ -148,4 +139,3 @@ export const selectSpinning = (state: RootState) => state.roulette.games[state.r
 export const selectWinningId = (state: RootState) => state.roulette.games[state.roulette.currentGame].winningId;
 export const selectWinningName = (state: RootState) => state.roulette.games[state.roulette.currentGame].winningName;
 export const selectSeed = (state: RootState) => state.roulette.games[state.roulette.currentGame].seed;
-export const selectNarrator = (state: RootState) => !!state.roulette.narrator;

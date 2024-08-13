@@ -1,0 +1,22 @@
+{
+    "version": "0.2",
+    "ignorePaths": [],
+    "dictionaryDefinitions": [],
+    "dictionaries": [
+        "npm",
+        "softwareTerms",
+        "typescript"
+    ],
+    "words": [
+        "archerax",
+        "mantine",
+        "sonarjs",
+        "tseslint"
+    ],
+    "ignoreWords": [
+        "uuidv4",
+        "GM_xmlhttpRequest"
+    ],
+    "import": [],
+    "language": "en-GB,en-US,en"
+}

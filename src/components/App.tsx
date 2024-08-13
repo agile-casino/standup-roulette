@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { RouletteDialog } from "./RouletteDialog";
-import { store } from "../store";
-import { Provider } from "react-redux";
 import { MantineProvider } from "@mantine/core";
 import { useColorScheme } from "@mantine/hooks";
+import { useEffect, useState } from "react";
+import { Provider } from "react-redux";
+import { store } from "../store";
+import { RouletteDialog } from "./RouletteDialog";
 
 export function App() {
   const [url, setUrl] = useState(window.location.href);
@@ -54,7 +54,7 @@ export function App() {
             margin: "auto 8px",
             background: dialogOpen ? activeBackgroundColour : inactiveBackgroundColour,
             border: "1px solid rgb(234,234,234)",
-            color: dialogOpen ? activeForegroundColour : inactiveForegroundColour,
+            color: dialogOpen ? activeForegroundColour : inactiveForegroundColour
           }}
         >
           Standup Roulette

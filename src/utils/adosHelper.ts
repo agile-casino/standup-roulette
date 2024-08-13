@@ -11,7 +11,7 @@ export async function selectTeam(name: string): Promise<boolean> {
     if (teamNameDropdown.textContent?.toLowerCase() === name.toLowerCase()) {
       return true; // correct team name is already selected
     }
-    
+
     const teamNameDropdown2Button = await waitForElement(teamNameDropdown, ".bolt-button", defaultTimeoutMilliseconds) as HTMLElement;
     teamNameDropdown2Button.click();
 
@@ -49,29 +49,29 @@ export async function selectPerson(name: string) {
 
     for (const personNameOption of rows) {
       switch (personNameOption.textContent) {
-      case "@Me":
-        break;
-      case "Unassigned":
-        break;
-      case "All":
-        allOption = personNameOption;
-        break;
-      default:
-        personNameOptions.push(personNameOption);
-        break;
+        case "@Me":
+          break;
+        case "Unassigned":
+          break;
+        case "All":
+          allOption = personNameOption;
+          break;
+        default:
+          personNameOptions.push(personNameOption);
+          break;
       }
     }
-    
+
     let best: HTMLElement | undefined;
     for (const person of personNameOptions) {
       const name1 = formatName(name);
       const name2 = formatName(person.textContent);
-  
+
       if (name2.startsWith(name1)) {
         best = person;
       }
     }
-  
+
     if (best) {
       best.click();
     }

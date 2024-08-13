@@ -10,7 +10,7 @@ export async function waitFor<T>(action: () => T | null, maxWaitMilliseconds = 5
       else {
         const currentTime = new Date().getTime();
         if (currentTime - startTime > maxWaitMilliseconds) {
-          reject(new Error(`Timed out.`));
+          reject(new Error("Timed out."));
         }
       }
     }, 100);

@@ -2,7 +2,7 @@ import { RouletteState as v1state } from "./v1/RouletteState";
 import { RouletteState as v2state } from "./v2/RouletteState";
 
 export const migrations = {
-  undefined: function(old: v1state): v2state {
+  undefined: function (old: v1state): v2state {
     return {
       currentGame: 0,
       games: [
@@ -17,7 +17,7 @@ export const migrations = {
       ]
     };
   },
-  2: function(state: v2state): v2state {
+  2: function (state: v2state): v2state {
     state.games.forEach(game => game.spinning = false);
     return state;
   }

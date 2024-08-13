@@ -1,6 +1,8 @@
+import { ActionIcon, Button, Center, Dialog, Input, Table, Title } from "@mantine/core";
+import { IconArrowLeft, IconArrowRight, IconCirclePlus } from "@tabler/icons-react";
 import { useMemo, useState } from "react";
 import { Wheel, WheelDataType } from "react-custom-roulette";
-import { If } from "./If";
+import { thatsAllFolks } from "../images/thatsAllFolks";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import {
   addUser,
@@ -12,21 +14,17 @@ import {
   reset,
   selectAllUsers,
   selectGame,
-  selectNarrator,
   selectRemainingUsers,
   selectSeed,
   selectSpinning,
   selectWinningId,
-  selectWinningName,
-  toggleNarrator
+  selectWinningName
 } from "../store/roulette/rouletteSlice";
 import { selectPerson, selectTeam } from "../utils/adosHelper";
-import { thatsAllFolks } from "../images/thatsAllFolks";
-import { ActionIcon, Button, Center, Checkbox, Dialog, Input, Table, Title } from "@mantine/core";
-import { IconArrowLeft, IconArrowRight, IconCirclePlus } from "@tabler/icons-react";
+import { getMascot } from "../utils/mascot";
+import { If } from "./If";
 import { UserEditRow } from "./UserEditRow";
 import { WinnerControl } from "./WinnerControl";
-import { getMascot } from "../utils/mascot";
 import styles from "./RouletteDialog.module.css";
 
 interface SettingsDialogProps {
@@ -53,9 +51,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
   const remainingUsers = useAppSelector(selectRemainingUsers);
   const seed = useAppSelector(selectSeed);
 
-  const narrator = useAppSelector(selectNarrator);
-
-  const winningIndex = remainingUsers.findIndex((x) => x.id === winningId) > 0 ? remainingUsers.findIndex((x) => x.id === winningId) : 0;
+  const winningIndex = remainingUsers.findIndex(x => x.id === winningId) > 0 ? remainingUsers.findIndex(x => x.id === winningId) : 0;
 
   const [newName, setNewName] = useState("");
 
@@ -73,7 +69,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
   const onStopSpinning = () => {
     dispatch(endSpin());
 
-    const winningUser = remainingUsers.find((u) => u.id === winningId);
+    const winningUser = remainingUsers.find(u => u.id === winningId);
 
     if (winningUser?.team) {
       selectTeam(`Team ${winningUser.team}`)
@@ -96,7 +92,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
   };
 
   const data: WheelDataType[] = useMemo(() => {
-    return remainingUsers.map((user) => ({ option: user.name, style: { backgroundColor: user.colour } }));
+    return remainingUsers.map(user => ({ option: user.name, style: { backgroundColor: user.colour } }));
   }, [remainingUsers]);
 
   if (props.open) {
@@ -104,10 +100,13 @@ export function RouletteDialog(props: SettingsDialogProps) {
       <Dialog opened={true} className={styles.dialog} position={{ bottom: 0, left: 0 }} w={1000} h={700} withBorder={true} withCloseButton={true} onClose={props.onCloseClicked}>
         <Title order={4} fw={400}>
           <span>Standup Roulette</span>
-          <ActionIcon style={{ margin: "0 1rem", verticalAlign: "bottom" }}  onClick={() => dispatch(prevGame())}>
+          <ActionIcon style={{ margin: "0 1rem", verticalAlign: "bottom" }} onClick={() => dispatch(prevGame())}>
             <IconArrowLeft />
           </ActionIcon>
-          <span>Team {game + 1}</span>
+          <span>
+            Team
+            {game + 1}
+          </span>
           <ActionIcon style={{ margin: "0 1rem", verticalAlign: "bottom" }} onClick={() => dispatch(nextGame())}>
             <IconArrowRight />
           </ActionIcon>
@@ -133,9 +132,6 @@ export function RouletteDialog(props: SettingsDialogProps) {
                 Reset
               </Button>
             </Center>
-            <Center style={{ marginTop: "0.5em" }}>
-              <Checkbox checked={narrator} onChange={() => dispatch(toggleNarrator())} label="Super AI Narration Mode" />
-            </Center>
           </div>
           <div style={{ height: "95%", overflowY: "auto" }}>
             <Table horizontalSpacing="3px" verticalSpacing="3px" highlightOnHover={true} withRowBorders={false}>
@@ -148,7 +144,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
-                {allUsers.map((user) => (
+                {allUsers.map(user => (
                   <UserEditRow key={user.id} user={user} />
                 ))}
                 <Table.Tr>

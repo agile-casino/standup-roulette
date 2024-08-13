@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { persist } from "./persist";
 import { rouletteSlice } from "./roulette/rouletteSlice";
 import { migrations } from "./roulette/state/migrations";
-import { persist } from "./persist";
 
 export const store = configureStore({
   reducer: {
