@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 
-import { describe, expect, it, vi } from "vitest";
 import { Action, Reducer } from "@reduxjs/toolkit";
+import { describe, expect, it, vi } from "vitest";
 import { persist } from "./persist";
 
 interface TestState {

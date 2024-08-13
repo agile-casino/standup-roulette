@@ -1,6 +1,6 @@
 {
   "name": "standup-roulette",
-  "version": "4.4.1",
+  "version": "4.5.1",
   "description": "standup-roulette",
   "main": "index.js",
   "scripts": {
@@ -27,7 +27,9 @@
     "bumpVersion": "patch"
   },
   "devDependencies": {
+    "@cspell/eslint-plugin": "^8.13.0",
     "@happy-dom/jest-environment": "^14.12.3",
+    "@stylistic/eslint-plugin": "^2.4.0",
     "@testing-library/react": "^16.0.0",
     "@types/lodash": "^4.17.7",
     "@types/react": "^18.3.3",
@@ -39,6 +41,7 @@
     "@vitest/ui": "^2.0.4",
     "eslint": "^8.57.0",
     "eslint-config-love": "^53.0.0",
+    "eslint-plugin-perfectionist": "^3.0.0",
     "eslint-plugin-react": "^7.35.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-sonarjs": "^1.0.4",

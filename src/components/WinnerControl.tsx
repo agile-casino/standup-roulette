@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { Text } from "@mantine/core";
+import { useEffect, useState } from "react";
 
 interface MascotData {
   name: string;
@@ -7,7 +7,7 @@ interface MascotData {
     other: {
       "home"?: {
         front_default?: string;
-      },
+      };
       "official-artwork"?: {
         front_default: string;
       };
@@ -32,7 +32,7 @@ export function WinnerControl({ name, mascotNumber: number }: WinnerControlProps
 
   const src = data?.sprites.other.home?.front_default
     ?? data?.sprites.other["official-artwork"]?.front_default;
-  
+
   if (name) {
     return (
       <div className="winner" style={{ display: "inline-grid" }}>
@@ -50,7 +50,7 @@ export function WinnerControl({ name, mascotNumber: number }: WinnerControlProps
 }
 
 async function getData(number: number): Promise<MascotData | null> {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     GM_xmlhttpRequest({
       method: "GET",
       url: `https://pokeapi.co/api/v2/pokemon/${number}`,

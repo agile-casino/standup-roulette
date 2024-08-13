@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 
-import { test, expect } from "vitest";
 import { render } from "@testing-library/react";
+import { expect, test } from "vitest";
 import { If } from "./If";
 
 test("If_WhenConditionIsTrue_RendersChild", () => {

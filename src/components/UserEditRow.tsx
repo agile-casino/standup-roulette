@@ -1,17 +1,17 @@
-import { useAppDispatch } from "../store/hooks";
-import { removeUser, setUserName, setUserTeam, toggleUser} from "../store/roulette/rouletteSlice";
-import { RouletteUser } from "../store/roulette/state";
 import { ActionIcon, Checkbox, Input, Table } from "@mantine/core";
 import { IconCircleMinus } from "@tabler/icons-react";
+import { useAppDispatch } from "../store/hooks";
+import { removeUser, setUserName, setUserTeam, toggleUser } from "../store/roulette/rouletteSlice";
+import { RouletteUser } from "../store/roulette/state";
 
-export function UserEditRow({ user }: { user: RouletteUser; }) {
+export function UserEditRow({ user }: { user: RouletteUser }) {
   const dispatch = useAppDispatch();
 
-  const onNameChange = (event: { target: HTMLInputElement; }) => {
+  const onNameChange = (event: { target: HTMLInputElement }) => {
     dispatch(setUserName({ id: user.id, newUserName: event.target.value }));
   };
 
-  const onTeamChange = (event: { target: HTMLInputElement; }) => {
+  const onTeamChange = (event: { target: HTMLInputElement }) => {
     dispatch(setUserTeam({ id: user.id, newTeamName: event.target.value }));
   };
 
