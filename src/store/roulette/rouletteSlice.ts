@@ -12,6 +12,7 @@ const initialState: RouletteState = {
   currentGame: 0,
   games: [
     {
+      name: "Game 1",
       allUsers: [],
       remainingUsers: [],
       spinning: false,
@@ -34,6 +35,9 @@ export const rouletteSlice = createSlice({
   name: "roulette",
   initialState: initialState,
   reducers: {
+    setGameName: (state, action: PayloadAction<{ name: string }>) => {
+      state.games[state.currentGame].name = action.payload.name;
+    },
     prevGame: (state) => {
       if (state.games[state.currentGame].spinning) {
         return;
@@ -41,6 +45,7 @@ export const rouletteSlice = createSlice({
       const index = Math.max(state.currentGame - 1, 0);
       if (!state.games[index]) {
         state.games[index] = {
+          name: `Game ${index + 1}`,
           allUsers: [],
           remainingUsers: [],
           spinning: false,
@@ -58,6 +63,7 @@ export const rouletteSlice = createSlice({
       const index = Math.min(state.currentGame + 1, 4);
       if (!state.games[index]) {
         state.games[index] = {
+          name: `Game ${index + 1}`,
           allUsers: [],
           remainingUsers: [],
           spinning: false,
@@ -130,9 +136,9 @@ export const rouletteSlice = createSlice({
   }
 });
 
-export const { prevGame, nextGame, addUser, removeUser, setUserName, setUserTeam, toggleUser, reset, prepareSpin, beginSpin, endSpin, toggleNarrator } = rouletteSlice.actions;
+export const { setGameName, prevGame, nextGame, addUser, removeUser, setUserName, setUserTeam, toggleUser, reset, prepareSpin, beginSpin, endSpin } = rouletteSlice.actions;
 
-export const selectGame = (state: RootState) => state.roulette.currentGame;
+export const selectGameName = (state: RootState) => state.roulette.games[state.roulette.currentGame].name;
 export const selectAllUsers = (state: RootState) => state.roulette.games[state.roulette.currentGame].allUsers;
 export const selectRemainingUsers = (state: RootState) => state.roulette.games[state.roulette.currentGame].remainingUsers;
 export const selectSpinning = (state: RootState) => state.roulette.games[state.roulette.currentGame].spinning;

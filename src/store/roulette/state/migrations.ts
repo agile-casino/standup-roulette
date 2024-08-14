@@ -7,6 +7,7 @@ export const migrations = {
       currentGame: 0,
       games: [
         {
+          name: "Game 1",
           allUsers: old.allUsers,
           remainingUsers: old.remainingUsers,
           seed: old.seed,
@@ -19,6 +20,7 @@ export const migrations = {
   },
   2: function (state: v2state): v2state {
     state.games.forEach(game => game.spinning = false);
+    state.games.forEach((game, index) => game.name = `Game ${index + 1}`);
     return state;
   }
 };
