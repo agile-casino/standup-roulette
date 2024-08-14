@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Center, Dialog, Input, Table, Title } from "@mantine/core";
+import { ActionIcon, Button, Center, Dialog, Input, Table, TextInput, Title } from "@mantine/core";
 import { IconArrowLeft, IconArrowRight, IconCirclePlus } from "@tabler/icons-react";
 import { useMemo, useState } from "react";
 import { Wheel, WheelDataType } from "react-custom-roulette";
@@ -13,12 +13,13 @@ import {
   prevGame,
   reset,
   selectAllUsers,
-  selectGame,
+  selectGameName,
   selectRemainingUsers,
   selectSeed,
   selectSpinning,
   selectWinningId,
-  selectWinningName
+  selectWinningName,
+  setGameName
 } from "../store/roulette/rouletteSlice";
 import { selectPerson, selectTeam } from "../utils/adosHelper";
 import { getMascot } from "../utils/mascot";
@@ -40,7 +41,7 @@ interface SettingsDialogProps {
 export function RouletteDialog(props: SettingsDialogProps) {
   const dispatch = useAppDispatch();
 
-  const game = useAppSelector(selectGame);
+  const gameName = useAppSelector(selectGameName);
 
   const spinning = useAppSelector(selectSpinning);
 
@@ -98,14 +99,13 @@ export function RouletteDialog(props: SettingsDialogProps) {
   if (props.open) {
     return (
       <Dialog opened={true} className={styles.dialog} position={{ bottom: 0, left: 0 }} w={1000} h={700} withBorder={true} withCloseButton={true} onClose={props.onCloseClicked}>
-        <Title order={4} fw={400}>
+        <Title order={4} fw={400} className={styles.header}>
           <span>Standup Roulette</span>
           <ActionIcon style={{ margin: "0 1rem", verticalAlign: "bottom" }} onClick={() => dispatch(prevGame())}>
             <IconArrowLeft />
           </ActionIcon>
           <span>
-            Team
-            {game + 1}
+            <TextInput value={gameName} style={{ display: "inline-block" }} onChange={event => dispatch(setGameName({ name: event.currentTarget.value }))} />
           </span>
           <ActionIcon style={{ margin: "0 1rem", verticalAlign: "bottom" }} onClick={() => dispatch(nextGame())}>
             <IconArrowRight />

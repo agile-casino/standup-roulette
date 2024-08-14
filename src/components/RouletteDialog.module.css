@@ -18,3 +18,8 @@
 .dialog:not(:hover) .winner {
   font-size: 200px;
 }
+
+.header {
+  display: flex;
+  align-items: center;
+}

@@ -1,6 +1,7 @@
 import { RouletteUser } from "./RouletteUser";
 
 export interface RouletteGame {
+  name: string;
   allUsers: RouletteUser[];
   remainingUsers: RouletteUser[];
   spinning: boolean;
