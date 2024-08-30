@@ -49,8 +49,8 @@ importers:
         specifier: ^8.13.3
         version: 8.13.3(eslint@8.57.0)
       '@happy-dom/jest-environment':
-        specifier: ^14.12.3
-        version: 14.12.3
+        specifier: ^15.0.0
+        version: 15.6.0
       '@stylistic/eslint-plugin':
         specifier: ^2.6.2
         version: 2.6.2(eslint@8.57.0)(typescript@5.5.4)
@@ -101,7 +101,7 @@ importers:
         version: 1.0.4(eslint@8.57.0)
       eslint-plugin-vitest:
         specifier: ^0.5.4
-        version: 0.5.4(@typescript-eslint/eslint-plugin@8.1.0(@typescript-eslint/parser@8.1.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)(typescript@5.5.4)(vitest@2.0.5(@types/node@22.2.0)(@vitest/ui@2.0.5)(happy-dom@14.12.3)(less@4.2.0)(sass@1.77.8)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.41)))
+        version: 0.5.4(@typescript-eslint/eslint-plugin@8.1.0(@typescript-eslint/parser@8.1.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)(typescript@5.5.4)(vitest@2.0.5(@types/node@22.2.0)(@vitest/ui@2.0.5)(happy-dom@15.6.0)(less@4.2.0)(sass@1.77.8)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.41)))
       postcss:
         specifier: ^8.4.41
         version: 8.4.41
@@ -134,7 +134,7 @@ importers:
         version: 3.5.1(vite@5.4.0(@types/node@22.2.0)(less@4.2.0)(sass@1.77.8)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.41)))
       vitest:
         specifier: ^2.0.5
-        version: 2.0.5(@types/node@22.2.0)(@vitest/ui@2.0.5)(happy-dom@14.12.3)(less@4.2.0)(sass@1.77.8)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.41))
+        version: 2.0.5(@types/node@22.2.0)(@vitest/ui@2.0.5)(happy-dom@15.6.0)(less@4.2.0)(sass@1.77.8)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.41))
 
 packages:
 
@@ -535,9 +535,9 @@ packages:
   '@floating-ui/utils@0.2.7':
     resolution: {integrity: sha512-X8R8Oj771YRl/w+c1HqAC1szL8zWQRwFvgDwT129k9ACdBoud/+/rX9V0qiMl6LWUdP9voC2nDVZYPMQQsb6eA==}
 
-  '@happy-dom/jest-environment@14.12.3':
-    resolution: {integrity: sha512-sUMBNZIdGbTGt+BG2D5MKg5QBHLoBEYa9NfZr19h8v2qLiuXuFb/Bnh1+NJ0t1K0Wlcq0PlL2IKV9Cqzh2B+kw==}
-    engines: {node: '>=16.0.0'}
+  '@happy-dom/jest-environment@15.6.0':
+    resolution: {integrity: sha512-5FGSjmXcgm2ZBQ9JHKeYR5zmzGwxn9lJsqdnGIFvztXCKgwksIauvfF2c371+HVFTN8jV75SUe/np6qosiRUAA==}
+    engines: {node: '>=18.0.0'}
 
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -1710,9 +1710,9 @@ packages:
   graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
 
-  happy-dom@14.12.3:
-    resolution: {integrity: sha512-vsYlEs3E9gLwA1Hp+w3qzu+RUDFf4VTT8cyKqVICoZ2k7WM++Qyd2LwzyTi5bqMJFiIC/vNpTDYuxdreENRK/g==}
-    engines: {node: '>=16.0.0'}
+  happy-dom@15.6.0:
+    resolution: {integrity: sha512-M2ikOwrC5+KVofexnA0DZbQ0/hSHm2ZFKCmS3Ora11KGNHgHBdlRzZ/dzpDDPxQyqko3yNohFepJclG2T0GeZQ==}
+    engines: {node: '>=18.0.0'}
 
   has-bigints@1.0.2:
     resolution: {integrity: sha512-tSvCKtBr9lkF0Ex0aQiP9N+OpV4zi2r/Nee5VkRDbaqv35RLYMzbwQfFSZZH0kR+Rd6302UJZ2p/bJCEoR3VoQ==}
@@ -3336,12 +3336,12 @@ snapshots:
 
   '@floating-ui/utils@0.2.7': {}
 
-  '@happy-dom/jest-environment@14.12.3':
+  '@happy-dom/jest-environment@15.6.0':
     dependencies:
       '@jest/environment': 29.7.0
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
-      happy-dom: 14.12.3
+      happy-dom: 15.6.0
       jest-mock: 29.7.0
       jest-util: 29.7.0
 
@@ -3862,7 +3862,7 @@ snapshots:
       pathe: 1.1.2
       sirv: 2.0.4
       tinyrainbow: 1.2.0
-      vitest: 2.0.5(@types/node@22.2.0)(@vitest/ui@2.0.5)(happy-dom@14.12.3)(less@4.2.0)(sass@1.77.8)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.41))
+      vitest: 2.0.5(@types/node@22.2.0)(@vitest/ui@2.0.5)(happy-dom@15.6.0)(less@4.2.0)(sass@1.77.8)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.41))
 
   '@vitest/utils@2.0.5':
     dependencies:
@@ -4528,13 +4528,13 @@ snapshots:
     dependencies:
       eslint: 8.57.0
 
-  eslint-plugin-vitest@0.5.4(@typescript-eslint/eslint-plugin@8.1.0(@typescript-eslint/parser@8.1.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)(typescript@5.5.4)(vitest@2.0.5(@types/node@22.2.0)(@vitest/ui@2.0.5)(happy-dom@14.12.3)(less@4.2.0)(sass@1.77.8)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.41))):
+  eslint-plugin-vitest@0.5.4(@typescript-eslint/eslint-plugin@8.1.0(@typescript-eslint/parser@8.1.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)(typescript@5.5.4)(vitest@2.0.5(@types/node@22.2.0)(@vitest/ui@2.0.5)(happy-dom@15.6.0)(less@4.2.0)(sass@1.77.8)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.41))):
     dependencies:
       '@typescript-eslint/utils': 7.18.0(eslint@8.57.0)(typescript@5.5.4)
       eslint: 8.57.0
     optionalDependencies:
       '@typescript-eslint/eslint-plugin': 8.1.0(@typescript-eslint/parser@8.1.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)(typescript@5.5.4)
-      vitest: 2.0.5(@types/node@22.2.0)(@vitest/ui@2.0.5)(happy-dom@14.12.3)(less@4.2.0)(sass@1.77.8)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.41))
+      vitest: 2.0.5(@types/node@22.2.0)(@vitest/ui@2.0.5)(happy-dom@15.6.0)(less@4.2.0)(sass@1.77.8)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.41))
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -4787,7 +4787,7 @@ snapshots:
 
   graphemer@1.4.0: {}
 
-  happy-dom@14.12.3:
+  happy-dom@15.6.0:
     dependencies:
       entities: 4.5.0
       webidl-conversions: 7.0.0
@@ -5963,7 +5963,7 @@ snapshots:
       stylus: 0.62.0
       sugarss: 4.0.1(postcss@8.4.41)
 
-  vitest@2.0.5(@types/node@22.2.0)(@vitest/ui@2.0.5)(happy-dom@14.12.3)(less@4.2.0)(sass@1.77.8)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.41)):
+  vitest@2.0.5(@types/node@22.2.0)(@vitest/ui@2.0.5)(happy-dom@15.6.0)(less@4.2.0)(sass@1.77.8)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.41)):
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@vitest/expect': 2.0.5
@@ -5987,7 +5987,7 @@ snapshots:
     optionalDependencies:
       '@types/node': 22.2.0
       '@vitest/ui': 2.0.5(vitest@2.0.5)
-      happy-dom: 14.12.3
+      happy-dom: 15.6.0
     transitivePeerDependencies:
       - less
       - lightningcss
