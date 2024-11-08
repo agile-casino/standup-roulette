@@ -38,7 +38,7 @@ interface SettingsDialogProps {
   onCloseClicked: () => void;
 }
 
-export function RouletteDialog(props: SettingsDialogProps) {
+export function RouletteDialog(props: Readonly<SettingsDialogProps>) {
   const dispatch = useAppDispatch();
 
   const gameName = useAppSelector(selectGameName);
@@ -57,14 +57,14 @@ export function RouletteDialog(props: SettingsDialogProps) {
   const [newName, setNewName] = useState("");
 
   const onSpinClicked = () => {
-    dispatch(prepareSpin({ random: Math.random() }));
+    dispatch(prepareSpin({ random: Math.random() })); // eslint-disable-line sonarjs/pseudo-random
     setTimeout(() => {
       dispatch(beginSpin());
     }, 50);
   };
 
   const onResetClicked = () => {
-    dispatch(reset({ seed: Math.random() }));
+    dispatch(reset({ seed: Math.random() })); // eslint-disable-line sonarjs/pseudo-random
   };
 
   const onStopSpinning = () => {
@@ -120,7 +120,7 @@ export function RouletteDialog(props: SettingsDialogProps) {
               </Center>
             </If>
             <If condition={!data.length && !!winningName}>
-              <img src={thatsAllFolks} width={445} height={445} />
+              <img src={thatsAllFolks} alt="Fin" width={445} height={445} />
             </If>
             <Center>
               <If condition={remainingUsers.length > 0}>

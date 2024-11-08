@@ -75,7 +75,7 @@ export const rouletteSlice = createSlice({
       state.currentGame = index;
     },
     addUser: (state, action: PayloadAction<{ name: string }>) => {
-      state.games[state.currentGame].allUsers = [...state.games[state.currentGame].allUsers, { id: uuid(), name: action.payload.name }].sort(orderBy(x => x.name));
+      state.games[state.currentGame].allUsers = [...state.games[state.currentGame].allUsers, { id: uuid(), name: action.payload.name, checked: true }].sort(orderBy(x => x.name));
       assignColours(state.games[state.currentGame].allUsers);
     },
     removeUser: (state, action: PayloadAction<{ id: string }>) => {
@@ -86,7 +86,7 @@ export const rouletteSlice = createSlice({
       const user = state.games[state.currentGame].allUsers.find(u => u.id === action.payload.id);
       if (user) {
         user.name = action.payload.newUserName;
-        state.games[state.currentGame].allUsers = state.games[state.currentGame].allUsers.sort(orderBy(x => x.name));
+        state.games[state.currentGame].allUsers = state.games[state.currentGame].allUsers.toSorted(orderBy(x => x.name));
         assignColours(state.games[state.currentGame].allUsers);
       }
     },

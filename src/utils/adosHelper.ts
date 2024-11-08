@@ -51,10 +51,10 @@ export async function selectPerson(name: string) {
       switch (personNameOption.textContent) {
         case "@Me":
           break;
-        case "Unassigned":
-          break;
         case "All":
           allOption = personNameOption;
+          break;
+        case "Unassigned":
           break;
         default:
           personNameOptions.push(personNameOption);

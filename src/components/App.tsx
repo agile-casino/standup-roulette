@@ -36,7 +36,8 @@ export function App() {
     };
   }, []);
 
-  const matches = url.match(/(?<collection>[\w\d_%]+)\/(?<project>[\w\d_%]+)\/_sprints\/taskboard\/[\w\d_%]+\/[\w\d_%]+\/(?<team>[\w\d_%]+)\/(?<sprint>[\w\d_.%()]+)/);
+  // eslint-disable-next-line sonarjs/slow-regex
+  const matches = /(?<collection>[\w%]+)\/(?<project>[\w%]+)\/_sprints\/taskboard\/[\w%]+\/[\w%]+\/(?<team>[\w%]+)\/(?<sprint>[\w.%()]+)/.exec(url);
 
   if (matches?.groups) {
     const collection = decodeURI(matches.groups.collection);

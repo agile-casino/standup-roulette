@@ -20,7 +20,7 @@ interface WinnerControlProps {
   mascotNumber: number;
 }
 
-export function WinnerControl({ name, mascotNumber: number }: WinnerControlProps) {
+export function WinnerControl({ name, mascotNumber: number }: Readonly<WinnerControlProps>) {
   const [data, setData] = useState<MascotData | null>(null);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export function WinnerControl({ name, mascotNumber: number }: WinnerControlProps
 
 async function getData(number: number): Promise<MascotData | null> {
   return new Promise((resolve) => {
-    GM_xmlhttpRequest({
+    GM_xmlhttpRequest({ // eslint-disable-line sonarjs/new-cap
       method: "GET",
       url: `https://pokeapi.co/api/v2/pokemon/${number}`,
       onload: response => resolve(JSON.parse(response.responseText) as MascotData),
