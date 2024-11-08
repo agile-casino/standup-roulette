@@ -1,4 +1,4 @@
-import { crc24 } from "crc";
+import { default as crc24 } from "crc/crc24";
 
 const numberOfPokemonImagesAvailable = 1017;
 

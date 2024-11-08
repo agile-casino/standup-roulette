@@ -24,9 +24,9 @@ export default defineConfig({
   ],
   build: {
     manifest: true,
-    target: "chrome118",
+    target: "chrome121",
     chunkSizeWarningLimit: 1024,
-    minify: false,
+    minify: true,
     rollupOptions: {
       input: "src/index.tsx",
       output: {

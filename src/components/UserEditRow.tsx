@@ -4,7 +4,11 @@ import { useAppDispatch } from "../store/hooks";
 import { removeUser, setUserName, setUserTeam, toggleUser } from "../store/roulette/rouletteSlice";
 import { RouletteUser } from "../store/roulette/state";
 
-export function UserEditRow({ user }: { user: RouletteUser }) {
+interface UserEditRowProps {
+  user: RouletteUser;
+}
+
+export function UserEditRow({ user }: Readonly<UserEditRowProps>) {
   const dispatch = useAppDispatch();
 
   const onNameChange = (event: { target: HTMLInputElement }) => {
