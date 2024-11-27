@@ -1,4 +1,4 @@
-import { RouletteUser } from "./RouletteUser";
+import type { RouletteUser } from "./RouletteUser";
 
 export interface RouletteGame {
   name: string;
@@ -8,4 +8,5 @@ export interface RouletteGame {
   winningId: string | null;
   winningName: string | null;
   seed: number;
+  endImageUrl: string;
 }

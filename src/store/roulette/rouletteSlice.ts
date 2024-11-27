@@ -1,10 +1,10 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
+import type { RootState } from "../index";
+import type { RouletteState, RouletteUser } from "./state";
 import { getColourScheme } from "../../utils/colourScheme";
 import { deepCopy } from "../../utils/deepCopy";
 import { orderBy } from "../../utils/orderBy";
-import { RootState } from "../index";
-import { RouletteState, RouletteUser } from "./state";
 
 const uuid = uuidv4 as () => string;
 
@@ -18,7 +18,8 @@ const initialState: RouletteState = {
       spinning: false,
       winningId: null,
       winningName: null,
-      seed: 0
+      seed: 0,
+      endImageUrl: ""
     }
   ]
 };
@@ -51,7 +52,8 @@ export const rouletteSlice = createSlice({
           spinning: false,
           winningId: null,
           winningName: null,
-          seed: 0
+          seed: 0,
+          endImageUrl: ""
         };
       }
       state.currentGame = index;
@@ -69,7 +71,8 @@ export const rouletteSlice = createSlice({
           spinning: false,
           winningId: null,
           winningName: null,
-          seed: 0
+          seed: 0,
+          endImageUrl: ""
         };
       }
       state.currentGame = index;
@@ -132,11 +135,14 @@ export const rouletteSlice = createSlice({
       state.games[state.currentGame].winningId = null;
       state.games[state.currentGame].winningName = null;
       state.games[state.currentGame].seed = action.payload.seed;
+    },
+    setEndImageUrl: (state, action: PayloadAction<{ url: string }>) => {
+      state.games[state.currentGame].endImageUrl = action.payload.url;
     }
   }
 });
 
-export const { setGameName, prevGame, nextGame, addUser, removeUser, setUserName, setUserTeam, toggleUser, reset, prepareSpin, beginSpin, endSpin } = rouletteSlice.actions;
+export const { setGameName, prevGame, nextGame, addUser, removeUser, setUserName, setUserTeam, toggleUser, reset, prepareSpin, beginSpin, endSpin, setEndImageUrl } = rouletteSlice.actions;
 
 export const selectGameName = (state: RootState) => state.roulette.games[state.roulette.currentGame].name;
 export const selectAllUsers = (state: RootState) => state.roulette.games[state.roulette.currentGame].allUsers;
@@ -145,3 +151,4 @@ export const selectSpinning = (state: RootState) => state.roulette.games[state.r
 export const selectWinningId = (state: RootState) => state.roulette.games[state.roulette.currentGame].winningId;
 export const selectWinningName = (state: RootState) => state.roulette.games[state.roulette.currentGame].winningName;
 export const selectSeed = (state: RootState) => state.roulette.games[state.roulette.currentGame].seed;
+export const selectEndImageUrl = (state: RootState) => state.roulette.games[state.roulette.currentGame].endImageUrl;
