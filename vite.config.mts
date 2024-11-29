@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import bannerPlugin from "vite-plugin-banner";
+import checker from "vite-plugin-checker";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 import pkg from "./package.json";
 
@@ -20,6 +21,10 @@ const banner = `
 export default defineConfig({
   plugins: [
     bannerPlugin({ content: banner, verify: false }),
+    checker({
+      biome: { command: "ci", flags: "src" },
+      typescript: true
+    }),
     cssInjectedByJsPlugin()
   ],
   build: {
@@ -34,8 +39,5 @@ export default defineConfig({
         manualChunks: undefined
       }
     }
-  },
-  test: {
-    globals: true
   }
 });

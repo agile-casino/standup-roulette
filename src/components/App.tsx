@@ -24,19 +24,17 @@ export function App() {
     }
   }
 
-  function onUrlChange() {
-    setUrl(window.location.href);
-    setOrigin(window.location.origin);
-  }
-
   useEffect(() => {
+    function onUrlChange() {
+      setUrl(window.location.href);
+      setOrigin(window.location.origin);
+    }
     window.addEventListener("urlChange", onUrlChange);
     return () => {
       window.removeEventListener("urlChange", onUrlChange);
     };
   }, []);
 
-  // eslint-disable-next-line sonarjs/slow-regex
   const matches = /(?<collection>[\w%]+)\/(?<project>[\w%]+)\/_sprints\/taskboard\/[\w%]+\/[\w%]+\/(?<team>[\w%]+)\/(?<sprint>[\w.%()]+)/.exec(url);
 
   if (matches?.groups) {
@@ -47,6 +45,7 @@ export function App() {
     return (
       <>
         <button
+          type="button"
           onClick={() => {
             setDialogOpen(!dialogOpen);
           }}
@@ -78,7 +77,5 @@ export function App() {
       </>
     );
   }
-  else {
-    return null;
-  }
+  return null;
 }

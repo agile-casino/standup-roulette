@@ -18,9 +18,11 @@ export const migrations = {
     ]
   }),
   2: (state: v2state): v2state => {
-    state.games.forEach(game => game.spinning = false);
-    state.games.forEach((game, index) => game.name = `Game ${index + 1}`);
-    state.games.forEach(game => game.endImageUrl = "");
+    for (let i = 0; i < state.games.length; i++) {
+      state.games[i].endImageUrl = "";
+      state.games[i].name = `Game ${i + 1}`;
+      state.games[i].spinning = false;
+    }
     return state;
   }
 };

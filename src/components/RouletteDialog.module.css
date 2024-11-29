@@ -1,14 +1,14 @@
 .dialog {
-    left: 0;
-    bottom: 0;
-    position: fixed !important;
-    width: 1000px;
-    height: 650px;
-    z-index: 10002;
-    transform: scale(25%) !important;
-    transform-origin: bottom left !important;
-    transition-property: transform;
-    transition-duration: 0.3s;
+  left: 0;
+  bottom: 0;
+  position: fixed !important;
+  width: 1000px;
+  height: 650px;
+  z-index: 10002;
+  transform: scale(25%) !important;
+  transform-origin: bottom left !important;
+  transition-property: transform;
+  transition-duration: 0.3s;
 }
 
 .dialog:hover {

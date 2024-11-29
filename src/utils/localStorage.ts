@@ -11,8 +11,7 @@ export function setLocalStorage<T>(key: string, value: T | undefined, exclude?: 
     const filter = (key: string, val: unknown) => (exclude?.includes(key) ? undefined : val);
     const serialised = JSON.stringify(value, filter);
     localStorage.setItem(key, serialised);
-  }
-  else {
+  } else {
     localStorage.removeItem(key);
   }
 }

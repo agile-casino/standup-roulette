@@ -2,7 +2,7 @@ import { ActionIcon, Checkbox, Input, Table } from "@mantine/core";
 import { IconCircleMinus } from "@tabler/icons-react";
 import { useAppDispatch } from "../store/hooks";
 import { removeUser, setUserName, setUserTeam, toggleUser } from "../store/roulette/rouletteSlice";
-import { RouletteUser } from "../store/roulette/state";
+import type { RouletteUser } from "../store/roulette/state";
 
 interface UserEditRowProps {
   user: RouletteUser;

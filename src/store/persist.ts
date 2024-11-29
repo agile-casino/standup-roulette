@@ -1,4 +1,4 @@
-import { Action, Reducer } from "@reduxjs/toolkit";
+import type { Action, Reducer } from "@reduxjs/toolkit";
 import { getLocalStorage, setLocalStorage } from "../utils/localStorage";
 
 interface Persisted {
@@ -12,15 +12,14 @@ interface PersistSettings<TState> {
   migrations?: MigrationSet<TState>;
 }
 
-type Migration<TState> = (oldState: any) => TState; // eslint-disable-line @typescript-eslint/no-explicit-any
-type MigrationSet<TState> = Record<number, Migration<TState> | undefined>;
+// biome-ignore lint/suspicious/noExplicitAny: can't think of a better way at the moment
+type Migration<TState> = (oldState: any) => TState;
+export type MigrationSet<TState> = Record<number, Migration<TState> | undefined>;
 
 export function persist<TState, TAction extends Action>(reducer: Reducer<TState, TAction>, settings: PersistSettings<TState>): Reducer<TState, TAction> {
-  return function (state: TState | undefined, action: TAction) {
-    if (state === undefined) {
-      state = load(settings.key, settings.migrations ?? {});
-    }
-    const newState = reducer(state, action);
+  return (state: TState | undefined, action: TAction) => {
+    const currentState = state ?? load(settings.key, settings.migrations ?? {});
+    const newState = reducer(currentState, action);
     save(settings.key, newState, settings.version);
     return newState;
   };
@@ -32,9 +31,7 @@ function save<TState>(key: string, state: TState, version: number) {
 
 function load<TState>(key: string, migrations: MigrationSet<TState>): TState | undefined {
   const loaded = getLocalStorage<Persisted | undefined>(key, undefined);
-  return loaded
-    ? migrate(loaded, migrations)
-    : undefined;
+  return loaded ? migrate(loaded, migrations) : undefined;
 }
 
 function migrate<TState>(loaded: Persisted, migrations: MigrationSet<TState>): TState {
