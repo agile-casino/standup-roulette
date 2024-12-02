@@ -1,4 +1,4 @@
-import { RouletteGame } from "./RouletteGame";
+import type { RouletteGame } from "./RouletteGame";
 
 export interface RouletteState {
   currentGame: number;

@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 
-import { Action, Reducer } from "@reduxjs/toolkit";
+import type { Action, Reducer } from "@reduxjs/toolkit";
 import { describe, expect, it, vi } from "vitest";
 import { persist } from "./persist";
 

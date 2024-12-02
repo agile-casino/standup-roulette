@@ -7,7 +7,7 @@ import { If } from "./If";
 test("If_WhenConditionIsTrue_RendersChild", () => {
   const { queryByTestId } = render(
     <If condition={true}>
-      <div data-testid="test-div"></div>
+      <div data-testid="test-div" />
     </If>
   );
 
@@ -17,7 +17,7 @@ test("If_WhenConditionIsTrue_RendersChild", () => {
 test("If_WhenConditionIsFalse_DoesNotRenderChild", () => {
   const { queryByTestId } = render(
     <If condition={false}>
-      <div data-testid="test-div"></div>
+      <div data-testid="test-div" />
     </If>
   );
 

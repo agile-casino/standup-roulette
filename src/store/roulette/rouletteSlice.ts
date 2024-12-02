@@ -1,10 +1,10 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
-import type { RootState } from "../index";
-import type { RouletteState, RouletteUser } from "./state";
 import { getColourScheme } from "../../utils/colourScheme";
 import { deepCopy } from "../../utils/deepCopy";
 import { orderBy } from "../../utils/orderBy";
+import type { RootState } from "../index";
+import type { RouletteState, RouletteUser } from "./state";
 
 const uuid = uuidv4 as () => string;
 
@@ -39,7 +39,7 @@ export const rouletteSlice = createSlice({
     setGameName: (state, action: PayloadAction<{ name: string }>) => {
       state.games[state.currentGame].name = action.payload.name;
     },
-    prevGame: (state) => {
+    prevGame: state => {
       if (state.games[state.currentGame].spinning) {
         return;
       }
@@ -58,7 +58,7 @@ export const rouletteSlice = createSlice({
       }
       state.currentGame = index;
     },
-    nextGame: (state) => {
+    nextGame: state => {
       if (state.games[state.currentGame].spinning) {
         return;
       }
@@ -116,12 +116,12 @@ export const rouletteSlice = createSlice({
         state.games[state.currentGame].winningId = state.games[state.currentGame].remainingUsers[winningIndex].id;
       }
     },
-    beginSpin: (state) => {
+    beginSpin: state => {
       if (state.games[state.currentGame].remainingUsers.length > 0) {
         state.games[state.currentGame].spinning = true;
       }
     },
-    endSpin: (state) => {
+    endSpin: state => {
       if (state.games[state.currentGame].winningId !== null) {
         const user = state.games[state.currentGame].remainingUsers.find(u => u.id === state.games[state.currentGame].winningId);
         if (user) {

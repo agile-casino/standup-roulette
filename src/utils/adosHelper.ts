@@ -6,13 +6,13 @@ const defaultTimeoutMilliseconds = 2500;
 
 export async function selectTeam(name: string): Promise<boolean> {
   try {
-    const teamNameDropdown = await waitForElement(document.body, ".directory-selector-dropdown", defaultTimeoutMilliseconds) as HTMLElement;
+    const teamNameDropdown = (await waitForElement(document.body, ".directory-selector-dropdown", defaultTimeoutMilliseconds)) as HTMLElement;
 
     if (teamNameDropdown.textContent?.toLowerCase() === name.toLowerCase()) {
       return true; // correct team name is already selected
     }
 
-    const teamNameDropdown2Button = await waitForElement(teamNameDropdown, ".bolt-button", defaultTimeoutMilliseconds) as HTMLElement;
+    const teamNameDropdown2Button = (await waitForElement(teamNameDropdown, ".bolt-button", defaultTimeoutMilliseconds)) as HTMLElement;
     teamNameDropdown2Button.click();
 
     const row = await waitFor<HTMLElement>(() => {
@@ -24,8 +24,7 @@ export async function selectTeam(name: string): Promise<boolean> {
     await delay(1000);
 
     return true;
-  }
-  catch {
+  } catch {
     return false;
   }
 }
@@ -41,7 +40,7 @@ export async function selectPerson(name: string) {
 
     const rows = await waitFor<HTMLElement[]>(() => {
       const results = Array.from(document.querySelectorAll(".bolt-list-row"));
-      return results.length ? results as HTMLElement[] : null;
+      return results.length ? (results as HTMLElement[]) : null;
     });
 
     let allOption: HTMLElement | undefined;
@@ -74,12 +73,10 @@ export async function selectPerson(name: string) {
 
     if (best) {
       best.click();
-    }
-    else {
+    } else {
       allOption?.click();
     }
-  }
-  catch {
+  } catch {
     return false;
   }
 }

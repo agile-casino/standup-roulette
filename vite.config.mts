@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import bannerPlugin from "vite-plugin-banner";
+import checker from "vite-plugin-checker";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 import pkg from "./package.json";
 
@@ -17,9 +18,17 @@ const banner = `
 // ==/UserScript==
 `.trim();
 
+
+
 export default defineConfig({
   plugins: [
     bannerPlugin({ content: banner, verify: false }),
+    checker({
+      biome: process.platform !== "android"
+        ? { command: "ci", flags: "src" }
+        : undefined,
+      typescript: true
+    }),
     cssInjectedByJsPlugin()
   ],
   build: {
@@ -34,8 +43,5 @@ export default defineConfig({
         manualChunks: undefined
       }
     }
-  },
-  test: {
-    globals: true
   }
 });

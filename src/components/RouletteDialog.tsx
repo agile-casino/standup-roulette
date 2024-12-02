@@ -28,6 +28,7 @@ import { getMascot } from "../utils/mascot";
 import { If } from "./If";
 import { UserEditRow } from "./UserEditRow";
 import { WinnerControl } from "./WinnerControl";
+
 import styles from "./RouletteDialog.module.css";
 
 interface SettingsDialogProps {
@@ -62,14 +63,14 @@ export function RouletteDialog(props: Readonly<SettingsDialogProps>) {
   const endImageUrl = useAppSelector(selectEndImageUrl);
 
   const onSpinClicked = () => {
-    dispatch(prepareSpin({ random: Math.random() })); // eslint-disable-line sonarjs/pseudo-random
+    dispatch(prepareSpin({ random: Math.random() }));
     setTimeout(() => {
       dispatch(beginSpin());
     }, 50);
   };
 
   const onResetClicked = () => {
-    dispatch(reset({ seed: Math.random() })); // eslint-disable-line sonarjs/pseudo-random
+    dispatch(reset({ seed: Math.random() }));
   };
 
   const onStopSpinning = () => {
@@ -79,7 +80,7 @@ export function RouletteDialog(props: Readonly<SettingsDialogProps>) {
 
     if (winningUser?.team) {
       selectTeam(`Team ${winningUser.team}`)
-        .then((selectedTeam) => {
+        .then(selectedTeam => {
           if (selectedTeam) {
             selectPerson(winningUser.name).catch((e: unknown) => console.log(e));
           }
@@ -119,66 +120,62 @@ export function RouletteDialog(props: Readonly<SettingsDialogProps>) {
             <IconArrowRight />
           </ActionIcon>
         </Title>
-        {
-          showSettings
-            ? (
-                <SettingsPanel />
-              )
-            : (
-                <div style={{ height: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                  <div>
-                    <If condition={!!data.length}>
-                      <Wheel data={data} spinDuration={0.15} prizeNumber={winningIndex} mustStartSpinning={spinning} onStopSpinning={onStopSpinning} />
-                      <Center>
-                        <WinnerControl name={winningName ?? ""} mascotNumber={getMascot(winningName ?? "", seed)} />
-                      </Center>
-                    </If>
-                    <If condition={!data.length && !!winningName}>
-                      <img src={endImageUrl || thatsAllFolks} alt="Fin" width={445} height={445} />
-                    </If>
-                    <Center>
-                      <If condition={remainingUsers.length > 0}>
-                        <Button variant="filled" disabled={spinning} style={{ width: "5rem", margin: "0.2rem" }} onClick={onSpinClicked}>
-                          Spin
-                        </Button>
-                      </If>
-                      <Button variant="filled" disabled={spinning} style={{ width: "5rem", margin: "0.2rem" }} onClick={onResetClicked}>
-                        Reset
-                      </Button>
-                    </Center>
-                  </div>
-                  <div style={{ height: "95%", overflowY: "auto" }}>
-                    <Table horizontalSpacing="3px" verticalSpacing="3px" highlightOnHover={true} withRowBorders={false}>
-                      <Table.Thead>
-                        <Table.Tr>
-                          <Table.Th />
-                          <Table.Th>Name</Table.Th>
-                          <Table.Th>Sprint Backlog</Table.Th>
-                          <Table.Th />
-                        </Table.Tr>
-                      </Table.Thead>
-                      <Table.Tbody>
-                        {allUsers.map(user => (
-                          <UserEditRow key={user.id} user={user} />
-                        ))}
-                        <Table.Tr>
-                          <Table.Td />
-                          <Table.Td>
-                            <Input value={newName} onChange={onNewNameChange} />
-                          </Table.Td>
-                          <Table.Td />
-                          <Table.Td style={{ verticalAlign: "middle" }}>
-                            <ActionIcon onClick={onAddUser}>
-                              <IconCirclePlus />
-                            </ActionIcon>
-                          </Table.Td>
-                        </Table.Tr>
-                      </Table.Tbody>
-                    </Table>
-                  </div>
-                </div>
-              )
-        }
+        {showSettings ? (
+          <SettingsPanel />
+        ) : (
+          <div style={{ height: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+            <div>
+              <If condition={!!data.length}>
+                <Wheel data={data} spinDuration={0.15} prizeNumber={winningIndex} mustStartSpinning={spinning} onStopSpinning={onStopSpinning} />
+                <Center>
+                  <WinnerControl name={winningName ?? ""} mascotNumber={getMascot(winningName ?? "", seed)} />
+                </Center>
+              </If>
+              <If condition={!data.length && !!winningName}>
+                <img src={endImageUrl || thatsAllFolks} alt="Fin" width={445} height={445} />
+              </If>
+              <Center>
+                <If condition={remainingUsers.length > 0}>
+                  <Button variant="filled" disabled={spinning} style={{ width: "5rem", margin: "0.2rem" }} onClick={onSpinClicked}>
+                    Spin
+                  </Button>
+                </If>
+                <Button variant="filled" disabled={spinning} style={{ width: "5rem", margin: "0.2rem" }} onClick={onResetClicked}>
+                  Reset
+                </Button>
+              </Center>
+            </div>
+            <div style={{ height: "95%", overflowY: "auto" }}>
+              <Table horizontalSpacing="3px" verticalSpacing="3px" highlightOnHover={true} withRowBorders={false}>
+                <Table.Thead>
+                  <Table.Tr>
+                    <Table.Th />
+                    <Table.Th>Name</Table.Th>
+                    <Table.Th>Sprint Backlog</Table.Th>
+                    <Table.Th />
+                  </Table.Tr>
+                </Table.Thead>
+                <Table.Tbody>
+                  {allUsers.map(user => (
+                    <UserEditRow key={user.id} user={user} />
+                  ))}
+                  <Table.Tr>
+                    <Table.Td />
+                    <Table.Td>
+                      <Input value={newName} onChange={onNewNameChange} />
+                    </Table.Td>
+                    <Table.Td />
+                    <Table.Td style={{ verticalAlign: "middle" }}>
+                      <ActionIcon onClick={onAddUser}>
+                        <IconCirclePlus />
+                      </ActionIcon>
+                    </Table.Td>
+                  </Table.Tr>
+                </Table.Tbody>
+              </Table>
+            </div>
+          </div>
+        )}
       </Dialog>
     );
   }

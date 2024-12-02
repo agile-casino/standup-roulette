@@ -1,7 +1,8 @@
 export function isInDocument(element: Element) {
-  while (element.parentNode) {
-    element = element.parentNode as Element;
-    if (element === document.body) {
+  let e = element;
+  while (e.parentNode) {
+    e = e.parentNode as Element;
+    if (e === document.body) {
       return true;
     }
   }

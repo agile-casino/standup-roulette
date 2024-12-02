@@ -1,4 +1,4 @@
-import { RouletteUser } from "./RouletteUser";
+import type { RouletteUser } from "./RouletteUser";
 
 export interface RouletteState {
   allUsers: RouletteUser[];

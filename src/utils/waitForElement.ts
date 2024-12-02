@@ -6,8 +6,7 @@ export async function waitFor<T>(action: () => T | null, maxWaitMilliseconds = 5
       if (result) {
         clearInterval(interval);
         resolve(result);
-      }
-      else {
+      } else {
         const currentTime = new Date().getTime();
         if (currentTime - startTime > maxWaitMilliseconds) {
           reject(new Error("Timed out."));
@@ -25,8 +24,7 @@ export async function waitForElement(parent: HTMLElement, selector: string, maxW
       if (element) {
         clearInterval(interval);
         resolve(element);
-      }
-      else {
+      } else {
         const currentTime = new Date().getTime();
         if (currentTime - startTime > maxWaitMilliseconds) {
           reject(new Error(`Could not find element for selector ${selector} in ${maxWaitMilliseconds} milliseconds.`));

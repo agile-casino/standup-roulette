@@ -4,7 +4,7 @@ export function ascending<TValue>(valA: TValue, valB: TValue): number {
   if (valA > valB) {
     return 1;
   }
-  else if (valB > valA) {
+  if (valB > valA) {
     return -1;
   }
 
@@ -12,7 +12,7 @@ export function ascending<TValue>(valA: TValue, valB: TValue): number {
 }
 
 export function orderBy<TObject, TValue>(value: (x: TObject) => TValue): OrderByFn<TObject> {
-  return function (a: TObject, b: TObject) {
+  return (a: TObject, b: TObject) => {
     const valA = value(a);
     const valB = value(b);
 
@@ -24,7 +24,7 @@ export function descending<TValue>(valA: TValue, valB: TValue): number {
   if (valA > valB) {
     return -1;
   }
-  else if (valB > valA) {
+  if (valB > valA) {
     return 1;
   }
 
@@ -32,7 +32,7 @@ export function descending<TValue>(valA: TValue, valB: TValue): number {
 }
 
 export function orderByDescending<TObject, TValue>(value: (x: TObject) => TValue): OrderByFn<TObject> {
-  return function (a: TObject, b: TObject) {
+  return (a: TObject, b: TObject) => {
     const valA = value(a);
     const valB = value(b);
 
