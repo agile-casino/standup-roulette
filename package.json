@@ -41,7 +41,7 @@
     "@vitest/eslint-plugin": "^1.1.12",
     "@vitest/ui": "^2.1.6",
     "eslint": "^9.16.0",
-    "eslint-config-love": "^97.0.0",
+    "eslint-config-love": "^109.0.0",
     "eslint-plugin-perfectionist": "^3.9.1",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.0.0",
