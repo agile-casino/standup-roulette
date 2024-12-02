@@ -1,5 +1,5 @@
 import * as ReactDOM from "react-dom/client";
-import { App } from "./components/App";
+import { App } from "./App";
 import { isInDocument } from "./utils";
 import "@mantine/core/styles.css";
 
