@@ -37,3 +37,4 @@ describe("formatName", () => {
     expect(result).toBe("John   Doe");
   });
 });
+
