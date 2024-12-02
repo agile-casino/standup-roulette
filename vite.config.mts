@@ -18,11 +18,15 @@ const banner = `
 // ==/UserScript==
 `.trim();
 
+
+
 export default defineConfig({
   plugins: [
     bannerPlugin({ content: banner, verify: false }),
     checker({
-      biome: { command: "ci", flags: "src" },
+      biome: process.platform !== "android"
+        ? { command: "ci", flags: "src" }
+        : undefined,
       typescript: true
     }),
     cssInjectedByJsPlugin()
