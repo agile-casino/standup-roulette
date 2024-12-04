@@ -65,7 +65,7 @@ importers:
         version: 18.3.1
       '@types/tampermonkey':
         specifier: ^5.0.3
-        version: 5.0.3
+        version: 5.0.4
       '@types/uuid':
         specifier: ^10.0.0
         version: 10.0.0
@@ -804,8 +804,8 @@ packages:
   '@types/stack-utils@2.0.3':
     resolution: {integrity: sha512-9aEbYZ3TbYMznPdcdr3SmIrLXwC/AKZXQeCf9Pgao5CKb8CyHuEX5jzWPTkvregvhRJHcpRO6BFoGW9ycaOkYw==}
 
-  '@types/tampermonkey@5.0.3':
-    resolution: {integrity: sha512-i8+x8ipoib8xAfho25oNTbILgrO665oxq5tNr3LvH5DaW5UOPsc88Fe1mTVTDwsux5LYOcd8Syb6q+s95x878Q==}
+  '@types/tampermonkey@5.0.4':
+    resolution: {integrity: sha512-HEJ0O5CkDZSwIgd9Zip4xM8o7gZC8zBmJuH1YEXNINIC+aCWEXD10pnpo3NQG5IWHx+Xr4fMSGq1jqeKXH2lpA==}
 
   '@types/use-sync-external-store@0.0.3':
     resolution: {integrity: sha512-EwmlvuaxPNej9+T4v5AuBPJa2x2UOJVdjCtDHgcDqitUeOtjnJKJ+apYjVcAoBEMjKW1VVFGZLUb5+qqa09XFA==}
@@ -2613,7 +2613,7 @@ snapshots:
 
   '@types/stack-utils@2.0.3': {}
 
-  '@types/tampermonkey@5.0.3': {}
+  '@types/tampermonkey@5.0.4': {}
 
   '@types/use-sync-external-store@0.0.3': {}
 
