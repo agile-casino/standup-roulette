@@ -95,16 +95,16 @@ importers:
         version: 5.1.0(typescript@5.7.2)
       vite:
         specifier: ^6.0.1
-        version: 6.0.2(@types/node@22.10.1)(less@4.2.1)(sass@1.81.0)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.49))
+        version: 6.0.3(@types/node@22.10.1)(less@4.2.1)(sass@1.81.0)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.49))
       vite-plugin-banner:
         specifier: ^0.8.0
         version: 0.8.0
       vite-plugin-checker:
         specifier: ^0.8.0
-        version: 0.8.0(@biomejs/biome@1.9.4)(typescript@5.7.2)(vite@6.0.2(@types/node@22.10.1)(less@4.2.1)(sass@1.81.0)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.49)))
+        version: 0.8.0(@biomejs/biome@1.9.4)(typescript@5.7.2)(vite@6.0.3(@types/node@22.10.1)(less@4.2.1)(sass@1.81.0)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.49)))
       vite-plugin-css-injected-by-js:
         specifier: ^3.5.2
-        version: 3.5.2(vite@6.0.2(@types/node@22.10.1)(less@4.2.1)(sass@1.81.0)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.49)))
+        version: 3.5.2(vite@6.0.3(@types/node@22.10.1)(less@4.2.1)(sass@1.81.0)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.49)))
       vitest:
         specifier: ^2.1.6
         version: 2.1.8(@types/node@22.10.1)(@vitest/ui@2.1.8)(happy-dom@15.11.7)(less@4.2.1)(sass@1.81.0)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.49))
@@ -1965,8 +1965,8 @@ packages:
       terser:
         optional: true
 
-  vite@6.0.2:
-    resolution: {integrity: sha512-XdQ+VsY2tJpBsKGs0wf3U/+azx8BBpYRHFAyKm5VeEZNOJZRB63q7Sc8Iup3k0TrN3KO6QgyzFf+opSbfY1y0g==}
+  vite@6.0.3:
+    resolution: {integrity: sha512-Cmuo5P0ENTN6HxLSo6IHsjCLn/81Vgrp81oaiFFMRa8gGDj5xEjIcEpf2ZymZtZR8oU0P2JX5WuUp/rlXcHkAw==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
     peerDependencies:
@@ -3699,7 +3699,7 @@ snapshots:
 
   vite-plugin-banner@0.8.0: {}
 
-  vite-plugin-checker@0.8.0(@biomejs/biome@1.9.4)(typescript@5.7.2)(vite@6.0.2(@types/node@22.10.1)(less@4.2.1)(sass@1.81.0)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.49))):
+  vite-plugin-checker@0.8.0(@biomejs/biome@1.9.4)(typescript@5.7.2)(vite@6.0.3(@types/node@22.10.1)(less@4.2.1)(sass@1.81.0)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.49))):
     dependencies:
       '@babel/code-frame': 7.26.2
       ansi-escapes: 4.3.2
@@ -3711,7 +3711,7 @@ snapshots:
       npm-run-path: 4.0.1
       strip-ansi: 6.0.1
       tiny-invariant: 1.3.3
-      vite: 6.0.2(@types/node@22.10.1)(less@4.2.1)(sass@1.81.0)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.49))
+      vite: 6.0.3(@types/node@22.10.1)(less@4.2.1)(sass@1.81.0)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.49))
       vscode-languageclient: 7.0.0
       vscode-languageserver: 7.0.0
       vscode-languageserver-textdocument: 1.0.12
@@ -3720,9 +3720,9 @@ snapshots:
       '@biomejs/biome': 1.9.4
       typescript: 5.7.2
 
-  vite-plugin-css-injected-by-js@3.5.2(vite@6.0.2(@types/node@22.10.1)(less@4.2.1)(sass@1.81.0)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.49))):
+  vite-plugin-css-injected-by-js@3.5.2(vite@6.0.3(@types/node@22.10.1)(less@4.2.1)(sass@1.81.0)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.49))):
     dependencies:
-      vite: 6.0.2(@types/node@22.10.1)(less@4.2.1)(sass@1.81.0)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.49))
+      vite: 6.0.3(@types/node@22.10.1)(less@4.2.1)(sass@1.81.0)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.49))
 
   vite@5.4.11(@types/node@22.10.1)(less@4.2.1)(sass@1.81.0)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.49)):
     dependencies:
@@ -3737,7 +3737,7 @@ snapshots:
       stylus: 0.62.0
       sugarss: 4.0.1(postcss@8.4.49)
 
-  vite@6.0.2(@types/node@22.10.1)(less@4.2.1)(sass@1.81.0)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.49)):
+  vite@6.0.3(@types/node@22.10.1)(less@4.2.1)(sass@1.81.0)(stylus@0.62.0)(sugarss@4.0.1(postcss@8.4.49)):
     dependencies:
       esbuild: 0.24.0
       postcss: 8.4.49
