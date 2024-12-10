@@ -2,8 +2,8 @@ import { MantineProvider } from "@mantine/core";
 import { useColorScheme } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
-import { store } from "../store";
-import { RouletteDialog } from "./RouletteDialog";
+import { RouletteDialog } from "./components/RouletteDialog";
+import { store } from "./store";
 
 export function App() {
   const [url, setUrl] = useState(window.location.href);
