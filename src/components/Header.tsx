@@ -4,7 +4,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { nextGame, prevGame, setGameName } from "../store/roulette/rouletteSlice";
 import { selectGameName } from "../store/roulette/rouletteSlice";
-import styles from "./RouletteDialog.module.css";
+import styles from "./styles.module.css";
 
 interface HeaderProps {
   setShowSettings: Dispatch<SetStateAction<boolean>>;

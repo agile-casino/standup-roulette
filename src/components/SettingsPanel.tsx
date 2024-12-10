@@ -2,7 +2,7 @@ import { Input, Title } from "@mantine/core";
 import type { ChangeEvent } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { selectEndImageUrl, setEndImageUrl } from "../store/roulette/rouletteSlice";
-import styles from "./RouletteDialog.module.css";
+import styles from "./styles.module.css";
 
 export function SettingsPanel() {
   const dispatch = useAppDispatch();

@@ -4,7 +4,7 @@ import { Header } from "./Header";
 import { RouletteUsers } from "./RouletteUsers";
 import { RouletteWheel } from "./RouletteWheel";
 import { SettingsPanel } from "./SettingsPanel";
-import styles from "./RouletteDialog.module.css";
+import styles from "./styles.module.css";
 
 interface SettingsDialogProps {
   origin: string;
