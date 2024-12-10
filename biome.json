@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": []
+    "ignore": ["**/dist/**"]
   },
   "formatter": {
     "enabled": true,
@@ -27,7 +27,7 @@
   "javascript": {
     "formatter": {
       "arrowParentheses": "asNeeded",
-      "quoteProperties":"preserve",
+      "quoteProperties": "preserve",
       "quoteStyle": "double",
       "trailingCommas": "none"
     }
