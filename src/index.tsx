@@ -13,15 +13,14 @@ let url = window.location.href;
 const urlChangeEvent = new Event("urlChange");
 
 const observer = new MutationObserver(() => {
-  if (window.location.href !== url) {
+  const currentUrl = window.location.href;
+  if (currentUrl !== url) {
     window.dispatchEvent(urlChangeEvent);
-    url = window.location.href;
+    url = currentUrl;
   }
   if (!isInDocument(container)) {
     const searchHeader = document.querySelector(".expandable-search-header");
-    if (searchHeader) {
-      searchHeader.parentElement?.insertBefore(container, searchHeader);
-    }
+    searchHeader?.parentElement?.insertBefore(container, searchHeader);
   }
 });
 
