@@ -1,5 +1,6 @@
 import { ActionIcon, Checkbox, Input, Table } from "@mantine/core";
 import { IconCircleMinus } from "@tabler/icons-react";
+import { type ChangeEvent, useCallback } from "react";
 import { useAppDispatch } from "../store/hooks";
 import { removeUser, setUserName, setUserTeam, toggleUser } from "../store/roulette/rouletteSlice";
 import type { RouletteUser } from "../store/roulette/state";
@@ -11,21 +12,27 @@ interface UserEditRowProps {
 export function UserEditRow({ user }: Readonly<UserEditRowProps>) {
   const dispatch = useAppDispatch();
 
-  const onNameChange = (event: { target: HTMLInputElement }) => {
-    dispatch(setUserName({ id: user.id, newUserName: event.target.value }));
-  };
+  const onNameChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      dispatch(setUserName({ id: user.id, newUserName: event.target.value }));
+    },
+    [dispatch, user.id]
+  );
 
-  const onTeamChange = (event: { target: HTMLInputElement }) => {
-    dispatch(setUserTeam({ id: user.id, newTeamName: event.target.value }));
-  };
+  const onTeamChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      dispatch(setUserTeam({ id: user.id, newTeamName: event.target.value }));
+    },
+    [dispatch, user.id]
+  );
 
-  const onToggleUser = () => {
+  const onToggleUser = useCallback(() => {
     dispatch(toggleUser({ id: user.id }));
-  };
+  }, [dispatch, user.id]);
 
-  const onRemoveUser = () => {
+  const onRemoveUser = useCallback(() => {
     dispatch(removeUser({ id: user.id }));
-  };
+  }, [dispatch, user.id]);
 
   return (
     <Table.Tr>
