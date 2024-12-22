@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import bannerPlugin from "vite-plugin-banner";
 import checker from "vite-plugin-checker";
+import type { BiomeConfig } from "vite-plugin-checker/dist/esm/types";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 import pkg from "./package.json";
 
@@ -18,15 +19,20 @@ const banner = `
 // ==/UserScript==
 `.trim();
 
+function getBiomeConfig(platform: string, mode: string): BiomeConfig {
+  if ( platform === "android" ) {
+    return false;
+  }
+  return mode === "development"
+    ? { command: "check", flags: "src" }
+    : { command: "ci", flags: "src" };
+}
 
-
-export default defineConfig({
+export default defineConfig(({ mode }: { mode: string }) => ({
   plugins: [
     bannerPlugin({ content: banner, verify: false }),
     checker({
-      biome: process.platform !== "android"
-        ? { command: "ci", flags: "src" }
-        : undefined,
+      biome: getBiomeConfig(process.platform, mode),
       typescript: true
     }),
     cssInjectedByJsPlugin()
@@ -35,7 +41,7 @@ export default defineConfig({
     manifest: true,
     target: "chrome121",
     chunkSizeWarningLimit: 1024,
-    minify: true,
+    minify: mode !== "development",
     rollupOptions: {
       input: "src/index.tsx",
       output: {
@@ -44,4 +50,4 @@ export default defineConfig({
       }
     }
   }
-});
+}));

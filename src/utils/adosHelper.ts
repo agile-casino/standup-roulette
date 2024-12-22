@@ -63,8 +63,8 @@ export async function selectPerson(name: string) {
 
     let best: HTMLElement | undefined;
     for (const person of personNameOptions) {
-      const name1 = formatName(name);
-      const name2 = formatName(person.textContent);
+      const name1 = formatName(name).toLowerCase();
+      const name2 = formatName(person.textContent).toLowerCase();
 
       if (name2.startsWith(name1)) {
         best = person;
