@@ -4,6 +4,6 @@ interface IfProps {
   condition: boolean;
 }
 
-export function If(props: PropsWithChildren<IfProps>): ReactNode {
-  return props.condition ? props.children : null;
+export function If({ condition, children }: PropsWithChildren<IfProps>): ReactNode {
+  return condition ? children : null;
 }

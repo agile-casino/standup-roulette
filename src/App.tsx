@@ -5,24 +5,9 @@ import { Provider } from "react-redux";
 import { RouletteDialog } from "./components/RouletteDialog";
 import { store } from "./store";
 
-export function App() {
+function useUrl() {
   const [url, setUrl] = useState(window.location.href);
   const [origin, setOrigin] = useState(window.location.origin);
-  const [dialogOpen, setDialogOpen] = useState(false);
-
-  let colorScheme = useColorScheme();
-  const activeForegroundColour = "black";
-  const activeBackgroundColour = colorScheme === "dark" ? "silver" : "#CCFFAA";
-  const inactiveForegroundColour = "unset";
-  const inactiveBackgroundColour = "unset";
-
-  const navMenu = document.querySelector(".project-navigation");
-  if (navMenu) {
-    const navMenuStyle = getComputedStyle(navMenu);
-    if (navMenuStyle.backgroundColor === "rgb(59, 58, 57)") {
-      colorScheme = "dark";
-    }
-  }
 
   useEffect(() => {
     function onUrlChange() {
@@ -35,20 +20,40 @@ export function App() {
     };
   }, []);
 
+  return { url, origin };
+}
+
+function useColorSchemeFromNavMenu() {
+  let colorScheme = useColorScheme();
+  const navMenu = document.querySelector(".project-navigation");
+  if (navMenu) {
+    const navMenuStyle = getComputedStyle(navMenu);
+    if (navMenuStyle.backgroundColor === "rgb(59, 58, 57)") {
+      colorScheme = "dark";
+    }
+  }
+  return colorScheme;
+}
+
+export function App() {
+  const { url, origin } = useUrl();
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const colorScheme = useColorSchemeFromNavMenu();
+
+  const activeForegroundColour = "black";
+  const activeBackgroundColour = colorScheme === "dark" ? "silver" : "#CCFFAA";
+  const inactiveForegroundColour = "unset";
+  const inactiveBackgroundColour = "unset";
+
   const matches = /(?<collection>[\w%]+)\/(?<project>[\w%]+)\/_sprints\/taskboard\/[\w%]+\/[\w%]+\/(?<team>[\w%]+)\/(?<sprint>[\w.%()]+)/.exec(url);
 
   if (matches?.groups) {
-    const collection = decodeURI(matches.groups.collection);
-    const project = decodeURI(matches.groups.project);
-    const team = decodeURI(matches.groups.team);
-    const sprint = decodeURI(matches.groups.sprint);
+    const { collection, project, team, sprint } = matches.groups;
     return (
       <>
         <button
           type="button"
-          onClick={() => {
-            setDialogOpen(!dialogOpen);
-          }}
+          onClick={() => setDialogOpen(previous => !previous)}
           style={{
             height: "32px",
             margin: "auto 8px",
@@ -61,17 +66,7 @@ export function App() {
         </button>
         <Provider store={store}>
           <MantineProvider defaultColorScheme={colorScheme}>
-            <RouletteDialog
-              origin={origin}
-              collection={collection}
-              project={project}
-              team={team}
-              sprint={sprint}
-              open={dialogOpen}
-              onCloseClicked={() => {
-                setDialogOpen(!dialogOpen);
-              }}
-            />
+            <RouletteDialog origin={origin} collection={decodeURI(collection)} project={decodeURI(project)} team={decodeURI(team)} sprint={decodeURI(sprint)} open={dialogOpen} onCloseClicked={() => setDialogOpen(previous => !previous)} />
           </MantineProvider>
         </Provider>
       </>

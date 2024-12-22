@@ -1,5 +1,5 @@
 import { Button, Center } from "@mantine/core";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { Wheel, type WheelDataType } from "react-custom-roulette";
 import { thatsAllFolks } from "../images/thatsAllFolks";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
@@ -13,52 +13,55 @@ export function RouletteWheel() {
   const dispatch = useAppDispatch();
 
   const spinning = useAppSelector(selectSpinning);
-
   const winningId = useAppSelector(selectWinningId);
   const winningName = useAppSelector(selectWinningName);
-
   const remainingUsers = useAppSelector(selectRemainingUsers);
   const seed = useAppSelector(selectSeed);
+  const endImageUrl = useAppSelector(selectEndImageUrl);
 
-  const winningIndex = remainingUsers.findIndex(x => x.id === winningId) > 0 ? remainingUsers.findIndex(x => x.id === winningId) : 0;
+  const getUser = useMemo(() => {
+    return remainingUsers.find(u => u.id === winningId);
+  }, [remainingUsers, winningId]);
+
+  const getUserIndex = useMemo(() => {
+    return remainingUsers.findIndex(u => u.id === winningId);
+  }, [remainingUsers, winningId]);
 
   const data: WheelDataType[] = useMemo(() => {
     return remainingUsers.map(user => ({ option: user.name, style: { backgroundColor: user.colour } }));
   }, [remainingUsers]);
 
-  const endImageUrl = useAppSelector(selectEndImageUrl);
-
-  const onSpinClicked = () => {
+  const onSpinClicked = useCallback(() => {
     dispatch(prepareSpin({ random: Math.random() }));
     setTimeout(() => {
       dispatch(beginSpin());
     }, 50);
-  };
+  }, [dispatch]);
 
-  const onResetClicked = () => {
+  const onResetClicked = useCallback(() => {
     dispatch(reset({ seed: Math.random() }));
-  };
+  }, [dispatch]);
 
-  const onStopSpinning = () => {
+  const onStopSpinning = useCallback(() => {
     dispatch(endSpin());
 
-    const winningUser = remainingUsers.find(u => u.id === winningId);
+    const winningUser = getUser;
 
     if (winningUser?.team) {
       selectTeam(`Team ${winningUser.team}`)
         .then(selectedTeam => {
           if (selectedTeam) {
-            selectPerson(winningUser.name).catch((e: unknown) => console.log(e));
+            selectPerson(winningUser.name).catch(console.error);
           }
         })
-        .catch((e: unknown) => console.log(e));
+        .catch(console.error);
     }
-  };
+  }, [dispatch, getUser]);
 
   return (
     <div>
       <If condition={!!data.length}>
-        <Wheel data={data} spinDuration={0.15} prizeNumber={winningIndex} mustStartSpinning={spinning} onStopSpinning={onStopSpinning} />
+        <Wheel data={data} spinDuration={0.15} prizeNumber={getUserIndex} mustStartSpinning={spinning} onStopSpinning={onStopSpinning} />
         <Center>
           <WinnerControl name={winningName ?? ""} mascotNumber={getMascot(winningName ?? "", seed)} />
         </Center>
