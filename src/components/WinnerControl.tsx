@@ -20,15 +20,18 @@ interface WinnerControlProps {
   mascotNumber: number;
 }
 
-export function WinnerControl({ name, mascotNumber: number }: Readonly<WinnerControlProps>) {
+export function WinnerControl({ name, mascotNumber }: Readonly<WinnerControlProps>) {
   const [data, setData] = useState<MascotData | null>(null);
 
   useEffect(() => {
-    setData(null);
-    getData(number)
-      .then(setData)
-      .catch((e: unknown) => console.error(e));
-  }, [number]);
+    const fetchData = async () => {
+      setData(null);
+      getData(mascotNumber)
+        .then(data => setData(data))
+        .catch(console.error);
+    };
+    fetchData();
+  }, [mascotNumber]);
 
   const src = data?.sprites.other.home?.front_default ?? data?.sprites.other["official-artwork"]?.front_default;
 
@@ -54,11 +57,11 @@ export function WinnerControl({ name, mascotNumber: number }: Readonly<WinnerCon
   return null;
 }
 
-async function getData(number: number): Promise<MascotData | null> {
+async function getData(mascotNumber: number): Promise<MascotData | null> {
   return new Promise(resolve => {
     GM_xmlhttpRequest({
       method: "GET",
-      url: `https://pokeapi.co/api/v2/pokemon/${number}`,
+      url: `https://pokeapi.co/api/v2/pokemon/${mascotNumber}`,
       onload: response => resolve(JSON.parse(response.responseText) as MascotData),
       onerror: () => resolve(null)
     });
