@@ -19,11 +19,11 @@ export function RouletteWheel() {
   const seed = useAppSelector(selectSeed);
   const endImageUrl = useAppSelector(selectEndImageUrl);
 
-  const getUser = useMemo(() => {
+  const winningUser = useMemo(() => {
     return remainingUsers.find(u => u.id === winningId);
   }, [remainingUsers, winningId]);
 
-  const getUserIndex = useMemo(() => {
+  const winningUserIndex = useMemo(() => {
     return remainingUsers.findIndex(u => u.id === winningId);
   }, [remainingUsers, winningId]);
 
@@ -45,8 +45,6 @@ export function RouletteWheel() {
   const onStopSpinning = useCallback(() => {
     dispatch(endSpin());
 
-    const winningUser = getUser;
-
     if (winningUser?.team) {
       selectTeam(`Team ${winningUser.team}`)
         .then(selectedTeam => {
@@ -56,12 +54,12 @@ export function RouletteWheel() {
         })
         .catch(console.error);
     }
-  }, [dispatch, getUser]);
+  }, [dispatch, winningUser]);
 
   return (
     <div>
       <If condition={!!data.length}>
-        <Wheel data={data} spinDuration={0.15} prizeNumber={getUserIndex} mustStartSpinning={spinning} onStopSpinning={onStopSpinning} />
+        <Wheel data={data} spinDuration={0.15} prizeNumber={winningUserIndex} mustStartSpinning={spinning} onStopSpinning={onStopSpinning} />
         <Center>
           <WinnerControl name={winningName ?? ""} mascotNumber={getMascot(winningName ?? "", seed)} />
         </Center>

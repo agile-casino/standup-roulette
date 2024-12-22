@@ -24,13 +24,10 @@ export function WinnerControl({ name, mascotNumber }: Readonly<WinnerControlProp
   const [data, setData] = useState<MascotData | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setData(null);
-      getData(mascotNumber)
-        .then(data => setData(data))
-        .catch(console.error);
-    };
-    fetchData();
+    setData(null);
+    getData(mascotNumber)
+      .then(data => setData(data))
+      .catch(console.error);
   }, [mascotNumber]);
 
   const src = data?.sprites.other.home?.front_default ?? data?.sprites.other["official-artwork"]?.front_default;
