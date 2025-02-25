@@ -1,6 +1,6 @@
 {
   "name": "standup-roulette",
-  "version": "4.7.0",
+  "version": "4.7.1",
   "description": "standup-roulette",
   "main": "index.js",
   "scripts": {
