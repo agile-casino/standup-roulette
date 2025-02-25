@@ -1,7 +1,6 @@
 import { defineConfig } from "vite";
 import bannerPlugin from "vite-plugin-banner";
 import checker from "vite-plugin-checker";
-import type { BiomeConfig } from "vite-plugin-checker/dist/esm/types";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 import pkg from "./package.json";
 
@@ -19,7 +18,7 @@ const banner = `
 // ==/UserScript==
 `.trim();
 
-function getBiomeConfig(platform: string, mode: string): BiomeConfig {
+function getBiomeConfig(platform: string, mode: string): { command: "check" | "ci", flags: "src" } | false {
   if ( platform === "android" ) {
     return false;
   }
