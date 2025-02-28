@@ -92,10 +92,10 @@ importers:
         version: 0.9.1
       typescript:
         specifier: ^5.7.3
-        version: 5.7.3
+        version: 5.8.2
       typescript-plugin-css-modules:
         specifier: ^5.1.0
-        version: 5.1.0(typescript@5.7.3)
+        version: 5.1.0(typescript@5.8.2)
       vite:
         specifier: ^6.2.0
         version: 6.2.0(@types/node@22.13.5)(less@4.2.2)(sass@1.85.1)(stylus@0.64.0)(sugarss@5.0.0(postcss@8.5.3))
@@ -104,7 +104,7 @@ importers:
         version: 0.8.0
       vite-plugin-checker:
         specifier: ^0.9.0
-        version: 0.9.0(@biomejs/biome@1.9.4)(typescript@5.7.3)(vite@6.2.0(@types/node@22.13.5)(less@4.2.2)(sass@1.85.1)(stylus@0.64.0)(sugarss@5.0.0(postcss@8.5.3)))
+        version: 0.9.0(@biomejs/biome@1.9.4)(typescript@5.8.2)(vite@6.2.0(@types/node@22.13.5)(less@4.2.2)(sass@1.85.1)(stylus@0.64.0)(sugarss@5.0.0(postcss@8.5.3)))
       vite-plugin-css-injected-by-js:
         specifier: ^3.5.2
         version: 3.5.2(vite@6.2.0(@types/node@22.13.5)(less@4.2.2)(sass@1.85.1)(stylus@0.64.0)(sugarss@5.0.0(postcss@8.5.3)))
@@ -1673,8 +1673,8 @@ packages:
     peerDependencies:
       typescript: '>=4.0.0'
 
-  typescript@5.7.3:
-    resolution: {integrity: sha512-84MVSjMEHP+FQRPy3pX9sTVV/INIex71s9TL2Gm5FG/WG1SqXeKyZ0k7/blY/4FdOzI12CBy1vGc4og/eus0fw==}
+  typescript@5.8.2:
+    resolution: {integrity: sha512-aJn6wq13/afZp/jT9QZmwEjDqqvSGp1VT5GVg+f/t6/oVyrgXM6BY1h9BRh/O5p3PlUPAe+WuiEZOmb/49RqoQ==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -3310,7 +3310,7 @@ snapshots:
       postcss-modules-values: 4.0.0(postcss@8.5.3)
       yargs: 17.7.2
 
-  typescript-plugin-css-modules@5.1.0(typescript@5.7.3):
+  typescript-plugin-css-modules@5.1.0(typescript@5.8.2):
     dependencies:
       '@types/postcss-modules-local-by-default': 4.0.2
       '@types/postcss-modules-scope': 3.0.4
@@ -3328,12 +3328,12 @@ snapshots:
       source-map-js: 1.2.1
       stylus: 0.62.0
       tsconfig-paths: 4.2.0
-      typescript: 5.7.3
+      typescript: 5.8.2
     transitivePeerDependencies:
       - supports-color
       - ts-node
 
-  typescript@5.7.3: {}
+  typescript@5.8.2: {}
 
   undici-types@6.20.0: {}
 
@@ -3404,7 +3404,7 @@ snapshots:
 
   vite-plugin-banner@0.8.0: {}
 
-  vite-plugin-checker@0.9.0(@biomejs/biome@1.9.4)(typescript@5.7.3)(vite@6.2.0(@types/node@22.13.5)(less@4.2.2)(sass@1.85.1)(stylus@0.64.0)(sugarss@5.0.0(postcss@8.5.3))):
+  vite-plugin-checker@0.9.0(@biomejs/biome@1.9.4)(typescript@5.8.2)(vite@6.2.0(@types/node@22.13.5)(less@4.2.2)(sass@1.85.1)(stylus@0.64.0)(sugarss@5.0.0(postcss@8.5.3))):
     dependencies:
       '@babel/code-frame': 7.26.2
       chokidar: 4.0.3
@@ -3418,7 +3418,7 @@ snapshots:
       vscode-uri: 3.1.0
     optionalDependencies:
       '@biomejs/biome': 1.9.4
-      typescript: 5.7.3
+      typescript: 5.8.2
 
   vite-plugin-css-injected-by-js@3.5.2(vite@6.2.0(@types/node@22.13.5)(less@4.2.2)(sass@1.85.1)(stylus@0.64.0)(sugarss@5.0.0(postcss@8.5.3))):
     dependencies:
