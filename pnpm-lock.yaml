@@ -19,7 +19,7 @@ importers:
         version: 2.6.0(react-redux@9.2.0(@types/react@19.0.10)(react@19.0.0)(redux@5.0.1))(react@19.0.0)
       '@tabler/icons-react':
         specifier: ^3.30.0
-        version: 3.30.0(react@19.0.0)
+        version: 3.31.0(react@19.0.0)
       buffer:
         specifier: ^6.0.3
         version: 6.0.3
@@ -608,13 +608,13 @@ packages:
   '@sinonjs/fake-timers@10.3.0':
     resolution: {integrity: sha512-V4BG07kuYSUkTCSBHG8G8TNhM+F19jXFWnQtzj+we8DrkpSBCee9Z3Ms8yiGer/dlmhe35/Xdgyo3/0rQKg7YA==}
 
-  '@tabler/icons-react@3.30.0':
-    resolution: {integrity: sha512-9KZ9D1UNAyjlLkkYp2HBPHdf6lAJ2aelDqh8YYAnnmLF3xwprWKxxW8+zw5jlI0IwdfN4XFFuzqePkaw+DpIOg==}
+  '@tabler/icons-react@3.31.0':
+    resolution: {integrity: sha512-2rrCM5y/VnaVKnORpDdAua9SEGuJKVqPtWxeQ/vUVsgaUx30LDgBZph7/lterXxDY1IKR6NO//HDhWiifXTi3w==}
     peerDependencies:
       react: '>= 16'
 
-  '@tabler/icons@3.30.0':
-    resolution: {integrity: sha512-c8OKLM48l00u9TFbh2qhSODMONIzML8ajtCyq95rW8vzkWcBrKRPM61tdkThz2j4kd5u17srPGIjqdeRUZdfdw==}
+  '@tabler/icons@3.31.0':
+    resolution: {integrity: sha512-dblAdeKY3+GA1U+Q9eziZ0ooVlZMHsE8dqP0RkwvRtEsAULoKOYaCUOcJ4oW1DjWegdxk++UAt2SlQVnmeHv+g==}
 
   '@testing-library/dom@10.4.0':
     resolution: {integrity: sha512-pemlzrSESWbdAloYml3bAJMEfNh1Z7EduzqPKprCH5S341frlpYnUEW0H72dLxa6IsYr+mPno20GiSm+h9dEdQ==}
@@ -2280,12 +2280,12 @@ snapshots:
     dependencies:
       '@sinonjs/commons': 3.0.1
 
-  '@tabler/icons-react@3.30.0(react@19.0.0)':
+  '@tabler/icons-react@3.31.0(react@19.0.0)':
     dependencies:
-      '@tabler/icons': 3.30.0
+      '@tabler/icons': 3.31.0
       react: 19.0.0
 
-  '@tabler/icons@3.30.0': {}
+  '@tabler/icons@3.31.0': {}
 
   '@testing-library/dom@10.4.0':
     dependencies:
