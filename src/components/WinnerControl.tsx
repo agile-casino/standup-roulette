@@ -7,9 +7,11 @@ interface MascotData {
     other: {
       "home"?: {
         front_default?: string;
+        front_shiny?: string;
       };
       "official-artwork"?: {
         front_default: string;
+        front_shiny: string;
       };
     };
   };
@@ -30,7 +32,22 @@ export function WinnerControl({ name, mascotNumber }: Readonly<WinnerControlProp
       .catch(console.error);
   }, [mascotNumber]);
 
-  const src = data?.sprites.other.home?.front_default ?? data?.sprites.other["official-artwork"]?.front_default;
+  let mascotName = "";
+  if (data) {
+    mascotName = data?.name?.toUpperCase()[0] + data?.name?.slice(1)?.replace(/[-]./g, x => x.toUpperCase()[1]);
+  }
+
+  const date = new Date();
+  const isAprilFirst = date.getMonth() === 3 && date.getDate() === 1;
+  const shinySrc = data?.sprites.other["official-artwork"]?.front_shiny ?? data?.sprites.other.home?.front_shiny;
+
+  let src: string;
+  if (isAprilFirst && shinySrc) {
+    mascotName = `Shiny ${mascotName}`;
+    src = shinySrc;
+  } else {
+    src = data?.sprites.other["official-artwork"]?.front_default ?? data?.sprites.other.home?.front_default ?? "";
+  }
 
   if (name) {
     return (
@@ -38,13 +55,13 @@ export function WinnerControl({ name, mascotNumber }: Readonly<WinnerControlProp
         <Text fz="xl" style={{ gridColumn: 1 }}>
           Winner:&nbsp;
         </Text>
-        <div style={{ gridColumn: 3, gridRow: "1 / span 2" }}>{data && src && <img src={src} alt={data.name} title={data.name} width={50} height={50} />}</div>
+        <div style={{ gridColumn: 3, gridRow: "1 / span 2" }}>{data && src && <img src={src} alt={mascotName} title={mascotName} width={50} height={50} />}</div>
         <Text fz="xl" style={{ gridColumn: 2 }}>
           {name}
         </Text>
         {data && (
           <Text fz="md" lh="xs" style={{ gridColumn: 2 }}>
-            {data.name}
+            {mascotName}
           </Text>
         )}
       </div>
