@@ -17,7 +17,7 @@ export async function selectTeam(name: string): Promise<boolean> {
 
     const row = await waitFor<HTMLElement>(() => {
       const rows = document.querySelectorAll(".directory-dropdown-link");
-      return Array.from(rows).find(x => x.textContent?.toLowerCase() === name.toLowerCase()) as HTMLElement;
+      return Array.from(rows).find(x => x.textContent?.toLowerCase() === name.toLowerCase() || x.textContent?.toLowerCase() === `team ${name.toLowerCase()}`) as HTMLElement;
     }, defaultTimeoutMilliseconds);
 
     row.click();
