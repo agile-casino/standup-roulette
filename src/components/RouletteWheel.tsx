@@ -46,7 +46,7 @@ export function RouletteWheel() {
     dispatch(endSpin());
 
     if (winningUser?.team) {
-      selectTeam(`Team ${winningUser.team}`)
+      selectTeam(winningUser.team)
         .then(selectedTeam => {
           if (selectedTeam) {
             selectPerson(winningUser.name).catch(console.error);
