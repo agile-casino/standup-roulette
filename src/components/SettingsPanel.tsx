@@ -2,6 +2,7 @@ import { Input, Title } from "@mantine/core";
 import type { ChangeEvent } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { selectEndImageUrl, setEndImageUrl } from "../store/roulette/rouletteSlice";
+import { ImportExportSettings } from "./ImportExportSettings";
 import styles from "./styles.module.css";
 
 export function SettingsPanel() {
@@ -20,6 +21,8 @@ export function SettingsPanel() {
       <Input.Wrapper label="End of standup image url">
         <Input placeholder="(default)" value={endImageUrl} onChange={onEndImageUrlChange} />
       </Input.Wrapper>
+
+      <ImportExportSettings />
     </div>
   );
 }

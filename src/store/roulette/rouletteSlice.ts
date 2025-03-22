@@ -138,11 +138,14 @@ export const rouletteSlice = createSlice({
     },
     setEndImageUrl: (state, action: PayloadAction<{ url: string }>) => {
       state.games[state.currentGame].endImageUrl = action.payload.url;
+    },
+    importState: (_, action: PayloadAction<RouletteState>) => {
+      return action.payload;
     }
   }
 });
 
-export const { setGameName, prevGame, nextGame, addUser, removeUser, setUserName, setUserTeam, toggleUser, reset, prepareSpin, beginSpin, endSpin, setEndImageUrl } = rouletteSlice.actions;
+export const { setGameName, prevGame, nextGame, addUser, removeUser, setUserName, setUserTeam, toggleUser, reset, prepareSpin, beginSpin, endSpin, setEndImageUrl, importState } = rouletteSlice.actions;
 
 export const selectGameName = (state: RootState) => state.roulette.games[state.roulette.currentGame].name;
 export const selectAllUsers = (state: RootState) => state.roulette.games[state.roulette.currentGame].allUsers;
