@@ -24,9 +24,12 @@ interface WinnerControlProps {
 
 export function WinnerControl({ name, mascotNumber }: Readonly<WinnerControlProps>) {
   const [data, setData] = useState<MascotData | null>(null);
+  const [isShiny, setIsShiny] = useState(false);
 
   useEffect(() => {
     setData(null);
+    // Add random chance for shiny (1/20 or 5% chance)
+    setIsShiny(Math.random() < 0.05);
     getData(mascotNumber)
       .then(data => setData(data))
       .catch(console.error);
@@ -42,7 +45,7 @@ export function WinnerControl({ name, mascotNumber }: Readonly<WinnerControlProp
   const shinySrc = data?.sprites.other["official-artwork"]?.front_shiny ?? data?.sprites.other.home?.front_shiny;
 
   let src: string;
-  if (isAprilFirst && shinySrc) {
+  if ((isAprilFirst || isShiny) && shinySrc) {
     mascotName = `Shiny ${mascotName}`;
     src = shinySrc;
   } else {
