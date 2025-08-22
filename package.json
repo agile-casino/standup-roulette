@@ -51,8 +51,8 @@
     "vitest": "^3.1.4"
   },
   "dependencies": {
-    "@mantine/core": "^7.17.7",
-    "@mantine/hooks": "^7.17.7",
+    "@mantine/core": "^8.0.0",
+    "@mantine/hooks": "^8.0.0",
     "@reduxjs/toolkit": "^2.8.2",
     "@tabler/icons-react": "^3.33.0",
     "buffer": "^6.0.3",
