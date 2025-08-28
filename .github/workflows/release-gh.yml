@@ -1,8 +1,9 @@
-name: CI Build
+name: Release
 
 on:
   push:
-  pull_request:
+    branches: [main]
+    tags: ['v*.*.*']
 
 jobs:
   build:
@@ -27,3 +28,9 @@ jobs:
         run: |
           pnpm run build
           pnpm run test
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/index.user.js
