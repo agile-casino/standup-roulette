@@ -1,4 +1,4 @@
-export type OrderByFn<TObject> = (a: TObject, b: TObject) => number;
+type OrderByFn<TObject> = (a: TObject, b: TObject) => number;
 
 export function ascending<TValue>(valA: TValue, valB: TValue): number {
   if (valA > valB) {

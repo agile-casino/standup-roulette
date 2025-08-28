@@ -1,3 +1,5 @@
+/// <reference types="@types/tampermonkey" />
+
 import { Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 

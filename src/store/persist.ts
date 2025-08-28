@@ -14,7 +14,7 @@ interface PersistSettings<TState> {
 
 // biome-ignore lint/suspicious/noExplicitAny: can't think of a better way at the moment
 type Migration<TState> = (oldState: any) => TState;
-export type MigrationSet<TState> = Record<number, Migration<TState> | undefined>;
+type MigrationSet<TState> = Record<number, Migration<TState> | undefined>;
 
 export function persist<TState, TAction extends Action>(reducer: Reducer<TState, TAction>, settings: PersistSettings<TState>): Reducer<TState, TAction> {
   return (state: TState | undefined, action: TAction) => {
