@@ -1,7 +1,7 @@
 import * as ReactDOM from "react-dom/client";
 import { App } from "./App";
 import { isInDocument } from "./utils/isInDocument";
-import "@mantine/core/styles.css";
+import "@mantine/core/stylesla.layer.css";
 
 const container = document.createElement("div");
 container.className = "flex";
