@@ -28,7 +28,7 @@
     "bumpVersion": "patch"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.2.2",
+    "@biomejs/biome": "2.2.3",
     "@testing-library/react": "^16.3.0",
     "@tsconfig/recommended": "^1.0.10",
     "@types/node": "^24.3.0",
