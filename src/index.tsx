@@ -2,6 +2,15 @@ import * as ReactDOM from "react-dom/client";
 import { App } from "./App";
 import { isInDocument } from "./utils/isInDocument";
 import "@mantine/core/styles.layer.css";
+import "@mantine/core/styles/Checkbox.css";
+import "@mantine/core/styles/Button.css";
+import "@mantine/core/styles/ActionIcon.css";
+import "@mantine/core/styles/Dialog.css";
+import "@mantine/core/styles/Input.css";
+import "@mantine/core/styles/Title.css";
+import "@mantine/core/styles/Group.css";
+import "@mantine/core/styles/Table.css";
+import "@mantine/core/styles/Text.css";
 
 const container = document.createElement("div");
 container.className = "flex";
