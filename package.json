@@ -1,6 +1,6 @@
 {
   "name": "standup-roulette",
-  "version": "4.12.5",
+  "version": "4.12.6",
   "description": "standup-roulette",
   "main": "src/index.tsx",
   "scripts": {
