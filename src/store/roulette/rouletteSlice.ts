@@ -112,7 +112,8 @@ export const rouletteSlice = createSlice({
         state.games[state.currentGame].remainingUsers = newRemainingUsers;
       }
       if (state.games[state.currentGame].remainingUsers.length > 0) {
-        const winningIndex = Math.floor(action.payload.random * state.games[state.currentGame].remainingUsers.length);
+        const length = state.games[state.currentGame].remainingUsers.length;
+        const winningIndex = Math.min(Math.floor(action.payload.random * length), length - 1);
         state.games[state.currentGame].winningId = state.games[state.currentGame].remainingUsers[winningIndex].id;
       }
     },
