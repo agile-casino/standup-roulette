@@ -62,7 +62,7 @@ importers:
         version: 19.2.2(@types/react@19.2.2)
       '@types/tampermonkey':
         specifier: ^5.0.4
-        version: 5.0.4
+        version: 5.0.5
       '@types/uuid':
         specifier: ^11.0.0
         version: 11.0.0
@@ -780,8 +780,8 @@ packages:
   '@types/react@19.2.2':
     resolution: {integrity: sha512-6mDvHUFSjyT2B2yeNx2nUgMxh9LtOWvkhIU3uePn2I2oyNymUAX1NIsdgviM4CH+JSrp2D2hsMvJOkxY+0wNRA==}
 
-  '@types/tampermonkey@5.0.4':
-    resolution: {integrity: sha512-HEJ0O5CkDZSwIgd9Zip4xM8o7gZC8zBmJuH1YEXNINIC+aCWEXD10pnpo3NQG5IWHx+Xr4fMSGq1jqeKXH2lpA==}
+  '@types/tampermonkey@5.0.5':
+    resolution: {integrity: sha512-ZWitwJH4T/jcQiynhc3I5DNiwlsDzVTKPXg6A8ltTw3SDuf0b00bNRSV0Z/yldnhhBi9e8g8vY/X3LVSQcaCKQ==}
 
   '@types/use-sync-external-store@0.0.6':
     resolution: {integrity: sha512-zFDAD+tlpf2r4asuHEj0XH6pY6i0g5NeAHPn+15wk3BV6JA69eERFXC1gyGThDkVa1zCyKr5jox1+2LbV/AMLg==}
@@ -2513,7 +2513,7 @@ snapshots:
     dependencies:
       csstype: 3.1.3
 
-  '@types/tampermonkey@5.0.4': {}
+  '@types/tampermonkey@5.0.5': {}
 
   '@types/use-sync-external-store@0.0.6': {}
 
