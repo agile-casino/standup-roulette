@@ -5,6 +5,7 @@ import { deepCopy } from "../../utils/deepCopy";
 import { orderBy } from "../../utils/orderBy";
 import type { RootState } from "../index";
 import type { RouletteState, RouletteUser } from "./state";
+import { MascotApi } from "../../components/SettingsPanel";
 
 const uuid = uuidv4 as () => string;
 
@@ -19,7 +20,8 @@ const initialState: RouletteState = {
       winningId: null,
       winningName: null,
       seed: 0,
-      endImageUrl: ""
+      endImageUrl: "",
+      mascotApi: MascotApi.Pokémon
     }
   ]
 };
@@ -53,7 +55,8 @@ export const rouletteSlice = createSlice({
           winningId: null,
           winningName: null,
           seed: 0,
-          endImageUrl: ""
+          endImageUrl: "",
+          mascotApi: MascotApi.Pokémon
         };
       }
       state.currentGame = index;
@@ -72,7 +75,8 @@ export const rouletteSlice = createSlice({
           winningId: null,
           winningName: null,
           seed: 0,
-          endImageUrl: ""
+          endImageUrl: "",
+          mascotApi: MascotApi.Pokémon
         };
       }
       state.currentGame = index;
@@ -140,13 +144,16 @@ export const rouletteSlice = createSlice({
     setEndImageUrl: (state, action: PayloadAction<{ url: string }>) => {
       state.games[state.currentGame].endImageUrl = action.payload.url;
     },
+    setMascotApi: (state, action: PayloadAction<{ api: MascotApi }>) => {
+      state.games[state.currentGame].mascotApi = action.payload.api;
+    },
     importState: (_, action: PayloadAction<RouletteState>) => {
       return action.payload;
     }
   }
 });
 
-export const { setGameName, prevGame, nextGame, addUser, removeUser, setUserName, setUserTeam, toggleUser, reset, prepareSpin, beginSpin, endSpin, setEndImageUrl, importState } = rouletteSlice.actions;
+export const { setGameName, prevGame, nextGame, addUser, removeUser, setUserName, setUserTeam, toggleUser, reset, prepareSpin, beginSpin, endSpin, setEndImageUrl, setMascotApi, importState } = rouletteSlice.actions;
 
 export const selectGameName = (state: RootState) => state.roulette.games[state.roulette.currentGame].name;
 export const selectAllUsers = (state: RootState) => state.roulette.games[state.roulette.currentGame].allUsers;
@@ -156,3 +163,4 @@ export const selectWinningId = (state: RootState) => state.roulette.games[state.
 export const selectWinningName = (state: RootState) => state.roulette.games[state.roulette.currentGame].winningName;
 export const selectSeed = (state: RootState) => state.roulette.games[state.roulette.currentGame].seed;
 export const selectEndImageUrl = (state: RootState) => state.roulette.games[state.roulette.currentGame].endImageUrl;
+export const selectMascotApi = (state: RootState) => state.roulette.games[state.roulette.currentGame].mascotApi;

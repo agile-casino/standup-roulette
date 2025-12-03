@@ -2,8 +2,11 @@
 
 import { Text } from "@mantine/core";
 import { useEffect, useState } from "react";
+import { selectMascotApi } from "../store/roulette/rouletteSlice";
+import { useAppSelector } from "../store/hooks";
+import { MascotApi } from "./SettingsPanel";
 
-interface MascotData {
+interface PokémonData {
   name: string;
   sprites: {
     other: {
@@ -19,6 +22,17 @@ interface MascotData {
   };
 }
 
+interface DigimonData {
+  name: string;
+  xAntibody: boolean;
+  images: {
+    href: string;
+    transparent: boolean;
+  };
+}
+
+type MascotData = PokémonData | DigimonData;
+
 interface WinnerControlProps {
   name: string;
   mascotNumber: number;
@@ -27,16 +41,20 @@ interface WinnerControlProps {
 export function WinnerControl({ name, mascotNumber }: Readonly<WinnerControlProps>) {
   const [data, setData] = useState<MascotData | null>(null);
   const [isShiny, setIsShiny] = useState(false);
+  const mascotApi = useAppSelector(selectMascotApi);
 
   useEffect(() => {
     setData(null);
-    // Add random chance for shiny (1/20 or 5% chance)
-    setIsShiny(Math.random() < 0.05);
-    getData(mascotNumber)
+
+    if (mascotApi ===  MascotApi.Pokémon) {
+      // Add random chance for shiny (1/20 or 5% chance)
+      setIsShiny(Math.random() < 0.05);
+    }
+
+    getMascotData(mascotApi, mascotNumber)
       .then(data => setData(data))
       .catch(console.error);
-  }, [mascotNumber]);
-
+  }, [mascotNumber, mascotApi]);
   let mascotName = "";
   if (data) {
     mascotName = data?.name?.toUpperCase()[0] + data?.name?.slice(1)?.replace(/[-]./g, x => x.toUpperCase()[1]);
@@ -44,14 +62,20 @@ export function WinnerControl({ name, mascotNumber }: Readonly<WinnerControlProp
 
   const date = new Date();
   const isAprilFirst = date.getMonth() === 3 && date.getDate() === 1;
-  const shinySrc = data?.sprites.other["official-artwork"]?.front_shiny ?? data?.sprites.other.home?.front_shiny;
+  let shinySrc: string | undefined = undefined;
+  let src: string = "";
 
-  let src: string;
-  if ((isAprilFirst || isShiny) && shinySrc) {
-    mascotName = `Shiny ${mascotName}`;
-    src = shinySrc;
-  } else {
-    src = data?.sprites.other["official-artwork"]?.front_default ?? data?.sprites.other.home?.front_default ?? "";
+  if (data && "sprites" in data) {
+    shinySrc = data.sprites.other["official-artwork"]?.front_shiny ?? data.sprites.other.home?.front_shiny;
+
+    if ((isAprilFirst || isShiny) && shinySrc) {
+      mascotName = `Shiny ${mascotName}`;
+      src = shinySrc;
+    } else {
+      src = data.sprites.other["official-artwork"]?.front_default ?? data.sprites.other.home?.front_default ?? "";
+    }
+  } else if (data && "images" in data && data.images?.href) {
+    src = data.images.href;
   }
 
   if (name) {
@@ -76,11 +100,11 @@ export function WinnerControl({ name, mascotNumber }: Readonly<WinnerControlProp
   return null;
 }
 
-async function getData(mascotNumber: number): Promise<MascotData | null> {
+async function getMascotData(mascotApi: MascotApi, mascotNumber: number): Promise<MascotData | null> {
   return new Promise(resolve => {
     GM_xmlhttpRequest({
       method: "GET",
-      url: `https://pokeapi.co/api/v2/pokemon/${mascotNumber}`,
+      url: `${mascotApi === MascotApi.Pokémon ? "https://pokeapi.co/api/v2/pokemon/" : "https://digi-api.com/api/v1/digimon/"}${mascotNumber}`,
       onload: response => resolve(JSON.parse(response.responseText) as MascotData),
       onerror: () => resolve(null)
     });

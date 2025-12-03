@@ -1,3 +1,4 @@
+import { MascotApi } from "../../../../components/SettingsPanel";
 import type { RouletteUser } from "./RouletteUser";
 
 export interface RouletteGame {
@@ -9,4 +10,5 @@ export interface RouletteGame {
   winningName: string | null;
   seed: number;
   endImageUrl: string;
+  mascotApi: MascotApi;
 }
