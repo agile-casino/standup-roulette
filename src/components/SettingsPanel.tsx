@@ -1,14 +1,10 @@
 import { Input, NativeSelect, Title } from "@mantine/core";
 import type { ChangeEvent } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { selectEndImageUrl, setEndImageUrl, setMascotApi } from "../store/roulette/rouletteSlice";
+import { selectEndImageUrl, selectMascotApi, setEndImageUrl, setMascotApi } from "../store/roulette/rouletteSlice";
 import { ImportExportSettings } from "./ImportExportSettings";
 import styles from "./styles.module.css";
-
-export enum MascotApi {
-  Pokémon,
-  Digimon
-}
+import { MascotApi } from "../types/MascotApi";
 
 const mascotApiOptions = [
   { value: MascotApi[MascotApi.Pokémon], label: "Pokémon" },
@@ -18,6 +14,7 @@ const mascotApiOptions = [
 export function SettingsPanel() {
   const dispatch = useAppDispatch();
   const endImageUrl = useAppSelector(selectEndImageUrl);
+  const mascotApi = useAppSelector(selectMascotApi);
 
   const onEndImageUrlChange = (event: ChangeEvent<HTMLInputElement>) => {
     dispatch(setEndImageUrl({ url: event.currentTarget.value }));
@@ -36,8 +33,7 @@ export function SettingsPanel() {
         <Input placeholder="(default)" value={endImageUrl} onChange={onEndImageUrlChange} />
       </Input.Wrapper>
       <Input.Wrapper>
-        <NativeSelect label="Mascot API" data={mascotApiOptions} defaultValue={MascotApi[MascotApi.Pokémon]} onChange={onApiChange}>
-        </NativeSelect>  
+        <NativeSelect label="Mascot API" data={mascotApiOptions} value={MascotApi[mascotApi ?? MascotApi.Pokémon]} onChange={onApiChange} />
       </Input.Wrapper>
       <ImportExportSettings />
     </div>

@@ -4,7 +4,7 @@ import { Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { selectMascotApi } from "../store/roulette/rouletteSlice";
 import { useAppSelector } from "../store/hooks";
-import { MascotApi } from "./SettingsPanel";
+import { MascotApi } from "../types/MascotApi";
 
 interface PokémonData {
   name: string;
@@ -28,7 +28,7 @@ interface DigimonData {
   images: {
     href: string;
     transparent: boolean;
-  };
+  }[];
 }
 
 type MascotData = PokémonData | DigimonData;
@@ -46,9 +46,11 @@ export function WinnerControl({ name, mascotNumber }: Readonly<WinnerControlProp
   useEffect(() => {
     setData(null);
 
-    if (mascotApi ===  MascotApi.Pokémon) {
+    if (mascotApi === MascotApi.Pokémon) {
       // Add random chance for shiny (1/20 or 5% chance)
       setIsShiny(Math.random() < 0.05);
+    } else {
+      setIsShiny(false);
     }
 
     getMascotData(mascotApi, mascotNumber)
@@ -74,8 +76,8 @@ export function WinnerControl({ name, mascotNumber }: Readonly<WinnerControlProp
     } else {
       src = data.sprites.other["official-artwork"]?.front_default ?? data.sprites.other.home?.front_default ?? "";
     }
-  } else if (data && "images" in data && data.images?.href) {
-    src = data.images.href;
+  } else if (data && "images" in data && data.images?.length > 0) {
+    src = data.images.find(image => image.transparent)?.href ?? data.images[0].href;
   }
 
   if (name) {
@@ -102,9 +104,13 @@ export function WinnerControl({ name, mascotNumber }: Readonly<WinnerControlProp
 
 async function getMascotData(mascotApi: MascotApi, mascotNumber: number): Promise<MascotData | null> {
   return new Promise(resolve => {
+     const baseUrl = mascotApi === MascotApi.Pokémon 
+      ? "https://pokeapi.co/api/v2/pokemon/"
+      : "https://digi-api.com/api/v1/digimon/";
+
     GM_xmlhttpRequest({
       method: "GET",
-      url: `${mascotApi === MascotApi.Pokémon ? "https://pokeapi.co/api/v2/pokemon/" : "https://digi-api.com/api/v1/digimon/"}${mascotNumber}`,
+      url: `${baseUrl}${mascotNumber}`,
       onload: response => resolve(JSON.parse(response.responseText) as MascotData),
       onerror: () => resolve(null)
     });

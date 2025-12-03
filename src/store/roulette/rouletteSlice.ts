@@ -5,7 +5,7 @@ import { deepCopy } from "../../utils/deepCopy";
 import { orderBy } from "../../utils/orderBy";
 import type { RootState } from "../index";
 import type { RouletteState, RouletteUser } from "./state";
-import { MascotApi } from "../../components/SettingsPanel";
+import { MascotApi } from "../../types/MascotApi";
 
 const uuid = uuidv4 as () => string;
 
