@@ -4,7 +4,7 @@ import { Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { selectMascotApi } from "../store/roulette/rouletteSlice";
 import { useAppSelector } from "../store/hooks";
-import { MascotApi } from "../types/MascotApi";
+import { MascotApi } from "../models/MascotApi";
 
 interface PokémonData {
   name: string;

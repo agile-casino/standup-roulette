@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { selectEndImageUrl, selectMascotApi, setEndImageUrl, setMascotApi } from "../store/roulette/rouletteSlice";
 import { ImportExportSettings } from "./ImportExportSettings";
 import styles from "./styles.module.css";
-import { MascotApi } from "../types/MascotApi";
+import { MascotApi } from "../models/MascotApi";
 
 const mascotApiOptions = [
   { value: MascotApi[MascotApi.Pokémon], label: "Pokémon" },
@@ -33,7 +33,7 @@ export function SettingsPanel() {
         <Input placeholder="(default)" value={endImageUrl} onChange={onEndImageUrlChange} />
       </Input.Wrapper>
       <Input.Wrapper>
-        <NativeSelect label="Mascot API" data={mascotApiOptions} value={MascotApi[mascotApi ?? MascotApi.Pokémon]} onChange={onApiChange} />
+        <NativeSelect label="Mascot API" data={mascotApiOptions} value={MascotApi[mascotApi]} onChange={onApiChange} />
       </Input.Wrapper>
       <ImportExportSettings />
     </div>
