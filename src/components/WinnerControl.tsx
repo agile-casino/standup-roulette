@@ -104,7 +104,7 @@ export function WinnerControl({ name, mascotNumber }: Readonly<WinnerControlProp
 
 async function getMascotData(mascotApi: MascotApi, mascotNumber: number): Promise<MascotData | null> {
   return new Promise(resolve => {
-     const baseUrl = mascotApi === MascotApi.Pokémon 
+    const baseUrl = mascotApi === MascotApi.Pokémon 
       ? "https://pokeapi.co/api/v2/pokemon/"
       : "https://digi-api.com/api/v1/digimon/";
 
