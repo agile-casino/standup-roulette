@@ -3,7 +3,7 @@ import { useCallback, useMemo } from "react";
 import { Wheel, type WheelDataType } from "react-custom-roulette";
 import { thatsAllFolks } from "../images/thatsAllFolks";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { beginSpin, endSpin, prepareSpin, reset, selectEndImageUrl, selectRemainingUsers, selectSeed, selectSpinning, selectWinningId, selectWinningName } from "../store/roulette/rouletteSlice";
+import { beginSpin, endSpin, prepareSpin, reset, selectEndImageUrl, selectMascotApi, selectRemainingUsers, selectSeed, selectSpinning, selectWinningId, selectWinningName } from "../store/roulette/rouletteSlice";
 import { selectPerson, selectTeam } from "../utils/adosHelper";
 import { getMascot } from "../utils/mascot";
 import { If } from "./If";
@@ -18,6 +18,7 @@ export function RouletteWheel() {
   const remainingUsers = useAppSelector(selectRemainingUsers);
   const seed = useAppSelector(selectSeed);
   const endImageUrl = useAppSelector(selectEndImageUrl);
+  const mascotApi = useAppSelector(selectMascotApi);
 
   const winningUser = useMemo(() => {
     return remainingUsers.find(u => u.id === winningId);
@@ -61,7 +62,7 @@ export function RouletteWheel() {
       <If condition={!!data.length}>
         <Wheel data={data} spinDuration={0.15} prizeNumber={winningUserIndex} mustStartSpinning={spinning} onStopSpinning={onStopSpinning} />
         <Center>
-          <WinnerControl name={winningName ?? ""} mascotNumber={getMascot(winningName ?? "", seed)} />
+          <WinnerControl name={winningName ?? ""} mascotNumber={getMascot(winningName ?? "", seed, mascotApi)} />
         </Center>
       </If>
       <If condition={!data.length && !!winningName}>
