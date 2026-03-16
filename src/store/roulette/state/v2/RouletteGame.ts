@@ -1,5 +1,10 @@
 import type { RouletteUser } from "./RouletteUser";
 
+export interface EndImageUrl {
+  url: string;
+  enabled: boolean;
+}
+
 export interface RouletteGame {
   name: string;
   allUsers: RouletteUser[];
@@ -8,5 +13,5 @@ export interface RouletteGame {
   winningId: string | null;
   winningName: string | null;
   seed: number;
-  endImageUrl: string;
+  endImageUrls: EndImageUrl[];
 }

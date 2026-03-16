@@ -4,24 +4,84 @@ import { getColourScheme } from "../../utils/colourScheme";
 import { deepCopy } from "../../utils/deepCopy";
 import { orderBy } from "../../utils/orderBy";
 import type { RootState } from "../index";
-import type { RouletteState, RouletteUser } from "./state";
+import type { EndImageUrl, RouletteState, RouletteUser } from "./state";
 
 const uuid = uuidv4 as () => string;
 
+function createInitialGame(name: string) {
+  return {
+    name,
+    allUsers: [],
+    remainingUsers: [],
+    spinning: false,
+    winningId: null,
+    winningName: null,
+    seed: 0,
+    endImageUrls: []
+  };
+}
+
+function normalizeEndImageUrls(endImageUrls: unknown, endImageUrl: unknown): EndImageUrl[] {
+  const normalized: EndImageUrl[] = [];
+
+  if (Array.isArray(endImageUrls)) {
+    for (const endImage of endImageUrls) {
+      if (typeof endImage === "object" && endImage !== null && "url" in endImage) {
+        const url = endImage.url;
+        if (typeof url === "string" && url.trim().length > 0) {
+          const enabled = "enabled" in endImage ? endImage.enabled !== false : true;
+          normalized.push({ url, enabled });
+        }
+      }
+    }
+  }
+
+  if (!normalized.length && typeof endImageUrl === "string" && endImageUrl.trim().length > 0) {
+    normalized.push({ url: endImageUrl, enabled: true });
+  }
+
+  return normalized;
+}
+
+function normalizeImportedState(state: unknown): RouletteState {
+  if (typeof state !== "object" || state === null || !Array.isArray((state as RouletteState).games)) {
+    return {
+      currentGame: 0,
+      games: [createInitialGame("Game 1")]
+    };
+  }
+
+  const importedState = state as { currentGame?: number; games: Array<Record<string, unknown>> };
+  const games = importedState.games.map((game, index) => {
+    const name = typeof game.name === "string" && game.name.trim().length > 0 ? game.name : `Game ${index + 1}`;
+    return {
+      name,
+      allUsers: Array.isArray(game.allUsers) ? (game.allUsers as RouletteUser[]) : [],
+      remainingUsers: Array.isArray(game.remainingUsers) ? (game.remainingUsers as RouletteUser[]) : [],
+      spinning: game.spinning === true,
+      winningId: typeof game.winningId === "string" ? game.winningId : null,
+      winningName: typeof game.winningName === "string" ? game.winningName : null,
+      seed: typeof game.seed === "number" ? game.seed : 0,
+      endImageUrls: normalizeEndImageUrls(game.endImageUrls, game.endImageUrl)
+    };
+  });
+
+  if (!games.length) {
+    games.push(createInitialGame("Game 1"));
+  }
+
+  const requestedCurrentGame = typeof importedState.currentGame === "number" ? importedState.currentGame : 0;
+  const currentGame = Math.min(Math.max(Math.floor(requestedCurrentGame), 0), games.length - 1);
+
+  return {
+    currentGame,
+    games
+  };
+}
+
 const initialState: RouletteState = {
   currentGame: 0,
-  games: [
-    {
-      name: "Game 1",
-      allUsers: [],
-      remainingUsers: [],
-      spinning: false,
-      winningId: null,
-      winningName: null,
-      seed: 0,
-      endImageUrl: ""
-    }
-  ]
+  games: [createInitialGame("Game 1")]
 };
 
 function assignColours(users: RouletteUser[]): void {
@@ -45,16 +105,7 @@ export const rouletteSlice = createSlice({
       }
       const index = Math.max(state.currentGame - 1, 0);
       if (!state.games[index]) {
-        state.games[index] = {
-          name: `Game ${index + 1}`,
-          allUsers: [],
-          remainingUsers: [],
-          spinning: false,
-          winningId: null,
-          winningName: null,
-          seed: 0,
-          endImageUrl: ""
-        };
+        state.games[index] = createInitialGame(`Game ${index + 1}`);
       }
       state.currentGame = index;
     },
@@ -64,16 +115,7 @@ export const rouletteSlice = createSlice({
       }
       const index = Math.min(state.currentGame + 1, 4);
       if (!state.games[index]) {
-        state.games[index] = {
-          name: `Game ${index + 1}`,
-          allUsers: [],
-          remainingUsers: [],
-          spinning: false,
-          winningId: null,
-          winningName: null,
-          seed: 0,
-          endImageUrl: ""
-        };
+        state.games[index] = createInitialGame(`Game ${index + 1}`);
       }
       state.currentGame = index;
     },
@@ -137,16 +179,32 @@ export const rouletteSlice = createSlice({
       state.games[state.currentGame].winningName = null;
       state.games[state.currentGame].seed = action.payload.seed;
     },
-    setEndImageUrl: (state, action: PayloadAction<{ url: string }>) => {
-      state.games[state.currentGame].endImageUrl = action.payload.url;
+    addEndImageUrl: state => {
+      state.games[state.currentGame].endImageUrls.push({ url: "", enabled: true });
     },
-    importState: (_, action: PayloadAction<RouletteState>) => {
-      return action.payload;
+    removeEndImageUrl: (state, action: PayloadAction<{ index: number }>) => {
+      state.games[state.currentGame].endImageUrls = state.games[state.currentGame].endImageUrls.filter((_, index) => index !== action.payload.index);
+    },
+    setEndImageUrlValue: (state, action: PayloadAction<{ index: number; url: string }>) => {
+      const imageUrl = state.games[state.currentGame].endImageUrls[action.payload.index];
+      if (imageUrl) {
+        imageUrl.url = action.payload.url;
+      }
+    },
+    setEndImageUrlEnabled: (state, action: PayloadAction<{ index: number; enabled: boolean }>) => {
+      const imageUrl = state.games[state.currentGame].endImageUrls[action.payload.index];
+      if (imageUrl) {
+        imageUrl.enabled = action.payload.enabled;
+      }
+    },
+    importState: (_, action: PayloadAction<unknown>) => {
+      return normalizeImportedState(action.payload);
     }
   }
 });
 
-export const { setGameName, prevGame, nextGame, addUser, removeUser, setUserName, setUserTeam, toggleUser, reset, prepareSpin, beginSpin, endSpin, setEndImageUrl, importState } = rouletteSlice.actions;
+export const { setGameName, prevGame, nextGame, addUser, removeUser, setUserName, setUserTeam, toggleUser, reset, prepareSpin, beginSpin, endSpin, addEndImageUrl, removeEndImageUrl, setEndImageUrlValue, setEndImageUrlEnabled, importState } =
+  rouletteSlice.actions;
 
 export const selectGameName = (state: RootState) => state.roulette.games[state.roulette.currentGame].name;
 export const selectAllUsers = (state: RootState) => state.roulette.games[state.roulette.currentGame].allUsers;
@@ -155,4 +213,4 @@ export const selectSpinning = (state: RootState) => state.roulette.games[state.r
 export const selectWinningId = (state: RootState) => state.roulette.games[state.roulette.currentGame].winningId;
 export const selectWinningName = (state: RootState) => state.roulette.games[state.roulette.currentGame].winningName;
 export const selectSeed = (state: RootState) => state.roulette.games[state.roulette.currentGame].seed;
-export const selectEndImageUrl = (state: RootState) => state.roulette.games[state.roulette.currentGame].endImageUrl;
+export const selectEndImageUrls = (state: RootState) => state.roulette.games[state.roulette.currentGame].endImageUrls;

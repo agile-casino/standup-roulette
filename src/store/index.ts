@@ -5,7 +5,7 @@ import { migrations } from "./roulette/state/migrations";
 
 export const store = configureStore({
   reducer: {
-    roulette: persist(rouletteSlice.reducer, { key: "roulette", version: 3, migrations: migrations })
+    roulette: persist(rouletteSlice.reducer, { key: "roulette", version: 4, migrations: migrations })
   }
 });
 

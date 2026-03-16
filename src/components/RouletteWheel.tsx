@@ -3,7 +3,7 @@ import { useCallback, useMemo } from "react";
 import { Wheel, type WheelDataType } from "react-custom-roulette";
 import { thatsAllFolks } from "../images/thatsAllFolks";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { beginSpin, endSpin, prepareSpin, reset, selectEndImageUrl, selectRemainingUsers, selectSeed, selectSpinning, selectWinningId, selectWinningName } from "../store/roulette/rouletteSlice";
+import { beginSpin, endSpin, prepareSpin, reset, selectEndImageUrls, selectRemainingUsers, selectSeed, selectSpinning, selectWinningId, selectWinningName } from "../store/roulette/rouletteSlice";
 import { selectPerson, selectTeam } from "../utils/adosHelper";
 import { getMascot } from "../utils/mascot";
 import { If } from "./If";
@@ -17,7 +17,7 @@ export function RouletteWheel() {
   const winningName = useAppSelector(selectWinningName);
   const remainingUsers = useAppSelector(selectRemainingUsers);
   const seed = useAppSelector(selectSeed);
-  const endImageUrl = useAppSelector(selectEndImageUrl);
+  const endImageUrls = useAppSelector(selectEndImageUrls);
 
   const winningUser = useMemo(() => {
     return remainingUsers.find(u => u.id === winningId);
@@ -31,11 +31,26 @@ export function RouletteWheel() {
     return remainingUsers.map(user => ({ option: user.name, style: { backgroundColor: user.colour } }));
   }, [remainingUsers]);
 
+  const selectedEndImageUrl = useMemo(() => {
+    const enabledEndImageUrls = endImageUrls.filter(x => x.enabled && x.url.trim().length > 0);
+    if (!enabledEndImageUrls.length) {
+      return "";
+    }
+
+    const randomValue = (Math.random() + seed + (winningName?.length ?? 0)) % 1;
+    const randomIndex = Math.min(Math.floor(randomValue * enabledEndImageUrls.length), enabledEndImageUrls.length - 1);
+    return enabledEndImageUrls[randomIndex].url;
+  }, [endImageUrls, seed, winningName]);
+
   const onSpinClicked = useCallback(() => {
     dispatch(prepareSpin({ random: Math.random() }));
     setTimeout(() => {
       dispatch(beginSpin());
     }, 50);
+  }, [dispatch]);
+
+  const onFinishClicked = useCallback(() => {
+    dispatch(prepareSpin({ random: Math.random() }));
   }, [dispatch]);
 
   const onResetClicked = useCallback(() => {
@@ -56,6 +71,8 @@ export function RouletteWheel() {
     }
   }, [dispatch, winningUser]);
 
+  const showFinishButton = remainingUsers.length === 1 && winningId !== null;
+
   return (
     <div>
       <If condition={!!data.length}>
@@ -65,17 +82,28 @@ export function RouletteWheel() {
         </Center>
       </If>
       <If condition={!data.length && !!winningName}>
-        <img src={endImageUrl || thatsAllFolks} alt="Fin" width={445} height={445} />
+        <img src={selectedEndImageUrl || thatsAllFolks} alt="Fin" width={445} height={445} />
       </If>
       <Center>
         <If condition={remainingUsers.length > 0}>
-          <Button variant="filled" disabled={spinning} style={{ width: "5rem", margin: "0.2rem" }} onClick={onSpinClicked}>
-            Spin
+          {showFinishButton ? (
+            <Button color="green" variant="filled" disabled={spinning} style={{ width: "5rem", margin: "0.2rem" }} onClick={onFinishClicked}>
+              Finish
+            </Button>
+          ) : (
+            <Button color="green" variant="filled" disabled={spinning} style={{ width: "5rem", margin: "0.2rem" }} onClick={onSpinClicked}>
+              Spin
+            </Button>
+          )}
+          <Button variant="default" disabled={spinning} style={{ width: "5rem", margin: "0.2rem" }} onClick={onResetClicked}>
+            Reset
           </Button>
         </If>
-        <Button variant="filled" disabled={spinning} style={{ width: "5rem", margin: "0.2rem" }} onClick={onResetClicked}>
-          Reset
-        </Button>
+        <If condition={remainingUsers.length === 0}>
+          <Button color="green" variant="filled" disabled={spinning} style={{ width: "5rem", margin: "0.2rem" }} onClick={onResetClicked}>
+            Reset
+          </Button>
+        </If>
       </Center>
     </div>
   );

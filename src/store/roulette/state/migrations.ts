@@ -1,6 +1,26 @@
 import type { RouletteState as v1state } from "./v1/RouletteState";
 import type { RouletteState as v2state } from "./v2/RouletteState";
 
+interface LegacyGame {
+  endImageUrl?: string;
+  endImageUrls?: v2state["games"][number]["endImageUrls"];
+}
+
+interface LegacyState {
+  currentGame: number;
+  games: Array<Omit<v2state["games"][number], "endImageUrls"> & LegacyGame>;
+}
+
+function toEndImageUrls(game: LegacyGame): v2state["games"][number]["endImageUrls"] {
+  if (Array.isArray(game.endImageUrls) && game.endImageUrls.length > 0) {
+    return game.endImageUrls.filter(x => x.url.trim().length > 0);
+  }
+  if (typeof game.endImageUrl === "string" && game.endImageUrl.trim().length > 0) {
+    return [{ url: game.endImageUrl, enabled: true }];
+  }
+  return [];
+}
+
 export const migrations = {
   undefined: (old: v1state): v2state => ({
     currentGame: 0,
@@ -13,16 +33,22 @@ export const migrations = {
         spinning: old.spinning,
         winningId: old.winningId,
         winningName: old.winningName,
-        endImageUrl: ""
+        endImageUrls: []
       }
     ]
   }),
-  2: (state: v2state): v2state => {
+  2: (state: LegacyState): v2state => {
     for (let i = 0; i < state.games.length; i++) {
-      state.games[i].endImageUrl = "";
+      state.games[i].endImageUrls = toEndImageUrls(state.games[i]);
       state.games[i].name = `Game ${i + 1}`;
       state.games[i].spinning = false;
     }
-    return state;
+    return state as v2state;
+  },
+  3: (state: LegacyState): v2state => {
+    for (let i = 0; i < state.games.length; i++) {
+      state.games[i].endImageUrls = toEndImageUrls(state.games[i]);
+    }
+    return state as v2state;
   }
 };

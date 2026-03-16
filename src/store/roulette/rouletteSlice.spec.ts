@@ -25,7 +25,7 @@ describe("rouletteSlice", () => {
               winningId: null,
               winningName: null,
               seed: 0,
-              endImageUrl: ""
+              endImageUrls: []
             }
           ]
         };
@@ -58,7 +58,7 @@ describe("rouletteSlice", () => {
               winningId: null,
               winningName: null,
               seed: 0,
-              endImageUrl: ""
+              endImageUrls: []
             }
           ]
         };
@@ -89,7 +89,7 @@ describe("rouletteSlice", () => {
               winningId: null,
               winningName: null,
               seed: 0,
-              endImageUrl: ""
+              endImageUrls: []
             }
           ]
         };
@@ -121,7 +121,7 @@ describe("rouletteSlice", () => {
               winningId: null,
               winningName: null,
               seed: 0,
-              endImageUrl: ""
+              endImageUrls: []
             }
           ]
         };
@@ -165,7 +165,7 @@ describe("rouletteSlice", () => {
                 winningId: null,
                 winningName: null,
                 seed: 0,
-                endImageUrl: ""
+                endImageUrls: []
               }
             ]
           };
@@ -212,7 +212,7 @@ describe("rouletteSlice", () => {
               winningId: null,
               winningName: null,
               seed: 0,
-              endImageUrl: ""
+              endImageUrls: []
             }
           ]
         };
