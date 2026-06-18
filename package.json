@@ -18,7 +18,7 @@
     "url": "git+https://github.com/archerax/standup-roulette.git"
   },
   "author": "archerax",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/archerax/standup-roulette/issues"
   },
