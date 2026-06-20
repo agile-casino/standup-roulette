@@ -47,11 +47,20 @@ function normalizeImportedState(state: unknown): RouletteState {
   if (typeof state !== "object" || state === null || !Array.isArray((state as RouletteState).games)) {
     return {
       currentGame: 0,
-      games: [createInitialGame("Game 1")]
+      games: [createInitialGame("Game 1")],
+      timerType: "off",
+      timerDuration: 60,
+      timerLimit: 60
     };
   }
 
-  const importedState = state as { currentGame?: number; games: Array<Record<string, unknown>> };
+  const importedState = state as {
+    currentGame?: number;
+    games: Array<Record<string, unknown>>;
+    timerType?: "off" | "up" | "down";
+    timerDuration?: number;
+    timerLimit?: number;
+  };
   const games = importedState.games.map((game, index) => {
     const name = typeof game.name === "string" && game.name.trim().length > 0 ? game.name : `Game ${index + 1}`;
     return {
@@ -73,15 +82,30 @@ function normalizeImportedState(state: unknown): RouletteState {
   const requestedCurrentGame = typeof importedState.currentGame === "number" ? importedState.currentGame : 0;
   const currentGame = Math.min(Math.max(Math.floor(requestedCurrentGame), 0), games.length - 1);
 
+  let timerType: "off" | "up" | "down" = "off";
+  if (importedState.timerType === "off" || importedState.timerType === "up" || importedState.timerType === "down") {
+    timerType = importedState.timerType;
+  } else {
+    timerType = "off";
+  }
+  const timerDuration = typeof importedState.timerDuration === "number" ? importedState.timerDuration : 60;
+  const timerLimit = typeof importedState.timerLimit === "number" ? importedState.timerLimit : 60;
+
   return {
     currentGame,
-    games
+    games,
+    timerType,
+    timerDuration,
+    timerLimit
   };
 }
 
 const initialState: RouletteState = {
   currentGame: 0,
-  games: [createInitialGame("Game 1")]
+  games: [createInitialGame("Game 1")],
+  timerType: "off",
+  timerDuration: 60,
+  timerLimit: 60
 };
 
 function assignColours(users: RouletteUser[]): void {
@@ -199,12 +223,41 @@ export const rouletteSlice = createSlice({
     },
     importState: (_, action: PayloadAction<unknown>) => {
       return normalizeImportedState(action.payload);
+    },
+    setTimerType: (state, action: PayloadAction<"off" | "up" | "down">) => {
+      state.timerType = action.payload;
+    },
+    setTimerDuration: (state, action: PayloadAction<number>) => {
+      state.timerDuration = action.payload;
+    },
+    setTimerLimit: (state, action: PayloadAction<number>) => {
+      state.timerLimit = action.payload;
     }
   }
 });
 
-export const { setGameName, prevGame, nextGame, addUser, removeUser, setUserName, setUserTeam, toggleUser, reset, prepareSpin, beginSpin, endSpin, addEndImageUrl, removeEndImageUrl, setEndImageUrlValue, setEndImageUrlEnabled, importState } =
-  rouletteSlice.actions;
+export const {
+  setGameName,
+  prevGame,
+  nextGame,
+  addUser,
+  removeUser,
+  setUserName,
+  setUserTeam,
+  toggleUser,
+  reset,
+  prepareSpin,
+  beginSpin,
+  endSpin,
+  addEndImageUrl,
+  removeEndImageUrl,
+  setEndImageUrlValue,
+  setEndImageUrlEnabled,
+  importState,
+  setTimerType,
+  setTimerDuration,
+  setTimerLimit
+} = rouletteSlice.actions;
 
 export const selectGameName = (state: RootState) => state.roulette.games[state.roulette.currentGame].name;
 export const selectAllUsers = (state: RootState) => state.roulette.games[state.roulette.currentGame].allUsers;
@@ -214,3 +267,6 @@ export const selectWinningId = (state: RootState) => state.roulette.games[state.
 export const selectWinningName = (state: RootState) => state.roulette.games[state.roulette.currentGame].winningName;
 export const selectSeed = (state: RootState) => state.roulette.games[state.roulette.currentGame].seed;
 export const selectEndImageUrls = (state: RootState) => state.roulette.games[state.roulette.currentGame].endImageUrls;
+export const selectTimerType = (state: RootState) => state.roulette.timerType;
+export const selectTimerDuration = (state: RootState) => state.roulette.timerDuration;
+export const selectTimerLimit = (state: RootState) => state.roulette.timerLimit;

@@ -1,5 +1,6 @@
 import type { RouletteState as v1state } from "./v1/RouletteState";
 import type { RouletteState as v2state } from "./v2/RouletteState";
+import type { RouletteState as v4state } from "./v4/RouletteState";
 
 interface LegacyGame {
   endImageUrl?: string;
@@ -22,7 +23,7 @@ function toEndImageUrls(game: LegacyGame): v2state["games"][number]["endImageUrl
 }
 
 export const migrations = {
-  undefined: (old: v1state): v2state => ({
+  undefined: (old: v1state): v4state => ({
     currentGame: 0,
     games: [
       {
@@ -35,20 +36,44 @@ export const migrations = {
         winningName: old.winningName,
         endImageUrls: []
       }
-    ]
+    ],
+    timerType: "off",
+    timerDuration: 60,
+    timerLimit: 60
   }),
-  2: (state: LegacyState): v2state => {
+  2: (state: LegacyState): v4state => {
     for (let i = 0; i < state.games.length; i++) {
       state.games[i].endImageUrls = toEndImageUrls(state.games[i]);
       state.games[i].name = `Game ${i + 1}`;
       state.games[i].spinning = false;
     }
-    return state as v2state;
+    return {
+      currentGame: state.currentGame,
+      games: state.games as v4state["games"],
+      timerType: "off",
+      timerDuration: 60,
+      timerLimit: 60
+    };
   },
-  3: (state: LegacyState): v2state => {
+  3: (state: LegacyState): v4state => {
     for (let i = 0; i < state.games.length; i++) {
       state.games[i].endImageUrls = toEndImageUrls(state.games[i]);
     }
-    return state as v2state;
+    return {
+      currentGame: state.currentGame,
+      games: state.games as v4state["games"],
+      timerType: "off",
+      timerDuration: 60,
+      timerLimit: 60
+    };
+  },
+  4: (state: v2state): v4state => {
+    return {
+      currentGame: state.currentGame,
+      games: state.games,
+      timerType: "off",
+      timerDuration: 60,
+      timerLimit: 60
+    };
   }
 };

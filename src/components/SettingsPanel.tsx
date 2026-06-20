@@ -1,14 +1,29 @@
-import { Button, Checkbox, Group, Input, Stack, Title } from "@mantine/core";
+import { Button, Checkbox, Group, Input, SegmentedControl, Select, Stack, Title } from "@mantine/core";
 import type { ChangeEvent } from "react";
 import { useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { addEndImageUrl, removeEndImageUrl, selectEndImageUrls, setEndImageUrlEnabled, setEndImageUrlValue } from "../store/roulette/rouletteSlice";
+import {
+  addEndImageUrl,
+  removeEndImageUrl,
+  selectEndImageUrls,
+  selectTimerDuration,
+  selectTimerLimit,
+  selectTimerType,
+  setEndImageUrlEnabled,
+  setEndImageUrlValue,
+  setTimerDuration,
+  setTimerLimit,
+  setTimerType
+} from "../store/roulette/rouletteSlice";
 import { ImportExportSettings } from "./ImportExportSettings";
 import styles from "./styles.module.css";
 
 export function SettingsPanel() {
   const dispatch = useAppDispatch();
   const endImageUrls = useAppSelector(selectEndImageUrls);
+  const timerType = useAppSelector(selectTimerType);
+  const timerDuration = useAppSelector(selectTimerDuration);
+  const timerLimit = useAppSelector(selectTimerLimit);
   const endImageUrlKeys = useRef<string[]>([]);
   const nextEndImageUrlKey = useRef(0);
 
@@ -61,6 +76,47 @@ export function SettingsPanel() {
           </Group>
         </Stack>
       </Input.Wrapper>
+
+      <Stack gap="sm" style={{ marginTop: "1.5rem", marginBottom: "1.5rem" }}>
+        <Input.Wrapper label="Speaker timer">
+          <SegmentedControl
+            value={timerType}
+            onChange={value => dispatch(setTimerType(value as "off" | "down" | "up"))}
+            data={[
+              { label: "Off", value: "off" },
+              { label: "Count Down", value: "down" },
+              { label: "Count Up", value: "up" }
+            ]}
+            style={{ maxWidth: "300px" }}
+          />
+        </Input.Wrapper>
+
+        {timerType !== "off" && (
+          <Input.Wrapper label={timerType === "down" ? "Count down from" : "Count up to (max 5 min)"} style={{ paddingLeft: "1.5rem" }}>
+            <Select
+              value={String(timerType === "down" ? timerDuration : timerLimit)}
+              onChange={value => {
+                if (value) {
+                  const numValue = Number.parseInt(value, 10);
+                  if (timerType === "down") {
+                    dispatch(setTimerDuration(numValue));
+                  } else {
+                    dispatch(setTimerLimit(numValue));
+                  }
+                }
+              }}
+              data={[
+                { value: "30", label: "30 seconds" },
+                { value: "60", label: "1 minute" },
+                { value: "120", label: "2 minutes" },
+                { value: "180", label: "3 minutes" },
+                { value: "300", label: "5 minutes" }
+              ]}
+              style={{ maxWidth: "250px" }}
+            />
+          </Input.Wrapper>
+        )}
+      </Stack>
 
       <ImportExportSettings />
     </div>

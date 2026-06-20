@@ -30,12 +30,3 @@ export function descending<TValue>(valA: TValue, valB: TValue): number {
 
   return 0;
 }
-
-export function orderByDescending<TObject, TValue>(value: (x: TObject) => TValue): OrderByFn<TObject> {
-  return (a: TObject, b: TObject) => {
-    const valA = value(a);
-    const valB = value(b);
-
-    return descending(valA, valB);
-  };
-}

@@ -1,3 +1,3 @@
-export { EndImageUrl } from "./v2/RouletteGame";
-export { RouletteState } from "./v2/RouletteState";
-export { RouletteUser } from "./v2/RouletteUser";
+export { EndImageUrl } from "./v4/RouletteGame";
+export { RouletteState } from "./v4/RouletteState";
+export { RouletteUser } from "./v4/RouletteUser";

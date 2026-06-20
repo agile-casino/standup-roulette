@@ -3,7 +3,9 @@ import { IconArrowLeft, IconArrowRight, IconSettings } from "@tabler/icons-react
 import type { ChangeEvent } from "react";
 import { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { nextGame, prevGame, selectGameName, selectSpinning, setGameName } from "../store/roulette/rouletteSlice";
+import { nextGame, prevGame, selectGameName, selectRemainingUsers, selectSpinning, selectTimerDuration, selectTimerLimit, selectTimerType, selectWinningName, setGameName } from "../store/roulette/rouletteSlice";
+import { If } from "./If";
+import { SpeakerTimer } from "./SpeakerTimer";
 import styles from "./styles.module.css";
 
 const maxGameIndex = 4;
@@ -17,6 +19,11 @@ export function Header({ toggleShowSettings }: Readonly<HeaderProps>) {
   const gameName = useAppSelector(selectGameName);
   const spinning = useAppSelector(selectSpinning);
   const currentGame = useAppSelector(state => state.roulette.currentGame);
+  const timerType = useAppSelector(selectTimerType);
+  const timerDuration = useAppSelector(selectTimerDuration);
+  const timerLimit = useAppSelector(selectTimerLimit);
+  const winningName = useAppSelector(selectWinningName);
+  const remainingUsers = useAppSelector(selectRemainingUsers);
 
   const canGoPrevGame = !spinning && currentGame > 0;
   const canGoNextGame = !spinning && currentGame < maxGameIndex;
@@ -37,7 +44,7 @@ export function Header({ toggleShowSettings }: Readonly<HeaderProps>) {
   }, [dispatch]);
 
   return (
-    <>
+    <div style={{ marginBottom: "var(--mantine-spacing-md)" }}>
       <ActionIcon variant="subtle" style={{ position: "absolute", top: "calc(var(--mantine-spacing-md) / 2)", right: "calc(var(--ai-size) + var(--mantine-spacing-md) / 2)" }} onClick={toggleShowSettings}>
         <IconSettings />
       </ActionIcon>
@@ -52,7 +59,10 @@ export function Header({ toggleShowSettings }: Readonly<HeaderProps>) {
         <ActionIcon style={{ margin: "0 1rem", verticalAlign: "bottom" }} onClick={onNextGameClick} disabled={!canGoNextGame}>
           <IconArrowRight />
         </ActionIcon>
+        <If condition={timerType !== "off" && !spinning && !!winningName && remainingUsers.length > 0}>
+          <SpeakerTimer timerType={timerType as "up" | "down"} timerDuration={timerDuration} timerLimit={timerLimit} />
+        </If>
       </Title>
-    </>
+    </div>
   );
 }

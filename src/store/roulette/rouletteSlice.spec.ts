@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { prepareSpin, rouletteSlice } from "./rouletteSlice";
+import { prepareSpin, rouletteSlice, setTimerDuration, setTimerLimit, setTimerType } from "./rouletteSlice";
 import type { RouletteState } from "./state";
 
 describe("rouletteSlice", () => {
@@ -27,7 +27,10 @@ describe("rouletteSlice", () => {
               seed: 0,
               endImageUrls: []
             }
-          ]
+          ],
+          timerType: "off",
+          timerDuration: 60,
+          timerLimit: 60
         };
 
         const action = prepareSpin({ random: 0.0 });
@@ -60,7 +63,10 @@ describe("rouletteSlice", () => {
               seed: 0,
               endImageUrls: []
             }
-          ]
+          ],
+          timerType: "off",
+          timerDuration: 60,
+          timerLimit: 60
         };
 
         const action = prepareSpin({ random: 0.5 });
@@ -91,7 +97,10 @@ describe("rouletteSlice", () => {
               seed: 0,
               endImageUrls: []
             }
-          ]
+          ],
+          timerType: "off",
+          timerDuration: 60,
+          timerLimit: 60
         };
 
         const action = prepareSpin({ random: 0.99999 });
@@ -123,7 +132,10 @@ describe("rouletteSlice", () => {
               seed: 0,
               endImageUrls: []
             }
-          ]
+          ],
+          timerType: "off",
+          timerDuration: 60,
+          timerLimit: 60
         };
 
         const action = prepareSpin({ random: 1.0 });
@@ -167,7 +179,10 @@ describe("rouletteSlice", () => {
                 seed: 0,
                 endImageUrls: []
               }
-            ]
+            ],
+            timerType: "off",
+            timerDuration: 60,
+            timerLimit: 60
           };
 
           const random = Math.random();
@@ -214,7 +229,10 @@ describe("rouletteSlice", () => {
               seed: 0,
               endImageUrls: []
             }
-          ]
+          ],
+          timerType: "off",
+          timerDuration: 60,
+          timerLimit: 60
         };
 
         // First spin - select first user (random = 0.0)
@@ -232,6 +250,47 @@ describe("rouletteSlice", () => {
         expect(state.games[0].remainingUsers.length).toBe(1);
         expect(state.games[0].winningId).toBe("3"); // Charlie is last
       });
+    });
+  });
+
+  describe("timer actions", () => {
+    it("should handle setTimerType correctly", () => {
+      const initialState: RouletteState = {
+        currentGame: 0,
+        games: [],
+        timerType: "off",
+        timerDuration: 60,
+        timerLimit: 60
+      };
+
+      const newState = rouletteSlice.reducer(initialState, setTimerType("up"));
+      expect(newState.timerType).toBe("up");
+    });
+
+    it("should handle setTimerDuration correctly", () => {
+      const initialState: RouletteState = {
+        currentGame: 0,
+        games: [],
+        timerType: "off",
+        timerDuration: 60,
+        timerLimit: 60
+      };
+
+      const newState = rouletteSlice.reducer(initialState, setTimerDuration(120));
+      expect(newState.timerDuration).toBe(120);
+    });
+
+    it("should handle setTimerLimit correctly", () => {
+      const initialState: RouletteState = {
+        currentGame: 0,
+        games: [],
+        timerType: "off",
+        timerDuration: 60,
+        timerLimit: 60
+      };
+
+      const newState = rouletteSlice.reducer(initialState, setTimerLimit(180));
+      expect(newState.timerLimit).toBe(180);
     });
   });
 });

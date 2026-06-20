@@ -1,4 +1,5 @@
 import { defineConfig } from "vite";
+import { analyzer } from "vite-bundle-analyzer";
 import bannerPlugin from "vite-plugin-banner";
 import checker from "vite-plugin-checker";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
@@ -19,17 +20,16 @@ const banner = `
 // ==/UserScript==
 `.trim();
 
-function getBiomeConfig(platform: string, mode: string): { command: "check" | "ci", flags: "src" } | false {
-  if ( platform === "android" ) {
+function getBiomeConfig(platform: string, mode: string): { command: "check" | "ci"; flags: "src" } | false {
+  if (platform === "android") {
     return false;
   }
-  return mode === "development"
-    ? { command: "check", flags: "src" }
-    : { command: "ci", flags: "src" };
+  return mode === "development" ? { command: "check", flags: "src" } : { command: "ci", flags: "src" };
 }
 
 export default defineConfig(({ mode }: { mode: string }) => ({
   plugins: [
+    analyzer({ analyzerMode: "static" }),
     bannerPlugin({ content: banner, verify: false }),
     checker({
       biome: getBiomeConfig(process.platform, mode),
@@ -47,6 +47,12 @@ export default defineConfig(({ mode }: { mode: string }) => ({
       output: {
         entryFileNames: "index.user.js",
         manualChunks: undefined
+      },
+      onwarn(warning, warn) {
+        if (warning.code === "MODULE_LEVEL_DIRECTIVE" && warning.message.includes("use client")) {
+          return;
+        }
+        warn(warning);
       }
     }
   }
