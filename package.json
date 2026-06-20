@@ -5,7 +5,9 @@
   "main": "src/index.tsx",
   "scripts": {
     "build": "vite build",
+    "build:dev": "vite build --mode development",
     "build:watch": "vite build --watch",
+    "dev": "vite",
     "lint": "prettier **/*.{md,yml} && biome check && knip",
     "lint:fix": "prettier --write **/*.{md,yml} && biome check --write && knip --fix",
     "prune": "ts-prune",
