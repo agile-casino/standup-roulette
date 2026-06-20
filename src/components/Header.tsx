@@ -4,7 +4,6 @@ import type { ChangeEvent } from "react";
 import { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { nextGame, prevGame, selectGameName, selectRemainingUsers, selectSpinning, selectTimerDuration, selectTimerLimit, selectTimerType, selectWinningName, setGameName } from "../store/roulette/rouletteSlice";
-import { If } from "./If";
 import { SpeakerTimer } from "./SpeakerTimer";
 import styles from "./styles.module.css";
 
@@ -59,9 +58,7 @@ export function Header({ toggleShowSettings }: Readonly<HeaderProps>) {
         <ActionIcon style={{ margin: "0 1rem", verticalAlign: "bottom" }} onClick={onNextGameClick} disabled={!canGoNextGame}>
           <IconArrowRight />
         </ActionIcon>
-        <If condition={timerType !== "off" && !spinning && !!winningName && remainingUsers.length > 0}>
-          <SpeakerTimer timerType={timerType as "up" | "down"} timerDuration={timerDuration} timerLimit={timerLimit} />
-        </If>
+        {timerType !== "off" && !spinning && !!winningName && remainingUsers.length > 0 && <SpeakerTimer timerType={timerType as "up" | "down"} timerDuration={timerDuration} timerLimit={timerLimit} />}
       </Title>
     </div>
   );

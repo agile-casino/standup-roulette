@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { beginSpin, endSpin, prepareSpin, reset, selectEndImageUrls, selectRemainingUsers, selectSeed, selectSpinning, selectWinningId, selectWinningName } from "../store/roulette/rouletteSlice";
 import { selectPerson, selectTeam } from "../utils/adosHelper";
 import { getMascot } from "../utils/mascot";
-import { If } from "./If";
 import { WinnerControl } from "./WinnerControl";
 
 export function RouletteWheel() {
@@ -75,35 +74,36 @@ export function RouletteWheel() {
 
   return (
     <div>
-      <If condition={!!data.length}>
-        <Wheel data={data} spinDuration={0.15} prizeNumber={winningUserIndex} mustStartSpinning={spinning} onStopSpinning={onStopSpinning} />
-        <Center>
-          <WinnerControl name={winningName ?? ""} mascotNumber={getMascot(winningName ?? "", seed)} />
-        </Center>
-      </If>
-      <If condition={!data.length && !!winningName}>
-        <img src={selectedEndImageUrl || thatsAllFolks} alt="Fin" width={445} height={445} />
-      </If>
+      {!!data.length && (
+        <>
+          <Wheel data={data} spinDuration={0.15} prizeNumber={winningUserIndex} mustStartSpinning={spinning} onStopSpinning={onStopSpinning} />
+          <Center>
+            <WinnerControl name={winningName ?? ""} mascotNumber={getMascot(winningName ?? "", seed)} />
+          </Center>
+        </>
+      )}
+      {!data.length && !!winningName && <img src={selectedEndImageUrl || thatsAllFolks} alt="Fin" width={445} height={445} />}
       <Center>
-        <If condition={remainingUsers.length > 0}>
-          {showFinishButton ? (
-            <Button color="green" variant="filled" disabled={spinning} style={{ width: "5rem", margin: "0.2rem" }} onClick={onFinishClicked}>
-              Finish
+        {remainingUsers.length > 0 ? (
+          <>
+            {showFinishButton ? (
+              <Button color="green" variant="filled" disabled={spinning} style={{ width: "5rem", margin: "0.2rem" }} onClick={onFinishClicked}>
+                Finish
+              </Button>
+            ) : (
+              <Button color="green" variant="filled" disabled={spinning} style={{ width: "5rem", margin: "0.2rem" }} onClick={onSpinClicked}>
+                Spin
+              </Button>
+            )}
+            <Button variant="default" disabled={spinning} style={{ width: "5rem", margin: "0.2rem" }} onClick={onResetClicked}>
+              Reset
             </Button>
-          ) : (
-            <Button color="green" variant="filled" disabled={spinning} style={{ width: "5rem", margin: "0.2rem" }} onClick={onSpinClicked}>
-              Spin
-            </Button>
-          )}
-          <Button variant="default" disabled={spinning} style={{ width: "5rem", margin: "0.2rem" }} onClick={onResetClicked}>
-            Reset
-          </Button>
-        </If>
-        <If condition={remainingUsers.length === 0}>
+          </>
+        ) : (
           <Button color="green" variant="filled" disabled={spinning} style={{ width: "5rem", margin: "0.2rem" }} onClick={onResetClicked}>
             Reset
           </Button>
-        </If>
+        )}
       </Center>
     </div>
   );
