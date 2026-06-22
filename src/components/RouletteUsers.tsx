@@ -1,8 +1,7 @@
 import { ActionIcon, Input, Table } from "@mantine/core";
 import { IconCirclePlus } from "@tabler/icons-react";
 import { type ChangeEvent, memo, useCallback, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { addUser, selectAllUsers } from "../store/roulette/rouletteSlice";
+import { useRouletteStore } from "../store/useRouletteStore";
 import { UserEditRow } from "./UserEditRow";
 
 interface InputRowProps {
@@ -27,18 +26,18 @@ const InputRow = memo(({ newName, onNewNameChange, onAddUser }: InputRowProps) =
 ));
 
 export function RouletteUsers() {
-  const dispatch = useAppDispatch();
   const [newName, setNewName] = useState("");
-  const allUsers = useAppSelector(selectAllUsers);
+  const allUsers = useRouletteStore(state => state.games[state.currentGame].allUsers);
+  const addUser = useRouletteStore(state => state.addUser);
 
   const onNewNameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setNewName(event.target.value);
   }, []);
 
   const onAddUser = useCallback(() => {
-    dispatch(addUser({ name: newName }));
+    addUser(newName);
     setNewName("");
-  }, [dispatch, newName]);
+  }, [addUser, newName]);
 
   return (
     <div style={{ height: "95%", overflowY: "auto" }}>

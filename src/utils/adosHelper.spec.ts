@@ -9,7 +9,7 @@ vi.mock("./delay", () => ({
 // Mock waitForElement to execute callbacks synchronously and instantly
 vi.mock("./waitForElement", () => {
   return {
-    waitFor: vi.fn(async (action) => {
+    waitFor: vi.fn(async action => {
       const res = action();
       if (!res) {
         throw new Error("Mock timeout");

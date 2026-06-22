@@ -1,13 +1,15 @@
-import { render, fireEvent } from "@testing-library/react";
+import { MantineProvider } from "@mantine/core";
+import { fireEvent, render } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { RouletteDialog } from "./RouletteDialog";
-import { MantineProvider } from "@mantine/core";
 
 // Mock child components
 vi.mock("./Header", () => ({
   Header: ({ toggleShowSettings }: { toggleShowSettings: () => void }) => (
     <div data-testid="mock-header">
-      <button data-testid="toggle-settings-btn" onClick={toggleShowSettings}>Toggle Settings</button>
+      <button type="button" data-testid="toggle-settings-btn" onClick={toggleShowSettings}>
+        Toggle Settings
+      </button>
     </div>
   )
 }));

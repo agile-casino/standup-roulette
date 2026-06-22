@@ -1,7 +1,7 @@
-import { render, waitFor, act } from "@testing-library/react";
+import { MantineProvider } from "@mantine/core";
+import { act, render, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { WinnerControl } from "./WinnerControl";
-import { MantineProvider } from "@mantine/core";
 
 interface GMXMLHttpRequestDetails {
   onload: (response: { responseText: string }) => void;

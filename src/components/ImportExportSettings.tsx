@@ -1,15 +1,24 @@
 import { Button, Group } from "@mantine/core";
-import type { RootState } from "../store";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { importState } from "../store/roulette/rouletteSlice";
+import { useRouletteStore } from "../store/useRouletteStore";
 
 export function ImportExportSettings() {
-  const dispatch = useAppDispatch();
-  const state = useAppSelector((state: RootState) => state.roulette);
+  const currentGame = useRouletteStore(state => state.currentGame);
+  const games = useRouletteStore(state => state.games);
+  const timerType = useRouletteStore(state => state.timerType);
+  const timerDuration = useRouletteStore(state => state.timerDuration);
+  const timerLimit = useRouletteStore(state => state.timerLimit);
+  const importState = useRouletteStore(state => state.importState);
 
   const handleExport = () => {
     try {
-      const stateStr = JSON.stringify(state);
+      const stateToExport = {
+        currentGame,
+        games,
+        timerType,
+        timerDuration,
+        timerLimit
+      };
+      const stateStr = JSON.stringify(stateToExport);
       const blob = new Blob([stateStr], { type: "application/json" });
       const url = URL.createObjectURL(blob);
 
@@ -44,7 +53,7 @@ export function ImportExportSettings() {
         try {
           const content = event.target?.result as string;
           const importedState = JSON.parse(content);
-          dispatch(importState(importedState));
+          importState(importedState);
         } catch (error) {
           console.error("Failed to parse imported file:", error);
           alert("Failed to import settings. The file may be corrupted.");

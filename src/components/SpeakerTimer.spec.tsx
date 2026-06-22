@@ -1,7 +1,7 @@
-import { render, fireEvent, act } from "@testing-library/react";
+import { MantineProvider } from "@mantine/core";
+import { act, fireEvent, render } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { SpeakerTimer } from "./SpeakerTimer";
-import { MantineProvider } from "@mantine/core";
 
 describe("SpeakerTimer", () => {
   beforeEach(() => {
@@ -23,7 +23,7 @@ describe("SpeakerTimer", () => {
   describe("when timerType is down", () => {
     it("should start at timerDuration and tick down every second", () => {
       const { getByText } = renderComponent("down", 120, 300);
-      
+
       expect(getByText("2:00")).toBeTruthy();
 
       // Tick 1 second
@@ -84,7 +84,6 @@ describe("SpeakerTimer", () => {
       // Find the play/pause button (variant yellow or green)
       const buttons = container.querySelectorAll("button");
       const playPauseButton = buttons[0]; // first button is play/pause
-      const resetButton = buttons[1]; // second button is rotate/reset
 
       // Pause
       fireEvent.click(playPauseButton);

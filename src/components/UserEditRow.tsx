@@ -1,38 +1,40 @@
 import { ActionIcon, Checkbox, Input, Table } from "@mantine/core";
 import { IconCircleMinus } from "@tabler/icons-react";
 import { type ChangeEvent, useCallback } from "react";
-import { useAppDispatch } from "../store/hooks";
-import { removeUser, setUserName, setUserTeam, toggleUser } from "../store/roulette/rouletteSlice";
 import type { RouletteUser } from "../store/roulette/state";
+import { useRouletteStore } from "../store/useRouletteStore";
 
 interface UserEditRowProps {
   user: RouletteUser;
 }
 
 export function UserEditRow({ user }: Readonly<UserEditRowProps>) {
-  const dispatch = useAppDispatch();
+  const removeUser = useRouletteStore(state => state.removeUser);
+  const setUserName = useRouletteStore(state => state.setUserName);
+  const setUserTeam = useRouletteStore(state => state.setUserTeam);
+  const toggleUser = useRouletteStore(state => state.toggleUser);
 
   const onNameChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
-      dispatch(setUserName({ id: user.id, newUserName: event.target.value }));
+      setUserName(user.id, event.target.value);
     },
-    [dispatch, user.id]
+    [setUserName, user.id]
   );
 
   const onTeamChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
-      dispatch(setUserTeam({ id: user.id, newTeamName: event.target.value }));
+      setUserTeam(user.id, event.target.value);
     },
-    [dispatch, user.id]
+    [setUserTeam, user.id]
   );
 
   const onToggleUser = useCallback(() => {
-    dispatch(toggleUser({ id: user.id }));
-  }, [dispatch, user.id]);
+    toggleUser(user.id);
+  }, [toggleUser, user.id]);
 
   const onRemoveUser = useCallback(() => {
-    dispatch(removeUser({ id: user.id }));
-  }, [dispatch, user.id]);
+    removeUser(user.id);
+  }, [removeUser, user.id]);
 
   return (
     <Table.Tr>

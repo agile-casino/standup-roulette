@@ -1,12 +1,19 @@
-import { render, fireEvent } from "@testing-library/react";
-import { describe, expect, it, vi, beforeEach } from "vitest";
+import { MantineProvider, Table } from "@mantine/core";
+import { fireEvent, render } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { UserEditRow } from "./UserEditRow";
-import { Table, MantineProvider } from "@mantine/core";
-import { removeUser, setUserName, setUserTeam, toggleUser } from "../store/roulette/rouletteSlice";
 
-const mockDispatch = vi.fn();
-vi.mock("../store/hooks", () => ({
-  useAppDispatch: () => mockDispatch
+const mockActions = {
+  removeUser: vi.fn(),
+  setUserName: vi.fn(),
+  setUserTeam: vi.fn(),
+  toggleUser: vi.fn()
+};
+
+vi.mock("../store/useRouletteStore", () => ({
+  useRouletteStore: (selectorFn: (state: any) => any) => {
+    return selectorFn(mockActions);
+  }
 }));
 
 describe("UserEditRow", () => {
@@ -19,7 +26,7 @@ describe("UserEditRow", () => {
   };
 
   beforeEach(() => {
-    mockDispatch.mockClear();
+    vi.clearAllMocks();
   });
 
   const renderComponent = () => {
@@ -36,7 +43,7 @@ describe("UserEditRow", () => {
 
   it("should render user inputs with values", () => {
     const { getByDisplayValue, getByRole } = renderComponent();
-    
+
     const nameInput = getByDisplayValue("Alice") as HTMLInputElement;
     const teamInput = getByDisplayValue("Alpha") as HTMLInputElement;
     const checkbox = getByRole("checkbox") as HTMLInputElement;
@@ -46,48 +53,39 @@ describe("UserEditRow", () => {
     expect(checkbox.checked).toBe(true);
   });
 
-  it("should dispatch setUserName when name is changed", () => {
+  it("should call setUserName when name is changed", () => {
     const { getByDisplayValue } = renderComponent();
     const nameInput = getByDisplayValue("Alice");
 
     fireEvent.change(nameInput, { target: { value: "Bob" } });
 
-    expect(mockDispatch).toHaveBeenCalledWith(
-      setUserName({ id: "user-1", newUserName: "Bob" })
-    );
+    expect(mockActions.setUserName).toHaveBeenCalledWith("user-1", "Bob");
   });
 
-  it("should dispatch setUserTeam when team is changed", () => {
+  it("should call setUserTeam when team is changed", () => {
     const { getByDisplayValue } = renderComponent();
     const teamInput = getByDisplayValue("Alpha");
 
     fireEvent.change(teamInput, { target: { value: "Beta" } });
 
-    expect(mockDispatch).toHaveBeenCalledWith(
-      setUserTeam({ id: "user-1", newTeamName: "Beta" })
-    );
+    expect(mockActions.setUserTeam).toHaveBeenCalledWith("user-1", "Beta");
   });
 
-  it("should dispatch toggleUser when checkbox is clicked", () => {
+  it("should call toggleUser when checkbox is clicked", () => {
     const { getByRole } = renderComponent();
     const checkbox = getByRole("checkbox");
 
     fireEvent.click(checkbox);
 
-    expect(mockDispatch).toHaveBeenCalledWith(
-      toggleUser({ id: "user-1" })
-    );
+    expect(mockActions.toggleUser).toHaveBeenCalledWith("user-1");
   });
 
-  it("should dispatch removeUser when delete button is clicked", () => {
+  it("should call removeUser when delete button is clicked", () => {
     const { getByRole } = renderComponent();
-    
-    // The action icon button
+
     const deleteButton = getByRole("button");
     fireEvent.click(deleteButton);
 
-    expect(mockDispatch).toHaveBeenCalledWith(
-      removeUser({ id: "user-1" })
-    );
+    expect(mockActions.removeUser).toHaveBeenCalledWith("user-1");
   });
 });

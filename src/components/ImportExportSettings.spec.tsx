@@ -1,21 +1,28 @@
-import { render, fireEvent } from "@testing-library/react";
-import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
-import { ImportExportSettings } from "./ImportExportSettings";
 import { MantineProvider } from "@mantine/core";
-import { importState } from "../store/roulette/rouletteSlice";
+import { fireEvent, render } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { ImportExportSettings } from "./ImportExportSettings";
 
-const mockDispatch = vi.fn();
-const mockState = {
-  roulette: {
-    currentGame: 0,
-    games: [],
-    timerType: "off"
-  }
+const mockActions = {
+  importState: vi.fn()
 };
 
-vi.mock("../store/hooks", () => ({
-  useAppDispatch: () => mockDispatch,
-  useAppSelector: (selectorFn: any) => selectorFn(mockState)
+const mockSelectors = {
+  currentGame: 0,
+  games: [] as any[],
+  timerType: "off",
+  timerDuration: 60,
+  timerLimit: 60
+};
+
+vi.mock("../store/useRouletteStore", () => ({
+  useRouletteStore: (selectorFn: (state: any) => any) => {
+    const mockState = {
+      ...mockSelectors,
+      ...mockActions
+    };
+    return selectorFn(mockState);
+  }
 }));
 
 // Mock FileReader
@@ -35,11 +42,11 @@ global.FileReader = MockFileReader as any;
 
 describe("ImportExportSettings", () => {
   beforeEach(() => {
-    mockDispatch.mockClear();
+    vi.clearAllMocks();
     mockFileReaderInstance = null;
     vi.spyOn(window, "alert").mockImplementation(() => {});
     vi.spyOn(console, "error").mockImplementation(() => {});
-    
+
     // Mock URL methods
     global.URL.createObjectURL = vi.fn().mockReturnValue("blob:foo");
     global.URL.revokeObjectURL = vi.fn();
@@ -78,7 +85,7 @@ describe("ImportExportSettings", () => {
 
   it("should trigger export flow when clicking Export Settings", () => {
     const { getByText } = renderComponent();
-    
+
     const clickSpy = vi.spyOn(HTMLAnchorElement.prototype, "click");
     const appendSpy = vi.spyOn(document.body, "appendChild");
     const removeSpy = vi.spyOn(document.body, "removeChild");
@@ -95,7 +102,7 @@ describe("ImportExportSettings", () => {
 
   it("should alert error if export fails", () => {
     const { getByText } = renderComponent();
-    
+
     vi.spyOn(global.URL, "createObjectURL").mockImplementation(() => {
       throw new Error("Export Error");
     });
@@ -122,7 +129,7 @@ describe("ImportExportSettings", () => {
       } as any);
     }
 
-    expect(mockDispatch).toHaveBeenCalledWith(importState({ testState: "ok" }));
+    expect(mockActions.importState).toHaveBeenCalledWith({ testState: "ok" });
   });
 
   it("should alert error if import file JSON is invalid", () => {

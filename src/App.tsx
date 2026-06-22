@@ -1,9 +1,7 @@
 import { MantineProvider } from "@mantine/core";
 import { useColorScheme } from "@mantine/hooks";
 import { useEffect, useState } from "react";
-import { Provider } from "react-redux";
 import { RouletteDialog } from "./components/RouletteDialog";
-import { store } from "./store";
 
 function useUrl() {
   const [url, setUrl] = useState(window.location.href);
@@ -64,11 +62,9 @@ export function App() {
         >
           Standup Roulette
         </button>
-        <Provider store={store}>
-          <MantineProvider defaultColorScheme={colorScheme}>
-            <RouletteDialog origin={origin} collection={decodeURI(collection)} project={decodeURI(project)} team={decodeURI(team)} sprint={decodeURI(sprint)} open={dialogOpen} onCloseClicked={() => setDialogOpen(previous => !previous)} />
-          </MantineProvider>
-        </Provider>
+        <MantineProvider defaultColorScheme={colorScheme}>
+          <RouletteDialog origin={origin} collection={decodeURI(collection)} project={decodeURI(project)} team={decodeURI(team)} sprint={decodeURI(sprint)} open={dialogOpen} onCloseClicked={() => setDialogOpen(previous => !previous)} />
+        </MantineProvider>
       </>
     );
   }

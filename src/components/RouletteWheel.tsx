@@ -2,21 +2,23 @@ import { Button, Center } from "@mantine/core";
 import { useCallback, useMemo } from "react";
 import { Wheel, type WheelDataType } from "react-custom-roulette";
 import { thatsAllFolks } from "../images/thatsAllFolks";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { beginSpin, endSpin, prepareSpin, reset, selectEndImageUrls, selectRemainingUsers, selectSeed, selectSpinning, selectWinningId, selectWinningName } from "../store/roulette/rouletteSlice";
+import { useRouletteStore } from "../store/useRouletteStore";
 import { selectPerson, selectTeam } from "../utils/adosHelper";
 import { getMascot } from "../utils/mascot";
 import { WinnerControl } from "./WinnerControl";
 
 export function RouletteWheel() {
-  const dispatch = useAppDispatch();
+  const spinning = useRouletteStore(state => state.games[state.currentGame].spinning);
+  const winningId = useRouletteStore(state => state.games[state.currentGame].winningId);
+  const winningName = useRouletteStore(state => state.games[state.currentGame].winningName);
+  const remainingUsers = useRouletteStore(state => state.games[state.currentGame].remainingUsers);
+  const seed = useRouletteStore(state => state.games[state.currentGame].seed);
+  const endImageUrls = useRouletteStore(state => state.games[state.currentGame].endImageUrls);
 
-  const spinning = useAppSelector(selectSpinning);
-  const winningId = useAppSelector(selectWinningId);
-  const winningName = useAppSelector(selectWinningName);
-  const remainingUsers = useAppSelector(selectRemainingUsers);
-  const seed = useAppSelector(selectSeed);
-  const endImageUrls = useAppSelector(selectEndImageUrls);
+  const prepareSpin = useRouletteStore(state => state.prepareSpin);
+  const beginSpin = useRouletteStore(state => state.beginSpin);
+  const reset = useRouletteStore(state => state.reset);
+  const endSpin = useRouletteStore(state => state.endSpin);
 
   const winningUser = useMemo(() => {
     return remainingUsers.find(u => u.id === winningId);
@@ -42,22 +44,22 @@ export function RouletteWheel() {
   }, [endImageUrls, seed, winningName]);
 
   const onSpinClicked = useCallback(() => {
-    dispatch(prepareSpin({ random: Math.random() }));
+    prepareSpin(Math.random());
     setTimeout(() => {
-      dispatch(beginSpin());
+      beginSpin();
     }, 50);
-  }, [dispatch]);
+  }, [prepareSpin, beginSpin]);
 
   const onFinishClicked = useCallback(() => {
-    dispatch(prepareSpin({ random: Math.random() }));
-  }, [dispatch]);
+    prepareSpin(Math.random());
+  }, [prepareSpin]);
 
   const onResetClicked = useCallback(() => {
-    dispatch(reset({ seed: Math.random() }));
-  }, [dispatch]);
+    reset(Math.random());
+  }, [reset]);
 
   const onStopSpinning = useCallback(() => {
-    dispatch(endSpin());
+    endSpin();
 
     if (winningUser?.team) {
       selectTeam(winningUser.team)
@@ -68,7 +70,7 @@ export function RouletteWheel() {
         })
         .catch(console.error);
     }
-  }, [dispatch, winningUser]);
+  }, [endSpin, winningUser]);
 
   const showFinishButton = remainingUsers.length === 1 && winningId !== null;
 

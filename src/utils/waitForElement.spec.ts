@@ -5,7 +5,7 @@ describe("waitForElement utils", () => {
   describe("waitFor", () => {
     it("should resolve when action returns a truthy value", async () => {
       let value: string | null = null;
-      
+
       // Change value to "hello" after 150ms (interval is 100ms, so it checks around 200ms)
       setTimeout(() => {
         value = "hello";

@@ -60,14 +60,14 @@
   "dependencies": {
     "@mantine/core": "^8.3.17",
     "@mantine/hooks": "^8.3.17",
-    "@reduxjs/toolkit": "^2.11.2",
     "@tabler/icons-react": "^3.40.0",
     "buffer": "^6.0.3",
     "crc": "^4.3.2",
+    "immer": "^11.1.8",
     "react": "^19.2.4",
     "react-custom-roulette": "^1.4.1",
     "react-dom": "^19.2.4",
-    "react-redux": "^9.2.0",
-    "uuid": "^13.0.0"
+    "uuid": "^13.0.0",
+    "zustand": "^5.0.14"
   }
 }

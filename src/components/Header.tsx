@@ -2,8 +2,7 @@ import { ActionIcon, TextInput, Title } from "@mantine/core";
 import { IconArrowLeft, IconArrowRight, IconSettings } from "@tabler/icons-react";
 import type { ChangeEvent } from "react";
 import { useCallback } from "react";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { nextGame, prevGame, selectGameName, selectRemainingUsers, selectSpinning, selectTimerDuration, selectTimerLimit, selectTimerType, selectWinningName, setGameName } from "../store/roulette/rouletteSlice";
+import { useRouletteStore } from "../store/useRouletteStore";
 import { SpeakerTimer } from "./SpeakerTimer";
 import styles from "./styles.module.css";
 
@@ -14,33 +13,36 @@ interface HeaderProps {
 }
 
 export function Header({ toggleShowSettings }: Readonly<HeaderProps>) {
-  const dispatch = useAppDispatch();
-  const gameName = useAppSelector(selectGameName);
-  const spinning = useAppSelector(selectSpinning);
-  const currentGame = useAppSelector(state => state.roulette.currentGame);
-  const timerType = useAppSelector(selectTimerType);
-  const timerDuration = useAppSelector(selectTimerDuration);
-  const timerLimit = useAppSelector(selectTimerLimit);
-  const winningName = useAppSelector(selectWinningName);
-  const remainingUsers = useAppSelector(selectRemainingUsers);
+  const gameName = useRouletteStore(state => state.games[state.currentGame].name);
+  const spinning = useRouletteStore(state => state.games[state.currentGame].spinning);
+  const currentGame = useRouletteStore(state => state.currentGame);
+  const timerType = useRouletteStore(state => state.timerType);
+  const timerDuration = useRouletteStore(state => state.timerDuration);
+  const timerLimit = useRouletteStore(state => state.timerLimit);
+  const winningName = useRouletteStore(state => state.games[state.currentGame].winningName);
+  const remainingUsers = useRouletteStore(state => state.games[state.currentGame].remainingUsers);
+
+  const setGameName = useRouletteStore(state => state.setGameName);
+  const prevGame = useRouletteStore(state => state.prevGame);
+  const nextGame = useRouletteStore(state => state.nextGame);
 
   const canGoPrevGame = !spinning && currentGame > 0;
   const canGoNextGame = !spinning && currentGame < maxGameIndex;
 
   const onGameNameUpdate = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
-      dispatch(setGameName({ name: event.currentTarget.value }));
+      setGameName(event.currentTarget.value);
     },
-    [dispatch]
+    [setGameName]
   );
 
   const onPrevGameClick = useCallback(() => {
-    dispatch(prevGame());
-  }, [dispatch]);
+    prevGame();
+  }, [prevGame]);
 
   const onNextGameClick = useCallback(() => {
-    dispatch(nextGame());
-  }, [dispatch]);
+    nextGame();
+  }, [nextGame]);
 
   return (
     <div style={{ marginBottom: "var(--mantine-spacing-md)" }}>

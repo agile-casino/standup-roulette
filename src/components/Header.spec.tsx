@@ -1,10 +1,8 @@
-import { render, fireEvent } from "@testing-library/react";
-import { describe, expect, it, vi, beforeEach } from "vitest";
-import { Header } from "./Header";
 import { MantineProvider } from "@mantine/core";
-import { prevGame, nextGame, setGameName } from "../store/roulette/rouletteSlice";
+import { fireEvent, render } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { Header } from "./Header";
 
-const mockDispatch = vi.fn();
 const mockSelectors = {
   gameName: "Game 1",
   spinning: false,
@@ -16,10 +14,14 @@ const mockSelectors = {
   remainingUsers: [] as any[]
 };
 
-vi.mock("../store/hooks", () => ({
-  useAppDispatch: () => mockDispatch,
-  useAppSelector: (selectorFn: any) => {
-    // Generate state according to current index
+const mockActions = {
+  setGameName: vi.fn(),
+  prevGame: vi.fn(),
+  nextGame: vi.fn()
+};
+
+vi.mock("../store/useRouletteStore", () => ({
+  useRouletteStore: (selectorFn: (state: any) => any) => {
     const games = Array.from({ length: 5 }, (_, index) => ({
       name: index === mockSelectors.currentGame ? mockSelectors.gameName : `Game ${index + 1}`,
       spinning: index === mockSelectors.currentGame ? mockSelectors.spinning : false,
@@ -32,13 +34,12 @@ vi.mock("../store/hooks", () => ({
     }));
 
     const mockState = {
-      roulette: {
-        currentGame: mockSelectors.currentGame,
-        games,
-        timerType: mockSelectors.timerType,
-        timerDuration: mockSelectors.timerDuration,
-        timerLimit: mockSelectors.timerLimit
-      }
+      currentGame: mockSelectors.currentGame,
+      games,
+      timerType: mockSelectors.timerType,
+      timerDuration: mockSelectors.timerDuration,
+      timerLimit: mockSelectors.timerLimit,
+      ...mockActions
     };
     return selectorFn(mockState);
   }
@@ -48,7 +49,7 @@ describe("Header", () => {
   const toggleShowSettingsMock = vi.fn();
 
   beforeEach(() => {
-    mockDispatch.mockClear();
+    vi.clearAllMocks();
     toggleShowSettingsMock.mockClear();
     mockSelectors.gameName = "Game 1";
     mockSelectors.spinning = false;
@@ -76,9 +77,8 @@ describe("Header", () => {
 
   it("should call toggleShowSettings when settings button is clicked", () => {
     const { container } = renderComponent();
-    // settings button has IconSettings inside it
     const buttons = container.querySelectorAll("button");
-    const settingsButton = buttons[0]; // The absolute-positioned settings button is the first one
+    const settingsButton = buttons[0];
     fireEvent.click(settingsButton);
     expect(toggleShowSettingsMock).toHaveBeenCalled();
   });
@@ -87,7 +87,6 @@ describe("Header", () => {
     mockSelectors.currentGame = 0;
     const { container } = renderComponent();
     const buttons = container.querySelectorAll("button");
-    // previous button is the second button (first within the Title tag)
     const prevButton = buttons[1];
     expect(prevButton.disabled).toBe(true);
   });
@@ -100,7 +99,7 @@ describe("Header", () => {
     expect(prevButton.disabled).toBe(false);
 
     fireEvent.click(prevButton);
-    expect(mockDispatch).toHaveBeenCalledWith(prevGame());
+    expect(mockActions.prevGame).toHaveBeenCalled();
   });
 
   it("should disable next game button when currentGame is 4", () => {
@@ -119,7 +118,7 @@ describe("Header", () => {
     expect(nextButton.disabled).toBe(false);
 
     fireEvent.click(nextButton);
-    expect(mockDispatch).toHaveBeenCalledWith(nextGame());
+    expect(mockActions.nextGame).toHaveBeenCalled();
   });
 
   it("should disable previous and next buttons when spinning", () => {
@@ -133,11 +132,11 @@ describe("Header", () => {
     expect(nextButton.disabled).toBe(true);
   });
 
-  it("should dispatch setGameName when typing in game name input", () => {
+  it("should call setGameName when typing in game name input", () => {
     const { getByDisplayValue } = renderComponent();
     const input = getByDisplayValue("Game 1");
     fireEvent.change(input, { target: { value: "Daily Standup" } });
-    expect(mockDispatch).toHaveBeenCalledWith(setGameName({ name: "Daily Standup" }));
+    expect(mockActions.setGameName).toHaveBeenCalledWith("Daily Standup");
   });
 
   it("should render SpeakerTimer when timer is on, not spinning, there is a winner, and users remain", () => {
@@ -147,7 +146,6 @@ describe("Header", () => {
     mockSelectors.remainingUsers = [{ id: "user-2", name: "Bob", checked: true }];
 
     const { getByText } = renderComponent();
-    // SpeakerTimer displays the timer value. In this case, 1:00 for 60 seconds
     expect(getByText("1:00")).toBeTruthy();
   });
 });

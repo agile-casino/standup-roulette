@@ -1,29 +1,24 @@
 import { Button, Checkbox, Group, Input, SegmentedControl, Select, Stack, Title } from "@mantine/core";
 import type { ChangeEvent } from "react";
 import { useRef } from "react";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import {
-  addEndImageUrl,
-  removeEndImageUrl,
-  selectEndImageUrls,
-  selectTimerDuration,
-  selectTimerLimit,
-  selectTimerType,
-  setEndImageUrlEnabled,
-  setEndImageUrlValue,
-  setTimerDuration,
-  setTimerLimit,
-  setTimerType
-} from "../store/roulette/rouletteSlice";
+import { useRouletteStore } from "../store/useRouletteStore";
 import { ImportExportSettings } from "./ImportExportSettings";
 import styles from "./styles.module.css";
 
 export function SettingsPanel() {
-  const dispatch = useAppDispatch();
-  const endImageUrls = useAppSelector(selectEndImageUrls);
-  const timerType = useAppSelector(selectTimerType);
-  const timerDuration = useAppSelector(selectTimerDuration);
-  const timerLimit = useAppSelector(selectTimerLimit);
+  const endImageUrls = useRouletteStore(state => state.games[state.currentGame].endImageUrls);
+  const timerType = useRouletteStore(state => state.timerType);
+  const timerDuration = useRouletteStore(state => state.timerDuration);
+  const timerLimit = useRouletteStore(state => state.timerLimit);
+
+  const addEndImageUrl = useRouletteStore(state => state.addEndImageUrl);
+  const removeEndImageUrl = useRouletteStore(state => state.removeEndImageUrl);
+  const setEndImageUrlValue = useRouletteStore(state => state.setEndImageUrlValue);
+  const setEndImageUrlEnabled = useRouletteStore(state => state.setEndImageUrlEnabled);
+  const setTimerType = useRouletteStore(state => state.setTimerType);
+  const setTimerDuration = useRouletteStore(state => state.setTimerDuration);
+  const setTimerLimit = useRouletteStore(state => state.setTimerLimit);
+
   const endImageUrlKeys = useRef<string[]>([]);
   const nextEndImageUrlKey = useRef(0);
 
@@ -36,21 +31,21 @@ export function SettingsPanel() {
   }
 
   const onEndImageUrlChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
-    dispatch(setEndImageUrlValue({ index, url: event.currentTarget.value }));
+    setEndImageUrlValue(index, event.currentTarget.value);
   };
 
   const onEndImageUrlEnabledChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
-    dispatch(setEndImageUrlEnabled({ index, enabled: event.currentTarget.checked }));
+    setEndImageUrlEnabled(index, event.currentTarget.checked);
   };
 
   const onEndImageUrlAdd = () => {
     endImageUrlKeys.current.push(`end-image-url-${nextEndImageUrlKey.current++}`);
-    dispatch(addEndImageUrl());
+    addEndImageUrl();
   };
 
   const onEndImageUrlRemove = (index: number) => () => {
     endImageUrlKeys.current.splice(index, 1);
-    dispatch(removeEndImageUrl({ index }));
+    removeEndImageUrl(index);
   };
 
   return (
@@ -81,7 +76,7 @@ export function SettingsPanel() {
         <Input.Wrapper label="Speaker timer">
           <SegmentedControl
             value={timerType}
-            onChange={value => dispatch(setTimerType(value as "off" | "down" | "up"))}
+            onChange={value => setTimerType(value as "off" | "down" | "up")}
             data={[
               { label: "Off", value: "off" },
               { label: "Count Down", value: "down" },
@@ -99,9 +94,9 @@ export function SettingsPanel() {
                 if (value) {
                   const numValue = Number.parseInt(value, 10);
                   if (timerType === "down") {
-                    dispatch(setTimerDuration(numValue));
+                    setTimerDuration(numValue);
                   } else {
-                    dispatch(setTimerLimit(numValue));
+                    setTimerLimit(numValue);
                   }
                 }
               }}
