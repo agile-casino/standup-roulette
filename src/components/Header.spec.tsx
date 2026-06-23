@@ -1,17 +1,19 @@
 import { MantineProvider } from "@mantine/core";
 import { fireEvent, render } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import type { RouletteUser } from "../store/roulette/state";
+import type { RouletteStoreType } from "../store/useRouletteStore";
 import { Header } from "./Header";
 
 const mockSelectors = {
   gameName: "Game 1",
   spinning: false,
   currentGame: 0,
-  timerType: "off",
+  timerType: "off" as "off" | "up" | "down",
   timerDuration: 60,
   timerLimit: 60,
   winningName: null as string | null,
-  remainingUsers: [] as any[]
+  remainingUsers: [] as RouletteUser[]
 };
 
 const mockActions = {
@@ -21,7 +23,7 @@ const mockActions = {
 };
 
 vi.mock("../store/useRouletteStore", () => ({
-  useRouletteStore: (selectorFn: (state: any) => any) => {
+  useRouletteStore: <T,>(selectorFn: (state: RouletteStoreType) => T): T => {
     const games = Array.from({ length: 5 }, (_, index) => ({
       name: index === mockSelectors.currentGame ? mockSelectors.gameName : `Game ${index + 1}`,
       spinning: index === mockSelectors.currentGame ? mockSelectors.spinning : false,
@@ -40,7 +42,7 @@ vi.mock("../store/useRouletteStore", () => ({
       timerDuration: mockSelectors.timerDuration,
       timerLimit: mockSelectors.timerLimit,
       ...mockActions
-    };
+    } as unknown as RouletteStoreType;
     return selectorFn(mockState);
   }
 }));

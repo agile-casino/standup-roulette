@@ -1,6 +1,6 @@
 import type { RouletteUser } from "./RouletteUser";
 
-export interface EndImageUrl {
+interface EndImageUrl {
   url: string;
   enabled: boolean;
 }

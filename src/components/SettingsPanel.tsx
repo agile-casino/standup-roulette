@@ -1,6 +1,7 @@
-import { Button, Checkbox, Group, Input, SegmentedControl, Select, Stack, Title } from "@mantine/core";
+import { Button, Checkbox, Group, Input, SegmentedControl, Select, Stack, Text, Title } from "@mantine/core";
 import type { ChangeEvent } from "react";
 import { useRef } from "react";
+import pkg from "../../package.json";
 import { useRouletteStore } from "../store/useRouletteStore";
 import { ImportExportSettings } from "./ImportExportSettings";
 import styles from "./styles.module.css";
@@ -49,7 +50,7 @@ export function SettingsPanel() {
   };
 
   return (
-    <div>
+    <div style={{ paddingBottom: "60px" }}>
       <Title order={5} fw={400} className={styles.header}>
         Settings
       </Title>
@@ -114,6 +115,28 @@ export function SettingsPanel() {
       </Stack>
 
       <ImportExportSettings />
+
+      <div
+        style={{
+          position: "absolute",
+          bottom: "var(--mantine-spacing-md)",
+          left: "var(--mantine-spacing-md)",
+          right: "var(--mantine-spacing-md)",
+          borderTop: "1px solid var(--mantine-color-default-border)",
+          paddingTop: "var(--mantine-spacing-xs)",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          backgroundColor: "var(--mantine-color-body)"
+        }}
+      >
+        <Text size="xs" c="dimmed">
+          Standup Roulette
+        </Text>
+        <Text size="xs" c="dimmed" fw={500}>
+          v{pkg.version}
+        </Text>
+      </div>
     </div>
   );
 }

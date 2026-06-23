@@ -313,26 +313,26 @@ export const useRouletteStore = create<RouletteStoreType>()(
       name: "roulette",
       version: 6,
       storage: createJSONStorage(() => localStorage),
-      migrate: (persistedState: any, version: number) => {
+      migrate: (persistedState: unknown, version: number) => {
         let state = persistedState;
 
         if (!version || version === 0) {
-          state = migrations.undefined(state);
+          state = migrations.undefined(state as Parameters<typeof migrations.undefined>[0]);
           version = 4;
         }
 
         if (version === 2) {
-          state = migrations[2](state);
+          state = migrations[2](state as Parameters<(typeof migrations)[2]>[0]);
           version = 4;
         }
 
         if (version === 3) {
-          state = migrations[3](state);
+          state = migrations[3](state as Parameters<(typeof migrations)[3]>[0]);
           version = 4;
         }
 
         if (version === 4) {
-          state = migrations[4](state);
+          state = migrations[4](state as Parameters<(typeof migrations)[4]>[0]);
           version = 6;
         }
 

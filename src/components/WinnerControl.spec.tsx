@@ -34,7 +34,7 @@ describe("WinnerControl", () => {
   });
 
   afterEach(() => {
-    delete (global as any).GM_xmlhttpRequest;
+    delete (global as unknown as Record<string, unknown>).GM_xmlhttpRequest;
     vi.restoreAllMocks();
   });
 

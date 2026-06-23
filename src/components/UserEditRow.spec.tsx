@@ -1,6 +1,7 @@
 import { MantineProvider, Table } from "@mantine/core";
 import { fireEvent, render } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import type { RouletteStoreType } from "../store/useRouletteStore";
 import { UserEditRow } from "./UserEditRow";
 
 const mockActions = {
@@ -11,8 +12,8 @@ const mockActions = {
 };
 
 vi.mock("../store/useRouletteStore", () => ({
-  useRouletteStore: (selectorFn: (state: any) => any) => {
-    return selectorFn(mockActions);
+  useRouletteStore: <T,>(selectorFn: (state: RouletteStoreType) => T): T => {
+    return selectorFn(mockActions as unknown as RouletteStoreType);
   }
 }));
 
