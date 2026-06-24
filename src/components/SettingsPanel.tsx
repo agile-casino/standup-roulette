@@ -108,6 +108,7 @@ export function SettingsPanel() {
                 { value: "180", label: "3 minutes" },
                 { value: "300", label: "5 minutes" }
               ]}
+              comboboxProps={{ withinPortal: false }}
               style={{ maxWidth: "250px" }}
             />
           </Input.Wrapper>
