@@ -1,4 +1,4 @@
-import { Button, Checkbox, Group, Input, SegmentedControl, Select, Stack, Text, Title } from "@mantine/core";
+import { Button, Checkbox, Divider, Group, Input, SegmentedControl, Stack, Text, Title } from "@mantine/core";
 import type { ChangeEvent } from "react";
 import { useRef } from "react";
 import pkg from "../../package.json";
@@ -50,87 +50,94 @@ export function SettingsPanel() {
   };
 
   return (
-    <div style={{ paddingBottom: "60px" }}>
+    <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <Title order={5} fw={400} className={styles.header}>
         Settings
       </Title>
-      <Input.Wrapper label="End of standup image urls">
-        <Stack gap={8}>
-          {endImageUrls.map((endImageUrl, index) => (
-            <Group key={endImageUrlKeys.current[index]} gap={8} wrap="nowrap">
-              <Checkbox checked={endImageUrl.enabled} onChange={onEndImageUrlEnabledChange(index)} aria-label={`Enable image url ${index + 1}`} />
-              <Input placeholder="https://..." value={endImageUrl.url} onChange={onEndImageUrlChange(index)} style={{ flexGrow: 1 }} />
-              <Button variant="light" color="red" onClick={onEndImageUrlRemove(index)}>
-                Remove
+
+      <div className={styles.settingsGrid}>
+        {/* Section 1: End of standup images */}
+        <div className={styles.settingsSection}>
+          <div className={styles.cardTitle}>End of Standup Images</div>
+          <div className={styles.cardSubtitle}>Configure image URLs to display when a standup roulette finishes.</div>
+          <Stack gap={8}>
+            {endImageUrls.map((endImageUrl, index) => (
+              <div key={endImageUrlKeys.current[index]} className={styles.urlRow}>
+                <Checkbox checked={endImageUrl.enabled} onChange={onEndImageUrlEnabledChange(index)} aria-label={`Enable image url ${index + 1}`} size="sm" />
+                <Input placeholder="https://..." value={endImageUrl.url} onChange={onEndImageUrlChange(index)} style={{ flexGrow: 1 }} size="sm" />
+                <Button variant="light" color="red" onClick={onEndImageUrlRemove(index)} size="xs">
+                  Remove
+                </Button>
+              </div>
+            ))}
+            <Group mt="xs">
+              <Button variant="outline" onClick={onEndImageUrlAdd} size="xs">
+                Add URL
               </Button>
             </Group>
-          ))}
-          <Group>
-            <Button variant="outline" onClick={onEndImageUrlAdd}>
-              Add URL
-            </Button>
-          </Group>
-        </Stack>
-      </Input.Wrapper>
+          </Stack>
+        </div>
 
-      <Stack gap="sm" style={{ marginTop: "1.5rem", marginBottom: "1.5rem" }}>
-        <Input.Wrapper label="Speaker timer">
-          <SegmentedControl
-            value={timerType}
-            onChange={value => setTimerType(value as "off" | "down" | "up")}
-            data={[
-              { label: "Off", value: "off" },
-              { label: "Count Down", value: "down" },
-              { label: "Count Up", value: "up" }
-            ]}
-            style={{ maxWidth: "300px" }}
-          />
-        </Input.Wrapper>
+        <Divider my="md" />
 
-        {timerType !== "off" && (
-          <Input.Wrapper label={timerType === "down" ? "Count down from" : "Count up to (max 5 min)"} style={{ paddingLeft: "1.5rem" }}>
-            <Select
-              value={String(timerType === "down" ? timerDuration : timerLimit)}
-              onChange={value => {
-                if (value) {
-                  const numValue = Number.parseInt(value, 10);
-                  if (timerType === "down") {
-                    setTimerDuration(numValue);
-                  } else {
-                    setTimerLimit(numValue);
-                  }
-                }
-              }}
-              data={[
-                { value: "30", label: "30 seconds" },
-                { value: "60", label: "1 minute" },
-                { value: "120", label: "2 minutes" },
-                { value: "180", label: "3 minutes" },
-                { value: "300", label: "5 minutes" }
-              ]}
-              comboboxProps={{ withinPortal: false }}
-              style={{ maxWidth: "250px" }}
-            />
-          </Input.Wrapper>
-        )}
-      </Stack>
+        {/* Section 2: Speaker Timer */}
+        <div className={styles.settingsSection}>
+          <div className={styles.cardTitle}>Speaker Timer</div>
+          <div className={styles.cardSubtitle}>Track individual speaker time with count up or count down timers.</div>
+          <div className={styles.timerRow}>
+            <div className={styles.timerControlCol}>
+              <Input.Wrapper label="Timer Type">
+                <SegmentedControl
+                  value={timerType}
+                  onChange={value => setTimerType(value as "off" | "down" | "up")}
+                  data={[
+                    { label: "Off", value: "off" },
+                    { label: "Count Down", value: "down" },
+                    { label: "Count Up", value: "up" }
+                  ]}
+                  size="sm"
+                  fullWidth
+                />
+              </Input.Wrapper>
+            </div>
 
-      <ImportExportSettings />
+            {timerType !== "off" && (
+              <div className={styles.timerSelectCol}>
+                <Input.Wrapper label={timerType === "down" ? "Count down from" : "Count up to (max 3 min)"}>
+                  <SegmentedControl
+                    value={String(timerType === "down" ? timerDuration : timerLimit)}
+                    onChange={value => {
+                      if (value) {
+                        const numValue = Number.parseInt(value, 10);
+                        if (timerType === "down") {
+                          setTimerDuration(numValue);
+                        } else {
+                          setTimerLimit(numValue);
+                        }
+                      }
+                    }}
+                    data={[
+                      { value: "60", label: "1m" },
+                      { value: "120", label: "2m" },
+                      { value: "180", label: "3m" }
+                    ]}
+                    size="sm"
+                    fullWidth
+                  />
+                </Input.Wrapper>
+              </div>
+            )}
+          </div>
+        </div>
 
-      <div
-        style={{
-          position: "absolute",
-          bottom: "var(--mantine-spacing-md)",
-          left: "var(--mantine-spacing-md)",
-          right: "var(--mantine-spacing-md)",
-          borderTop: "1px solid var(--mantine-color-default-border)",
-          paddingTop: "var(--mantine-spacing-xs)",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          backgroundColor: "var(--mantine-color-body)"
-        }}
-      >
+        <Divider my="md" />
+
+        {/* Section 3: Actions / Import-Export */}
+        <ImportExportSettings />
+      </div>
+
+      {/* Footer info */}
+      <div className={styles.footer}>
         <Text size="xs" c="dimmed">
           Standup Roulette
         </Text>

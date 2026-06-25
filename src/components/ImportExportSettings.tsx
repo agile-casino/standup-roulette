@@ -1,5 +1,7 @@
 import { Button, Group } from "@mantine/core";
+import { IconDownload, IconUpload } from "@tabler/icons-react";
 import { useRouletteStore } from "../store/useRouletteStore";
+import styles from "./styles.module.css";
 
 export function ImportExportSettings() {
   const currentGame = useRouletteStore(state => state.currentGame);
@@ -72,13 +74,17 @@ export function ImportExportSettings() {
   };
 
   return (
-    <Group mt={20}>
-      <Button onClick={handleExport} variant="outline">
-        Export Settings
-      </Button>
-      <Button onClick={handleImport} variant="outline">
-        Import Settings
-      </Button>
-    </Group>
+    <div className={styles.settingsSection}>
+      <div className={styles.cardTitle}>Import / Export</div>
+      <div className={styles.cardSubtitle}>Transfer your game settings, speakers, and timer configurations to another browser or device.</div>
+      <Group gap="xs" mt="xs" grow>
+        <Button onClick={handleImport} variant="outline" size="sm" leftSection={<IconUpload size={16} />} fullWidth>
+          Import Settings
+        </Button>
+        <Button onClick={handleExport} variant="outline" size="sm" leftSection={<IconDownload size={16} />} fullWidth>
+          Export Settings
+        </Button>
+      </Group>
+    </div>
   );
 }
