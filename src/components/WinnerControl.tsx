@@ -77,6 +77,9 @@ export function WinnerControl({ name, mascotNumber }: Readonly<WinnerControlProp
 }
 
 async function getData(mascotNumber: number): Promise<MascotData | null> {
+  if (typeof GM_xmlhttpRequest === "undefined") {
+    return null;
+  }
   return new Promise(resolve => {
     GM_xmlhttpRequest({
       method: "GET",

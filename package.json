@@ -11,10 +11,12 @@
     "lint": "prettier \"**/*.{md,yml}\" && biome check && knip",
     "lint:fix": "prettier --write \"**/*.{md,yml}\" && biome check --write && knip --fix",
     "prune": "ts-prune",
+    "sync": "node scripts/sync-manifest.js",
     "tcm": "tcm src/**/*.module.css",
     "test": "vitest run",
     "test:watch": "vitest",
-    "knip": "knip"
+    "knip": "knip",
+    "zip": "node scripts/zip-extension.js"
   },
   "repository": {
     "type": "git",
@@ -34,12 +36,14 @@
     "@biomejs/biome": "2.5.1",
     "@testing-library/react": "^16.3.2",
     "@tsconfig/recommended": "^1.0.13",
+    "@types/archiver": "^8.0.0",
     "@types/node": "^25.9.4",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@types/tampermonkey": "^5.0.5",
     "@vitest/coverage-v8": "^4.1.9",
     "@vitest/ui": "^4.1.9",
+    "archiver": "^8.0.0",
     "happy-dom": "^20.10.6",
     "knip": "^6.20.0",
     "postcss": "^8.5.15",

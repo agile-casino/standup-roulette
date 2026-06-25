@@ -1,12 +1,14 @@
-name: Release (Azure)
+name: Release
 
 on:
   push:
     tags: ["v*.*.*"]
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout Code
@@ -23,19 +25,15 @@ jobs:
           corepack enable
           pnpm install
 
-      - name: Build Code
+      - name: Build and Package
         run: |
           pnpm run build
+          pnpm run sync
+          pnpm run zip
           pnpm run test
           pnpm biome ci src
 
-      - name: Publish Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist/
-
-      - name: Release
+      - name: Deploy to Azure Blob Storage
         uses: bacongobbler/azure-blob-storage-upload@main
         with:
           source_dir: dist
@@ -43,3 +41,10 @@ jobs:
           extra_args: "--destination-path standup-roulette"
           connection_string: ${{ secrets.BLOB_CONNECTION_STRING }}
           overwrite: "true"
+
+      - name: Deploy to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/index.user.js
+            standup-roulette-extension-v*.zip
