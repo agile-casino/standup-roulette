@@ -29,7 +29,7 @@ function getBiomeConfig(platform: string, mode: string): { command: "check" | "c
 
 export default defineConfig(({ mode }: { mode: string }) => ({
   plugins: [
-    analyzer({ analyzerMode: "static" }),
+    mode === "development" ? analyzer({ analyzerMode: "static" }) : null,
     bannerPlugin({ content: banner, verify: false }),
     checker({
       biome: getBiomeConfig(process.platform, mode),
@@ -38,7 +38,7 @@ export default defineConfig(({ mode }: { mode: string }) => ({
     cssInjectedByJsPlugin()
   ],
   build: {
-    manifest: true,
+    manifest: false,
     target: "chrome121",
     chunkSizeWarningLimit: 1024,
     minify: mode !== "development",
