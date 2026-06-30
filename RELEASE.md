@@ -3,7 +3,9 @@
 This document outlines the steps to release a new version of **Standup Roulette**.
 
 ## 1. Prerequisites
+
 Ensure you have the correct Node.js environment and dependencies installed:
+
 ```bash
 # Install corepack if not installed
 npm i -g corepack@latest
@@ -18,13 +20,17 @@ pnpm install
 ## 2. Release Steps
 
 ### Step 2.1: Determine the New Version
+
 Decide on the next version number following Semantic Versioning (SemVer):
+
 - **Patch release** (e.g., `4.16.0` -> `4.16.1`): For bug fixes and minor internal adjustments.
 - **Minor release** (e.g., `4.16.0` -> `4.17.0`): For new backwards-compatible features.
 - **Major release** (e.g., `4.16.0` -> `5.0.0`): For breaking changes.
 
 ### Step 2.2: Update Version Strings
+
 Update the version string in the following files:
+
 1. **[package.json](file:///root/standup-roulette/package.json)** (line 3):
    ```json
    "version": "4.16.1"
@@ -35,7 +41,9 @@ Update the version string in the following files:
    ```
 
 ### Step 2.3: Verify Locally
+
 Always run local checks to ensure the build succeeds, tests pass, and code complies with formatting rules:
+
 ```bash
 # Build the project (generates the userscript bundle in dist/)
 pnpm run build
@@ -54,21 +62,28 @@ pnpm biome ci src
 ```
 
 ### Step 2.4: Commit the Release Changes
+
 Stage the version updates and create a commit:
+
 ```bash
 git add package.json public/manifest.json
 git commit -m "chore: release vX.Y.Z"
 ```
-*(Replace `vX.Y.Z` with the actual version number, e.g., `v4.16.1`)*
+
+_(Replace `vX.Y.Z` with the actual version number, e.g., `v4.16.1`)_
 
 ### Step 2.5: Tag the Commit
+
 Create a local git tag matching the version:
+
 ```bash
 git tag vX.Y.Z
 ```
 
 ### Step 2.6: Push to GitHub
+
 Push the branch and the new tag to trigger the release workflow:
+
 ```bash
 git push origin main
 git push origin vX.Y.Z
@@ -77,9 +92,11 @@ git push origin vX.Y.Z
 ---
 
 ## 3. Automated Release Workflow
+
 Once the tag is pushed to GitHub, the **Release Workflow** ([.github/workflows/release.yml](file:///root/standup-roulette/.github/workflows/release.yml)) is triggered automatically.
 
 This workflow:
+
 1. Checks out the code.
 2. Installs dependencies and runs the build (`pnpm run build`), version sync (`pnpm run sync`), packaging (`pnpm run zip`), and tests (`pnpm run test` & `pnpm biome ci src`).
 3. Deploys the built userscript (`dist/index.user.js`) to **Azure Blob Storage** under the container `apps/standup-roulette/`.

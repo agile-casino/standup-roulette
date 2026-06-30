@@ -7,9 +7,10 @@ This document outlines the steps to configure **merge-mentor** to automatically 
 ## 1. Objectives
 
 To introduce automated AI-driven pull request review reviews into the CI pipeline of **standup-roulette** to:
-* Catch errors, security gaps, or structural problems automatically on PR creation or updates.
-* Optimize developer iteration speed using budget-friendly open-source models via the **OpenCode Go** API.
-* Post structured inline review comments on the pull request.
+
+- Catch errors, security gaps, or structural problems automatically on PR creation or updates.
+- Optimize developer iteration speed using budget-friendly open-source models via the **OpenCode Go** API.
+- Post structured inline review comments on the pull request.
 
 ---
 
@@ -18,7 +19,9 @@ To introduce automated AI-driven pull request review reviews into the CI pipelin
 To allow the workflow to query code changes and write inline comments, the following permissions and secrets are required:
 
 ### Step 2.1: GitHub Repository Permissions
+
 Ensure the workflow has write permissions to post comments to Pull Requests. This is configured in the workflow YAML under:
+
 ```yaml
 permissions:
   contents: read
@@ -26,8 +29,10 @@ permissions:
 ```
 
 ### Step 2.2: Add Repository Secrets
+
 In your GitHub repository settings, navigate to **Settings ➡️ Secrets and variables ➡️ Actions** and add the following secret:
-* **`OPENCODE_API_KEY`**: Your personal OpenCode Go API key obtained from your OpenCode dashboard.
+
+- **`OPENCODE_API_KEY`**: Your personal OpenCode Go API key obtained from your OpenCode dashboard.
 
 ---
 
@@ -36,6 +41,7 @@ In your GitHub repository settings, navigate to **Settings ➡️ Secrets and va
 We will create a new GitHub Actions workflow file: [review.yml](file:///root/standup-roulette/.github/workflows/review.yml).
 
 ### Workflow Content:
+
 ```yaml
 name: AI Pull Request Review
 
@@ -89,8 +95,9 @@ jobs:
 ## 4. Customizing Review Strategies (Optional)
 
 The `merge-mentor` CLI supports extra options to tailor reviews to the project's codebase:
-* **deep mode:** Add `--strategy deep` for deeper reasoning, or omit for `--strategy fast` (lower cost, faster feedback loop).
-* **focused passes:** Add `--pass database` or `--pass testing` to focus feedback on those domains.
+
+- **deep mode:** Add `--strategy deep` for deeper reasoning, or omit for `--strategy fast` (lower cost, faster feedback loop).
+- **focused passes:** Add `--pass database` or `--pass testing` to focus feedback on those domains.
 
 ---
 
