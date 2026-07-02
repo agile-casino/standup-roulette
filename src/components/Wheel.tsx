@@ -141,9 +141,7 @@ export function Wheel({ mustStartSpinning, prizeNumber, data, onStopSpinning, sp
       ctx.textBaseline = "middle";
 
       // Subtle shadow/glow for text contrast
-      const isDarkText =
-        !textColor ||
-        !["#fff", "#ffffff", "white"].includes(textColor.toLowerCase());
+      const isDarkText = !textColor || !["#fff", "#ffffff", "white"].includes(textColor.toLowerCase());
       if (isDarkText) {
         ctx.shadowColor = "rgba(255, 255, 255, 0.65)";
         ctx.shadowBlur = 3;
@@ -158,12 +156,7 @@ export function Wheel({ mustStartSpinning, prizeNumber, data, onStopSpinning, sp
     }
 
     // 2. Draw outer bezel (ring)
-    const bezelGradient = ctx.createLinearGradient(
-      cx - bezelOuterRadius,
-      cy - bezelOuterRadius,
-      cx + bezelOuterRadius,
-      cy + bezelOuterRadius
-    );
+    const bezelGradient = ctx.createLinearGradient(cx - bezelOuterRadius, cy - bezelOuterRadius, cx + bezelOuterRadius, cy + bezelOuterRadius);
     bezelGradient.addColorStop(0, "#2c3e50"); // Premium slate dark
     bezelGradient.addColorStop(0.5, "#1a252f");
     bezelGradient.addColorStop(1, "#111827"); // Rich black
@@ -409,21 +402,10 @@ export function Wheel({ mustStartSpinning, prizeNumber, data, onStopSpinning, sp
           pointerEvents: "none"
         }}
       >
-        <svg
-          viewBox="0 0 100 100"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          style={{ filter: "drop-shadow(0px 5px 8px rgba(0,0,0,0.22))" }}
-        >
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: "drop-shadow(0px 5px 8px rgba(0,0,0,0.22))" }}>
           <title>Wheel Pointer</title>
           {/* Traditional map pin pointer but styled with gradient/premium stroke */}
-          <path
-            d="M 25 75 L 47 17 A 25 25 0 1 1 83 53 Z"
-            fill="#ef4444"
-            stroke="#ffffff"
-            strokeWidth="5"
-            strokeLinejoin="round"
-          />
+          <path d="M 25 75 L 47 17 A 25 25 0 1 1 83 53 Z" fill="#ef4444" stroke="#ffffff" strokeWidth="5" strokeLinejoin="round" />
           {/* Central hub of the pointer */}
           <circle cx="65" cy="35" r="7" fill="#ffffff" />
         </svg>
