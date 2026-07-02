@@ -19,6 +19,8 @@ export function SettingsPanel() {
   const setTimerType = useRouletteStore(state => state.setTimerType);
   const setTimerDuration = useRouletteStore(state => state.setTimerDuration);
   const setTimerLimit = useRouletteStore(state => state.setTimerLimit);
+  const wheelType = useRouletteStore(state => state.wheelType);
+  const setWheelType = useRouletteStore(state => state.setWheelType);
 
   const endImageUrlKeys = useRef<string[]>([]);
   const nextEndImageUrlKey = useRef(0);
@@ -132,7 +134,31 @@ export function SettingsPanel() {
 
         <Divider my="md" />
 
-        {/* Section 3: Actions / Import-Export */}
+        {/* Section 3: Roulette Wheel */}
+        <div className={styles.settingsSection}>
+          <div className={styles.cardTitle}>Roulette Wheel</div>
+          <div className={styles.cardSubtitle}>Switch between the classic library wheel and the new custom wheel.</div>
+          <div className={styles.timerRow}>
+            <div className={styles.timerControlCol}>
+              <Input.Wrapper label="Wheel Style">
+                <SegmentedControl
+                  value={wheelType}
+                  onChange={value => setWheelType(value as "old" | "new")}
+                  data={[
+                    { label: "Classic", value: "old" },
+                    { label: "Modern", value: "new" }
+                  ]}
+                  size="sm"
+                  fullWidth
+                />
+              </Input.Wrapper>
+            </div>
+          </div>
+        </div>
+
+        <Divider my="md" />
+
+        {/* Section 4: Actions / Import-Export */}
         <ImportExportSettings />
       </div>
 

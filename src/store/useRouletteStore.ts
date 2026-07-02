@@ -29,6 +29,7 @@ interface RouletteActions {
   setTimerType: (type: "off" | "up" | "down") => void;
   setTimerDuration: (duration: number) => void;
   setTimerLimit: (limit: number) => void;
+  setWheelType: (type: "old" | "new") => void;
 }
 
 export type RouletteStoreType = RouletteState & RouletteActions;
@@ -81,7 +82,8 @@ function normalizeImportedState(state: unknown): RouletteState {
       games: [initialGameState("Game 1")],
       timerType: "off",
       timerDuration: 60,
-      timerLimit: 60
+      timerLimit: 60,
+      wheelType: "old"
     };
   }
 
@@ -91,6 +93,7 @@ function normalizeImportedState(state: unknown): RouletteState {
     timerType?: "off" | "up" | "down";
     timerDuration?: number;
     timerLimit?: number;
+    wheelType?: "old" | "new";
   };
   const games = importedState.games.map((game, index) => {
     const name = typeof game.name === "string" && game.name.trim().length > 0 ? game.name : `Game ${index + 1}`;
@@ -122,12 +125,18 @@ function normalizeImportedState(state: unknown): RouletteState {
   const timerDuration = typeof importedState.timerDuration === "number" ? importedState.timerDuration : 60;
   const timerLimit = typeof importedState.timerLimit === "number" ? importedState.timerLimit : 60;
 
+  let wheelType: "old" | "new" = "old";
+  if (importedState.wheelType === "old" || importedState.wheelType === "new") {
+    wheelType = importedState.wheelType;
+  }
+
   return {
     currentGame,
     games,
     timerType,
     timerDuration,
-    timerLimit
+    timerLimit,
+    wheelType
   };
 }
 
@@ -140,6 +149,7 @@ export const useRouletteStore = create<RouletteStoreType>()(
       timerType: "off",
       timerDuration: 60,
       timerLimit: 60,
+      wheelType: "old",
 
       // --- Actions ---
       setGameName: name =>
@@ -307,11 +317,16 @@ export const useRouletteStore = create<RouletteStoreType>()(
       setTimerLimit: limit =>
         set(state => {
           state.timerLimit = limit;
+        }),
+
+      setWheelType: type =>
+        set(state => {
+          state.wheelType = type;
         })
     })),
     {
       name: "roulette",
-      version: 6,
+      version: 7,
       storage: createJSONStorage(() => localStorage),
       migrate: (persistedState: unknown, version: number) => {
         let state = persistedState;
@@ -334,6 +349,13 @@ export const useRouletteStore = create<RouletteStoreType>()(
         if (version === 4) {
           state = migrations[4](state as Parameters<(typeof migrations)[4]>[0]);
           version = 6;
+        }
+
+        if (version === 6) {
+          if (state && typeof state === "object") {
+            (state as Record<string, unknown>).wheelType = "old";
+          }
+          version = 7;
         }
 
         return state;

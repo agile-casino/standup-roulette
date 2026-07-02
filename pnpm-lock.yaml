@@ -95,7 +95,7 @@ importers:
         version: 7.0.1(postcss@8.5.16)
       prettier:
         specifier: ^3.8.4
-        version: 3.9.3
+        version: 3.9.4
       ts-prune:
         specifier: ^0.10.3
         version: 0.10.3
@@ -110,7 +110,7 @@ importers:
         version: 5.2.0(typescript@6.0.3)
       vite:
         specifier: ^8.1.0
-        version: 8.1.0(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0)
+        version: 8.1.2(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0)
       vite-bundle-analyzer:
         specifier: ^1.3.8
         version: 1.3.8
@@ -119,10 +119,10 @@ importers:
         version: 0.8.1
       vite-plugin-css-injected-by-js:
         specifier: ^5.0.1
-        version: 5.0.1(vite@8.1.0(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0))
+        version: 5.0.1(vite@8.1.2(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0))
       vitest:
         specifier: ^4.1.9
-        version: 4.1.9(@types/node@25.9.4)(@vitest/coverage-v8@4.1.9)(@vitest/ui@4.1.9)(happy-dom@20.10.6)(vite@8.1.0(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0))
+        version: 4.1.9(@types/node@25.9.4)(@vitest/coverage-v8@4.1.9)(@vitest/ui@4.1.9)(happy-dom@20.10.6)(vite@8.1.2(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0))
 
 packages:
 
@@ -1272,8 +1272,8 @@ packages:
   immer@11.1.8:
     resolution: {integrity: sha512-/tbkHMW7y10Lx6i1crLjD4/OhNkRG+Fo7byZHtah0547nIeXYcpIXaUh0IAQY6gO5459qpGGYapcEOHtFXkIuA==}
 
-  immutable@5.1.8:
-    resolution: {integrity: sha512-TM5YqrGeTsVIPPpILzeqZ8D2Zc2TvNgSDi88zPF2a4cyqQdWV/wVWBDRDbNzzrLeRWScrFcOX9lW2iX6GOtUDw==}
+  immutable@5.1.9:
+    resolution: {integrity: sha512-m8nVez3rwrgmWxtLMt1ZYXB2Lv7OKYn/disyxAlSDYAlKSlFoPPfIAmAM/M5xqL4m4C/wAPw7S2/CNaUii1Hxg==}
 
   import-fresh@3.3.1:
     resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
@@ -1684,8 +1684,8 @@ packages:
     resolution: {integrity: sha512-vuwillviilfKZsg0VGj5R/YwwcHx4SLsIOI/7K6mQkWx+l5cUHTjj5g0AasTBcyXsbfTgrwsUNmVUb5xVwyPwg==}
     engines: {node: ^10 || ^12 || >=14}
 
-  prettier@3.9.3:
-    resolution: {integrity: sha512-HWmu+K+zvHNpaMfSnYeqdqrDbR16cuIXaPx8WoHaviQkDJh1/0BNtOZmHVQI5jc3wXv0H1yXc9wjvFdXh+n3hQ==}
+  prettier@3.9.4:
+    resolution: {integrity: sha512-yWG/o/4oJfo036EKAfK6ACAoDOfHeRHx4tuxkfBZiauURiaSmYwlpOr5LQqKtIkRD2z1PLteme2WoxEnj4tHTg==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -2044,8 +2044,8 @@ packages:
     peerDependencies:
       vite: '>8.0.0-0'
 
-  vite@8.1.0:
-    resolution: {integrity: sha512-BuJcQK/56NQTWDGn4ABea3q4SSBdNPWwNZKTkkUpcMPnLoquSYH8llRtSUIgoL1KSCpHt5eghLShn50mH36y7Q==}
+  vite@8.1.2:
+    resolution: {integrity: sha512-6YYPbRXTxx6bRXmOn7XdnQAy5DQNHhDgtjhDHI13oe4pY93kkcdGJWxpGwOm++/Wh0QpQhDrpIoVMrmrsI5AGQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -2741,7 +2741,7 @@ snapshots:
       obug: 2.1.3
       std-env: 4.1.0
       tinyrainbow: 3.1.0
-      vitest: 4.1.9(@types/node@25.9.4)(@vitest/coverage-v8@4.1.9)(@vitest/ui@4.1.9)(happy-dom@20.10.6)(vite@8.1.0(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0))
+      vitest: 4.1.9(@types/node@25.9.4)(@vitest/coverage-v8@4.1.9)(@vitest/ui@4.1.9)(happy-dom@20.10.6)(vite@8.1.2(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0))
 
   '@vitest/expect@4.1.9':
     dependencies:
@@ -2752,13 +2752,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.1.0
 
-  '@vitest/mocker@4.1.9(vite@8.1.0(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0))':
+  '@vitest/mocker@4.1.9(vite@8.1.2(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0))':
     dependencies:
       '@vitest/spy': 4.1.9
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 8.1.0(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0)
+      vite: 8.1.2(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0)
 
   '@vitest/pretty-format@4.1.9':
     dependencies:
@@ -2787,7 +2787,7 @@ snapshots:
       sirv: 3.0.2
       tinyglobby: 0.2.17
       tinyrainbow: 3.1.0
-      vitest: 4.1.9(@types/node@25.9.4)(@vitest/coverage-v8@4.1.9)(@vitest/ui@4.1.9)(happy-dom@20.10.6)(vite@8.1.0(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0))
+      vitest: 4.1.9(@types/node@25.9.4)(@vitest/coverage-v8@4.1.9)(@vitest/ui@4.1.9)(happy-dom@20.10.6)(vite@8.1.2(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0))
 
   '@vitest/utils@4.1.9':
     dependencies:
@@ -3179,7 +3179,7 @@ snapshots:
 
   immer@11.1.8: {}
 
-  immutable@5.1.8: {}
+  immutable@5.1.9: {}
 
   import-fresh@3.3.1:
     dependencies:
@@ -3568,7 +3568,7 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  prettier@3.9.3: {}
+  prettier@3.9.4: {}
 
   pretty-format@27.5.1:
     dependencies:
@@ -3704,7 +3704,7 @@ snapshots:
   sass@1.101.0:
     dependencies:
       chokidar: 5.0.0
-      immutable: 5.1.8
+      immutable: 5.1.9
       source-map-js: 1.2.1
     optionalDependencies:
       '@parcel/watcher': 2.5.6
@@ -3951,11 +3951,11 @@ snapshots:
 
   vite-plugin-banner@0.8.1: {}
 
-  vite-plugin-css-injected-by-js@5.0.1(vite@8.1.0(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0)):
+  vite-plugin-css-injected-by-js@5.0.1(vite@8.1.2(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0)):
     dependencies:
-      vite: 8.1.0(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0)
+      vite: 8.1.2(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0)
 
-  vite@8.1.0(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0):
+  vite@8.1.2(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0):
     dependencies:
       lightningcss: 1.32.0
       picomatch: 4.0.4
@@ -3972,10 +3972,10 @@ snapshots:
       sugarss: 5.0.1(postcss@8.5.16)
       yaml: 2.9.0
 
-  vitest@4.1.9(@types/node@25.9.4)(@vitest/coverage-v8@4.1.9)(@vitest/ui@4.1.9)(happy-dom@20.10.6)(vite@8.1.0(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0)):
+  vitest@4.1.9(@types/node@25.9.4)(@vitest/coverage-v8@4.1.9)(@vitest/ui@4.1.9)(happy-dom@20.10.6)(vite@8.1.2(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0)):
     dependencies:
       '@vitest/expect': 4.1.9
-      '@vitest/mocker': 4.1.9(vite@8.1.0(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0))
+      '@vitest/mocker': 4.1.9(vite@8.1.2(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0))
       '@vitest/pretty-format': 4.1.9
       '@vitest/runner': 4.1.9
       '@vitest/snapshot': 4.1.9
@@ -3992,7 +3992,7 @@ snapshots:
       tinyexec: 1.2.4
       tinyglobby: 0.2.17
       tinyrainbow: 3.1.0
-      vite: 8.1.0(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0)
+      vite: 8.1.2(@types/node@25.9.4)(jiti@2.7.0)(less@4.6.7)(sass@1.101.0)(stylus@0.62.0)(sugarss@5.0.1(postcss@8.5.16))(yaml@2.9.0)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 25.9.4

@@ -39,7 +39,8 @@ export const migrations = {
     ],
     timerType: "off",
     timerDuration: 60,
-    timerLimit: 60
+    timerLimit: 60,
+    wheelType: "old"
   }),
   2: (state: LegacyState): v4state => {
     for (let i = 0; i < state.games.length; i++) {
@@ -52,7 +53,8 @@ export const migrations = {
       games: state.games as v4state["games"],
       timerType: "off",
       timerDuration: 60,
-      timerLimit: 60
+      timerLimit: 60,
+      wheelType: "old"
     };
   },
   3: (state: LegacyState): v4state => {
@@ -64,7 +66,8 @@ export const migrations = {
       games: state.games as v4state["games"],
       timerType: "off",
       timerDuration: 60,
-      timerLimit: 60
+      timerLimit: 60,
+      wheelType: "old"
     };
   },
   4: (state: v2state): v4state => {
@@ -73,7 +76,8 @@ export const migrations = {
       games: state.games,
       timerType: "off",
       timerDuration: 60,
-      timerLimit: 60
+      timerLimit: 60,
+      wheelType: "old"
     };
   }
 };

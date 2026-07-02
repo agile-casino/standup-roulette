@@ -1,10 +1,11 @@
 import { Button, Center } from "@mantine/core";
 import { useCallback, useMemo } from "react";
-import { Wheel, type WheelDataType } from "react-custom-roulette";
+import { Wheel as ClassicWheel } from "react-custom-roulette";
 import { thatsAllFolks } from "../images/thatsAllFolks";
 import { useRouletteStore } from "../store/useRouletteStore";
 import { selectPerson, selectTeam } from "../utils/adosHelper";
 import { getMascot } from "../utils/mascot";
+import { Wheel as ModernWheel, type WheelDataType } from "./Wheel";
 import { WinnerControl } from "./WinnerControl";
 
 export function RouletteWheel() {
@@ -14,6 +15,7 @@ export function RouletteWheel() {
   const remainingUsers = useRouletteStore(state => state.games[state.currentGame].remainingUsers);
   const seed = useRouletteStore(state => state.games[state.currentGame].seed);
   const endImageUrls = useRouletteStore(state => state.games[state.currentGame].endImageUrls);
+  const wheelType = useRouletteStore(state => state.wheelType);
 
   const prepareSpin = useRouletteStore(state => state.prepareSpin);
   const beginSpin = useRouletteStore(state => state.beginSpin);
@@ -78,7 +80,11 @@ export function RouletteWheel() {
     <div>
       {!!data.length && (
         <>
-          <Wheel data={data} spinDuration={0.15} prizeNumber={winningUserIndex} mustStartSpinning={spinning} onStopSpinning={onStopSpinning} />
+          {wheelType === "new" ? (
+            <ModernWheel data={data} spinDuration={0.15} prizeNumber={winningUserIndex} mustStartSpinning={spinning} onStopSpinning={onStopSpinning} />
+          ) : (
+            <ClassicWheel data={data} spinDuration={0.15} prizeNumber={winningUserIndex} mustStartSpinning={spinning} onStopSpinning={onStopSpinning} />
+          )}
           <Center>
             <WinnerControl name={winningName ?? ""} mascotNumber={getMascot(winningName ?? "", seed)} />
           </Center>

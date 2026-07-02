@@ -6,4 +6,5 @@ export interface RouletteState {
   timerType: "off" | "up" | "down";
   timerDuration: number;
   timerLimit: number;
+  wheelType: "old" | "new";
 }

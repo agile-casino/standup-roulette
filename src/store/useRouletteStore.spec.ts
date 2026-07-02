@@ -19,7 +19,8 @@ describe("useRouletteStore", () => {
       ],
       timerType: "off",
       timerDuration: 60,
-      timerLimit: 60
+      timerLimit: 60,
+      wheelType: "old"
     });
   });
 
@@ -251,6 +252,13 @@ describe("useRouletteStore", () => {
     it("should handle setTimerLimit correctly", () => {
       useRouletteStore.getState().setTimerLimit(180);
       expect(useRouletteStore.getState().timerLimit).toBe(180);
+    });
+  });
+
+  describe("wheel actions", () => {
+    it("should handle setWheelType correctly", () => {
+      useRouletteStore.getState().setWheelType("new");
+      expect(useRouletteStore.getState().wheelType).toBe("new");
     });
   });
 });

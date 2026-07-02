@@ -14,7 +14,8 @@ const mockSelectors: RouletteState = {
   games: [],
   timerType: "off",
   timerDuration: 60,
-  timerLimit: 60
+  timerLimit: 60,
+  wheelType: "old"
 };
 
 vi.mock("../store/useRouletteStore", () => ({
