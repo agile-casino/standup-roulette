@@ -7,11 +7,6 @@ import { SettingsPanel } from "./SettingsPanel";
 import styles from "./styles.module.css";
 
 interface SettingsDialogProps {
-  origin: string;
-  collection: string;
-  project: string;
-  team: string;
-  sprint: string;
   open: boolean;
   onCloseClicked: () => void;
 }

@@ -26,11 +26,6 @@ vi.mock("./RouletteUsers", () => ({
 describe("RouletteDialog", () => {
   const mockOnCloseClicked = vi.fn();
   const defaultProps = {
-    origin: "http://example.com",
-    collection: "DefaultCollection",
-    project: "DefaultProject",
-    team: "DefaultTeam",
-    sprint: "Sprint 1",
     open: true,
     onCloseClicked: mockOnCloseClicked
   };

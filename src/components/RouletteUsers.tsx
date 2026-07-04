@@ -46,7 +46,7 @@ export function RouletteUsers() {
           <Table.Tr>
             <Table.Th />
             <Table.Th>Name</Table.Th>
-            <Table.Th>Sprint Backlog</Table.Th>
+            <Table.Th>Team Name</Table.Th>
             <Table.Th />
           </Table.Tr>
         </Table.Thead>

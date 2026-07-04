@@ -131,8 +131,9 @@ describe("adosHelper", () => {
       });
 
       try {
-        await selectPerson("Bob");
+        const result = await selectPerson("Bob");
 
+        expect(result).toBe(true);
         expect(dropdownClickSpy).toHaveBeenCalled();
         expect(rowClickSpy).toHaveBeenCalled();
       } finally {
@@ -164,7 +165,8 @@ describe("adosHelper", () => {
       });
 
       try {
-        await selectPerson("Charlie");
+        const result = await selectPerson("Charlie");
+        expect(result).toBe(true);
         expect(allClickSpy).toHaveBeenCalled();
       } finally {
         document.evaluate = originalEvaluate;

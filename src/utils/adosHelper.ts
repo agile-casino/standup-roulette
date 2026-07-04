@@ -29,7 +29,7 @@ export async function selectTeam(name: string): Promise<boolean> {
   }
 }
 
-export async function selectPerson(name: string) {
+export async function selectPerson(name: string): Promise<boolean> {
   try {
     const personNameDropdown = await waitFor<HTMLElement>(() => {
       const results = document.evaluate("//div[starts-with(text(),'Person: ')]", document);
@@ -76,6 +76,7 @@ export async function selectPerson(name: string) {
     } else {
       allOption?.click();
     }
+    return true;
   } catch {
     return false;
   }

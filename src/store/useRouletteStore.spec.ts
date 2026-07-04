@@ -261,4 +261,47 @@ describe("useRouletteStore", () => {
       expect(useRouletteStore.getState().wheelType).toBe("new");
     });
   });
+
+  describe("migrations", () => {
+    it("should migrate version 5 state to version 7", () => {
+      const migrate = useRouletteStore.persist.getOptions().migrate;
+      if (migrate) {
+        const legacyState = {
+          currentGame: 0,
+          games: []
+        };
+        const migrated = migrate(legacyState, 5);
+        expect(migrated).toEqual({
+          currentGame: 0,
+          games: [],
+          timerType: "off",
+          timerDuration: 60,
+          timerLimit: 60,
+          wheelType: "old"
+        });
+      }
+    });
+
+    it("should migrate version 6 state to version 7", () => {
+      const migrate = useRouletteStore.persist.getOptions().migrate;
+      if (migrate) {
+        const legacyState = {
+          currentGame: 0,
+          games: [],
+          timerType: "off",
+          timerDuration: 60,
+          timerLimit: 60
+        };
+        const migrated = migrate(legacyState, 6);
+        expect(migrated).toEqual({
+          currentGame: 0,
+          games: [],
+          timerType: "off",
+          timerDuration: 60,
+          timerLimit: 60,
+          wheelType: "old"
+        });
+      }
+    });
+  });
 });

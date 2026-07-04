@@ -351,6 +351,17 @@ export const useRouletteStore = create<RouletteStoreType>()(
           version = 6;
         }
 
+        if (version === 5) {
+          if (state && typeof state === "object") {
+            const s = state as Record<string, unknown>;
+            if (s.timerType === undefined) s.timerType = "off";
+            if (s.timerDuration === undefined) s.timerDuration = 60;
+            if (s.timerLimit === undefined) s.timerLimit = 60;
+            if (s.wheelType === undefined) s.wheelType = "old";
+          }
+          version = 6;
+        }
+
         if (version === 6) {
           if (state && typeof state === "object") {
             (state as Record<string, unknown>).wheelType = "old";

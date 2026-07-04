@@ -63,7 +63,7 @@ export function App() {
           Standup Roulette
         </button>
         <MantineProvider defaultColorScheme={colorScheme}>
-          <RouletteDialog origin={origin} collection={decodeURI(collection)} project={decodeURI(project)} team={decodeURI(team)} sprint={decodeURI(sprint)} open={dialogOpen} onCloseClicked={() => setDialogOpen(previous => !previous)} />
+          <RouletteDialog open={dialogOpen} onCloseClicked={() => setDialogOpen(previous => !previous)} />
         </MantineProvider>
       </>
     );
