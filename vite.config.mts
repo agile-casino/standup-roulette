@@ -9,11 +9,11 @@ const banner = `
 // @name         Standup Roulette
 // @namespace    https://ados/
 // @version      ${pkg.version}
-// @downloadURL  https://archerax.blob.core.windows.net/apps/standup-roulette/index.user.js
+// @downloadURL  https://github.com/archerax/standup-roulette/releases/latest/download/standup-roulette.user.js
+// @updateURL    https://github.com/archerax/standup-roulette/releases/latest/download/standup-roulette.user.js
 // @description  Standup Roulette
 // @author       archerax
 // @match        https://dev.azure.com/*
-// @match        https://*.visualstudio.com/*
 // @icon         https://cdn.vsassets.io/content/icons/favicon.ico
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
@@ -29,7 +29,7 @@ export default defineConfig(({ mode }: { mode: string }) => ({
     rollupOptions: {
       input: "src/index.tsx",
       output: {
-        entryFileNames: "index.user.js",
+        entryFileNames: "standup-roulette.user.js",
         manualChunks: undefined
       },
       onwarn(warning, warn) {

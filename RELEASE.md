@@ -99,7 +99,7 @@ This workflow:
 
 1. Checks out the code.
 2. Installs dependencies and runs the build (`pnpm run build`), version sync (`pnpm run sync`), packaging (`pnpm run zip`), and tests (`pnpm run test` & `pnpm biome ci src`).
-3. Deploys the built userscript (`dist/index.user.js`) to **Azure Blob Storage** under the container `apps/standup-roulette/`.
+3. Deploys the built userscript (`dist/standup-roulette.user.js`) to **Azure Blob Storage** under the container `apps/standup-roulette/`.
 4. Creates a new **GitHub Release** corresponding to the tag, attaching:
-   - `dist/index.user.js` (userscript)
+   - `dist/standup-roulette.user.js` (userscript)
    - `standup-roulette-extension-vX.Y.Z.zip` (packaged browser extension)
