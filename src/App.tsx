@@ -34,7 +34,7 @@ function useColorSchemeFromNavMenu() {
 }
 
 export function App() {
-  const { url, origin } = useUrl();
+  const { url } = useUrl();
   const [dialogOpen, setDialogOpen] = useState(false);
   const colorScheme = useColorSchemeFromNavMenu();
 
@@ -46,7 +46,6 @@ export function App() {
   const matches = /(?<collection>[\w\-%]+)\/(?<project>[\w\-%]+)\/_sprints\/taskboard\/(?<team>[\w\-%]+)\/.+?\/(?<sprint>Sprint[\w\-.%()]+)/.exec(url);
 
   if (matches?.groups) {
-    const { collection, project, team, sprint } = matches.groups;
     return (
       <>
         <button
