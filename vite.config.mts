@@ -12,8 +12,8 @@ const banner = `
 // @downloadURL  https://archerax.blob.core.windows.net/apps/standup-roulette/index.user.js
 // @description  Standup Roulette
 // @author       archerax
-// @match        https://dev.azure.com/Weatherford-ADOS-WirelineRnD/WirelineRnD*
-// @match        https://dev.azure.com/WFRD-RDE-DWC-Software/ProdEng/*
+// @match        https://dev.azure.com/*
+// @match        https://*.visualstudio.com/*
 // @icon         https://cdn.vsassets.io/content/icons/favicon.ico
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
