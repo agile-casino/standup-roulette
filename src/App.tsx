@@ -43,7 +43,7 @@ export function App() {
   const inactiveForegroundColour = "unset";
   const inactiveBackgroundColour = "unset";
 
-  const matches = /(?<collection>[\w\-%]+)\/(?<project>[\w\-%]+)\/_sprints\/taskboard\/(?<team>[\w\-%]+)\/.+?\/(?<sprint>Sprint[\w\-.%()]+)/.exec(url);
+  const matches = /(?<collection>[\w\-%]+)\/(?<project>[\w\-%]+)\/_sprints\/taskboard\/(?<team>[\w\-%]+)\/.+?\/(?<sprint>(?:Sprint|Iteration)[\w\-.%()]+)/i.exec(url);
 
   if (matches?.groups) {
     return (
