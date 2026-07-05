@@ -9,8 +9,8 @@ const banner = `
 // @name         Standup Roulette
 // @namespace    https://ados/
 // @version      ${pkg.version}
-// @downloadURL  https://github.com/archerax/standup-roulette/releases/latest/download/standup-roulette.user.js
-// @updateURL    https://github.com/archerax/standup-roulette/releases/latest/download/standup-roulette.user.js
+// @downloadURL  https://github.com/agile-casino/standup-roulette/releases/latest/download/standup-roulette.user.js
+// @updateURL    https://github.com/agile-casino/standup-roulette/releases/latest/download/standup-roulette.user.js
 // @description  Standup Roulette
 // @author       archerax
 // @match        https://dev.azure.com/*
