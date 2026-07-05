@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Standup Roulette",
-  "version": "4.18.0",
+  "version": "4.18.1",
   "description": "Automate standup roulette selection on Azure DevOps sprint boards.",
   "icons": {
     "16": "icon16.png",

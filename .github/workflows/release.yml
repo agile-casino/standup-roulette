@@ -28,6 +28,7 @@ jobs:
       - name: Build and Package
         run: |
           pnpm run build
+          cp dist/standup-roulette.user.js dist/index.user.js
           pnpm run sync
           pnpm run zip
           pnpm run test
@@ -47,4 +48,5 @@ jobs:
         with:
           files: |
             dist/standup-roulette.user.js
+            dist/index.user.js
             standup-roulette-extension-v*.zip
