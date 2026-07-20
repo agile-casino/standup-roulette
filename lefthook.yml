@@ -1,0 +1,13 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - name: lint-staged
+      glob: "*.{js,ts,jsx,tsx,json,css,md,yml}"
+      run: pnpm biome check --write --no-errors-on-unmatched {staged_files} && git add {staged_files}
+      stage_fixed: true
+
+pre-push:
+  parallel: false
+  commands:
+    check:
+      run: pnpm check
