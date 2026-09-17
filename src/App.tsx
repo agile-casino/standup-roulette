@@ -2,6 +2,7 @@ import { MantineProvider } from "@mantine/core";
 import { useColorScheme } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { RouletteDialog } from "./components/RouletteDialog";
+import { theme } from "./theme";
 
 function useUrl() {
   const [url, setUrl] = useState(window.location.href);
@@ -61,7 +62,7 @@ export function App() {
         >
           Standup Roulette
         </button>
-        <MantineProvider defaultColorScheme={colorScheme}>
+        <MantineProvider theme={theme} forceColorScheme={colorScheme}>
           <RouletteDialog open={dialogOpen} onCloseClicked={() => setDialogOpen(previous => !previous)} />
         </MantineProvider>
       </>
