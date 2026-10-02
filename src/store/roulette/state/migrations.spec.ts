@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 import { migrations } from "./migrations";
 
 describe("roulette state migrations", () => {

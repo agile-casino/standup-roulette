@@ -1,6 +1,6 @@
 import { MantineProvider } from "@mantine/core";
 import { act, render, waitFor } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { WinnerControl } from "./WinnerControl";
 
 interface GMXMLHttpRequestDetails {
@@ -23,11 +23,11 @@ describe("WinnerControl", () => {
 
   beforeEach(() => {
     // Mock the global Tampermonkey API
-    global.GM_xmlhttpRequest = vi.fn().mockImplementation((details: GMXMLHttpRequestDetails) => {
+    global.GM_xmlhttpRequest = vi.fn<(details: GMXMLHttpRequestDetails) => void>().mockImplementation((details: GMXMLHttpRequestDetails) => {
       details.onload({
         responseText: JSON.stringify(mockMascotData)
       });
-    });
+    }) as unknown as typeof globalThis.GM_xmlhttpRequest;
 
     // Mock Math.random to return non-shiny by default
     vi.spyOn(Math, "random").mockReturnValue(0.5);

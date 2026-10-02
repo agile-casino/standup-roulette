@@ -337,6 +337,8 @@ export function Wheel({ mustStartSpinning, prizeNumber, data, onStopSpinning, sp
       const currentRotMod = rotation % 360;
       const targetRot = rotation - currentRotMod + extraSpins + targetAngle;
 
+      // Rotation is set imperatively when the parent flips `mustStartSpinning` to trigger the CSS transition.
+      // oxlint-disable-next-line react/set-state-in-effect
       setRotation(targetRot);
     }
     prevSpinning.current = mustStartSpinning;

@@ -70,11 +70,7 @@ import { v4 as uuidv4 } from "uuid";
 import { migrations } from "./roulette/state/migrations";
 import { getColourScheme } from "../utils/colourScheme";
 import { deepCopy } from "../utils/deepCopy";
-import type {
-  RouletteState,
-  RouletteUser,
-  EndImageUrl,
-} from "./roulette/state";
+import type { RouletteState, RouletteUser, EndImageUrl } from "./roulette/state";
 
 interface RouletteActions {
   setGameName: (name: string) => void;
@@ -109,11 +105,11 @@ const initialGameState = (name: string) => ({
   winningId: null,
   winningName: null,
   seed: 0,
-  endImageUrls: [],
+  endImageUrls: []
 });
 
 function assignColours(users: RouletteUser[]): void {
-  const selectedUsers = users.filter((x) => x.checked);
+  const selectedUsers = users.filter(x => x.checked);
   const colours = getColourScheme(selectedUsers.length);
   for (let i = 0; i < colours.length; i++) {
     selectedUsers[i].colour = colours[i];
@@ -131,13 +127,13 @@ export const useRouletteStore = create<RouletteStoreType>()(
       timerLimit: 60,
 
       // --- Actions ---
-      setGameName: (name) =>
-        set((state) => {
+      setGameName: name =>
+        set(state => {
           state.games[state.currentGame].name = name;
         }),
 
       prevGame: () =>
-        set((state) => {
+        set(state => {
           if (state.games[state.currentGame].spinning) return;
           const index = Math.max(state.currentGame - 1, 0);
           if (!state.games[index]) {
@@ -147,7 +143,7 @@ export const useRouletteStore = create<RouletteStoreType>()(
         }),
 
       nextGame: () =>
-        set((state) => {
+        set(state => {
           if (state.games[state.currentGame].spinning) return;
           const index = Math.min(state.currentGame + 1, 4);
           if (!state.games[index]) {
@@ -156,25 +152,25 @@ export const useRouletteStore = create<RouletteStoreType>()(
           state.currentGame = index;
         }),
 
-      addUser: (name) =>
-        set((state) => {
+      addUser: name =>
+        set(state => {
           const game = state.games[state.currentGame];
           game.allUsers.push({ id: uuidv4(), name, checked: true });
           game.allUsers.sort((a, b) => a.name.localeCompare(b.name));
           assignColours(game.allUsers);
         }),
 
-      removeUser: (id) =>
-        set((state) => {
+      removeUser: id =>
+        set(state => {
           const game = state.games[state.currentGame];
-          game.allUsers = game.allUsers.filter((u) => u.id !== id);
+          game.allUsers = game.allUsers.filter(u => u.id !== id);
           assignColours(game.allUsers);
         }),
 
       setUserName: (id, newUserName) =>
-        set((state) => {
+        set(state => {
           const game = state.games[state.currentGame];
-          const user = game.allUsers.find((u) => u.id === id);
+          const user = game.allUsers.find(u => u.id === id);
           if (user) {
             user.name = newUserName;
             game.allUsers.sort((a, b) => a.name.localeCompare(b.name));
@@ -183,44 +179,39 @@ export const useRouletteStore = create<RouletteStoreType>()(
         }),
 
       setUserTeam: (id, newTeamName) =>
-        set((state) => {
+        set(state => {
           const game = state.games[state.currentGame];
-          const user = game.allUsers.find((u) => u.id === id);
+          const user = game.allUsers.find(u => u.id === id);
           if (user) {
             user.team = newTeamName;
           }
         }),
 
-      toggleUser: (id) =>
-        set((state) => {
+      toggleUser: id =>
+        set(state => {
           const game = state.games[state.currentGame];
-          const user = game.allUsers.find((u) => u.id === id);
+          const user = game.allUsers.find(u => u.id === id);
           if (user) {
             user.checked = !user.checked;
             assignColours(game.allUsers);
           }
         }),
 
-      prepareSpin: (random) =>
-        set((state) => {
+      prepareSpin: random =>
+        set(state => {
           const game = state.games[state.currentGame];
           if (game.winningId !== null) {
-            game.remainingUsers = game.remainingUsers.filter(
-              (u) => u.id !== game.winningId,
-            );
+            game.remainingUsers = game.remainingUsers.filter(u => u.id !== game.winningId);
           }
           if (game.remainingUsers.length > 0) {
             const length = game.remainingUsers.length;
-            const winningIndex = Math.min(
-              Math.floor(random * length),
-              length - 1,
-            );
+            const winningIndex = Math.min(Math.floor(random * length), length - 1);
             game.winningId = game.remainingUsers[winningIndex].id;
           }
         }),
 
       beginSpin: () =>
-        set((state) => {
+        set(state => {
           const game = state.games[state.currentGame];
           if (game.remainingUsers.length > 0) {
             game.spinning = true;
@@ -228,12 +219,10 @@ export const useRouletteStore = create<RouletteStoreType>()(
         }),
 
       endSpin: () =>
-        set((state) => {
+        set(state => {
           const game = state.games[state.currentGame];
           if (game.winningId !== null) {
-            const user = game.remainingUsers.find(
-              (u) => u.id === game.winningId,
-            );
+            const user = game.remainingUsers.find(u => u.id === game.winningId);
             if (user) {
               game.winningName = user.name;
             }
@@ -241,35 +230,31 @@ export const useRouletteStore = create<RouletteStoreType>()(
           game.spinning = false;
         }),
 
-      reset: (seed) =>
-        set((state) => {
+      reset: seed =>
+        set(state => {
           const game = state.games[state.currentGame];
-          game.remainingUsers = deepCopy(
-            game.allUsers.filter((x) => x.checked),
-          );
+          game.remainingUsers = deepCopy(game.allUsers.filter(x => x.checked));
           game.winningId = null;
           game.winningName = null;
           game.seed = seed;
         }),
 
       addEndImageUrl: () =>
-        set((state) => {
+        set(state => {
           state.games[state.currentGame].endImageUrls.push({
             url: "",
-            enabled: true,
+            enabled: true
           });
         }),
 
-      removeEndImageUrl: (index) =>
-        set((state) => {
+      removeEndImageUrl: index =>
+        set(state => {
           const game = state.games[state.currentGame];
-          game.endImageUrls = game.endImageUrls.filter(
-            (_, idx) => idx !== index,
-          );
+          game.endImageUrls = game.endImageUrls.filter((_, idx) => idx !== index);
         }),
 
       setEndImageUrlValue: (index, url) =>
-        set((state) => {
+        set(state => {
           const imageUrl = state.games[state.currentGame].endImageUrls[index];
           if (imageUrl) {
             imageUrl.url = url;
@@ -277,15 +262,15 @@ export const useRouletteStore = create<RouletteStoreType>()(
         }),
 
       setEndImageUrlEnabled: (index, enabled) =>
-        set((state) => {
+        set(state => {
           const imageUrl = state.games[state.currentGame].endImageUrls[index];
           if (imageUrl) {
             imageUrl.enabled = enabled;
           }
         }),
 
-      importState: (imported) =>
-        set((state) => {
+      importState: imported =>
+        set(state => {
           // You can call your legacy normalizer here
           const normalized = normalizeImportedState(imported);
           state.currentGame = normalized.currentGame;
@@ -295,20 +280,20 @@ export const useRouletteStore = create<RouletteStoreType>()(
           state.timerLimit = normalized.timerLimit;
         }),
 
-      setTimerType: (type) =>
-        set((state) => {
+      setTimerType: type =>
+        set(state => {
           state.timerType = type;
         }),
 
-      setTimerDuration: (duration) =>
-        set((state) => {
+      setTimerDuration: duration =>
+        set(state => {
           state.timerDuration = duration;
         }),
 
-      setTimerLimit: (limit) =>
-        set((state) => {
+      setTimerLimit: limit =>
+        set(state => {
           state.timerLimit = limit;
-        }),
+        })
     })),
     {
       name: "roulette", // Matches legacy localStorage key
@@ -336,9 +321,9 @@ export const useRouletteStore = create<RouletteStoreType>()(
         }
 
         return state;
-      },
-    },
-  ),
+      }
+    }
+  )
 );
 ```
 
@@ -366,14 +351,10 @@ All component files that previously integrated with Redux selectors and actions 
   ```typescript
   import { useRouletteStore } from "../store/useRouletteStore";
 
-  const gameName = useRouletteStore(
-    (state) => state.games[state.currentGame].name,
-  );
-  const spinning = useRouletteStore(
-    (state) => state.games[state.currentGame].spinning,
-  );
-  const prevGame = useRouletteStore((state) => state.prevGame);
-  const nextGame = useRouletteStore((state) => state.nextGame);
+  const gameName = useRouletteStore(state => state.games[state.currentGame].name);
+  const spinning = useRouletteStore(state => state.games[state.currentGame].spinning);
+  const prevGame = useRouletteStore(state => state.prevGame);
+  const nextGame = useRouletteStore(state => state.nextGame);
   // prevGame();
   ```
 
@@ -382,31 +363,18 @@ All component files that previously integrated with Redux selectors and actions 
 - **Before (Redux)**:
   ```typescript
   import { useAppDispatch, useAppSelector } from "../store/hooks";
-  import {
-    addEndImageUrl,
-    removeEndImageUrl,
-    setEndImageUrlValue,
-    setEndImageUrlEnabled,
-  } from "../store/roulette/rouletteSlice";
+  import { addEndImageUrl, removeEndImageUrl, setEndImageUrlValue, setEndImageUrlEnabled } from "../store/roulette/rouletteSlice";
   ```
 - **After (Zustand)**:
 
   ```typescript
   import { useRouletteStore } from "../store/useRouletteStore";
 
-  const endImageUrls = useRouletteStore(
-    (state) => state.games[state.currentGame].endImageUrls,
-  );
-  const addEndImageUrl = useRouletteStore((state) => state.addEndImageUrl);
-  const removeEndImageUrl = useRouletteStore(
-    (state) => state.removeEndImageUrl,
-  );
-  const setEndImageUrlValue = useRouletteStore(
-    (state) => state.setEndImageUrlValue,
-  );
-  const setEndImageUrlEnabled = useRouletteStore(
-    (state) => state.setEndImageUrlEnabled,
-  );
+  const endImageUrls = useRouletteStore(state => state.games[state.currentGame].endImageUrls);
+  const addEndImageUrl = useRouletteStore(state => state.addEndImageUrl);
+  const removeEndImageUrl = useRouletteStore(state => state.removeEndImageUrl);
+  const setEndImageUrlValue = useRouletteStore(state => state.setEndImageUrlValue);
+  const setEndImageUrlEnabled = useRouletteStore(state => state.setEndImageUrlEnabled);
   ```
 
 ---
@@ -455,9 +423,9 @@ describe("Roulette Store Actions", () => {
           winningId: null,
           winningName: null,
           seed: 0,
-          endImageUrls: [],
-        },
-      ],
+          endImageUrls: []
+        }
+      ]
     });
   });
 

@@ -40,7 +40,7 @@ export function RouletteWheel() {
       return "";
     }
 
-    const randomValue = (Math.random() + seed + (winningName?.length ?? 0)) % 1;
+    const randomValue = (seed + (winningName?.length ?? 0)) % 1;
     const randomIndex = Math.min(Math.floor(randomValue * enabledEndImageUrls.length), enabledEndImageUrls.length - 1);
     return enabledEndImageUrls[randomIndex].url;
   }, [endImageUrls, seed, winningName]);
@@ -86,7 +86,7 @@ export function RouletteWheel() {
             <ClassicWheel data={data} spinDuration={0.15} prizeNumber={winningUserIndex} mustStartSpinning={spinning} onStopSpinning={onStopSpinning} />
           )}
           <Center>
-            <WinnerControl name={winningName ?? ""} mascotNumber={getMascot(winningName ?? "", seed)} />
+            <WinnerControl key={getMascot(winningName ?? "", seed)} name={winningName ?? ""} mascotNumber={getMascot(winningName ?? "", seed)} />
           </Center>
         </>
       )}

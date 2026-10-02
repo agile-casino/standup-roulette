@@ -1,14 +1,14 @@
 import { MantineProvider, Table } from "@mantine/core";
 import { fireEvent, render } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import type { RouletteStoreType } from "../store/useRouletteStore";
 import { UserEditRow } from "./UserEditRow";
 
 const mockActions = {
-  removeUser: vi.fn(),
-  setUserName: vi.fn(),
-  setUserTeam: vi.fn(),
-  toggleUser: vi.fn()
+  removeUser: vi.fn<(id: string) => void>(),
+  setUserName: vi.fn<(id: string, name: string) => void>(),
+  setUserTeam: vi.fn<(id: string, team: string) => void>(),
+  toggleUser: vi.fn<(id: string) => void>()
 };
 
 vi.mock("../store/useRouletteStore", () => ({
