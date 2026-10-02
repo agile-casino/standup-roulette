@@ -35,7 +35,7 @@ import { z } from "zod";
 
 export const EndImageUrlSchema = z.object({
   url: z.string().url().or(z.string().trim().min(1)),
-  enabled: z.boolean().default(true),
+  enabled: z.boolean().default(true)
 });
 ```
 
@@ -49,7 +49,7 @@ export const RouletteUserSchema = z.object({
   name: z.string().trim().min(1),
   team: z.string().trim().default(""),
   checked: z.boolean().default(true),
-  colour: z.string().optional(),
+  colour: z.string().optional()
 });
 ```
 
@@ -66,7 +66,7 @@ export const GameStateSchema = z.object({
   winningId: z.string().nullable().default(null),
   winningName: z.string().nullable().default(null),
   seed: z.number().default(0),
-  endImageUrls: z.array(EndImageUrlSchema).default([]),
+  endImageUrls: z.array(EndImageUrlSchema).default([])
 });
 ```
 
@@ -80,7 +80,7 @@ export const RouletteStateSchema = z.object({
   games: z.array(GameStateSchema).min(1),
   timerType: z.enum(["off", "up", "down"]).default("off"),
   timerDuration: z.number().int().positive().default(60),
-  timerLimit: z.number().int().positive().default(60),
+  timerLimit: z.number().int().positive().default(60)
 });
 
 export type RouletteState = z.infer<typeof RouletteStateSchema>;
@@ -122,7 +122,7 @@ In [useRouletteStore.ts](file:///root/standup-roulette/src/store/useRouletteStor
        games: [initialGameState("Game 1")],
        timerType: "off",
        timerDuration: 60,
-       timerLimit: 60,
+       timerLimit: 60
      };
    }
    ```

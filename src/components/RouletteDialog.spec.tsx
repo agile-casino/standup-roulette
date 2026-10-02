@@ -1,6 +1,6 @@
 import { MantineProvider } from "@mantine/core";
 import { fireEvent, render } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vite-plus/test";
 import { RouletteDialog } from "./RouletteDialog";
 
 // Mock child components
@@ -24,7 +24,7 @@ vi.mock("./RouletteUsers", () => ({
 }));
 
 describe("RouletteDialog", () => {
-  const mockOnCloseClicked = vi.fn();
+  const mockOnCloseClicked = vi.fn<() => void>();
   const defaultProps = {
     open: true,
     onCloseClicked: mockOnCloseClicked
@@ -69,13 +69,14 @@ describe("RouletteDialog", () => {
   });
 
   it("should call onCloseClicked when close button is clicked", () => {
-    const { container } = renderComponent();
-    // Dialog has built-in close button if withCloseButton={true}
-    const closeBtn = container.querySelector(".mantine-Dialog-closeButton");
-    if (closeBtn) {
-      fireEvent.click(closeBtn);
-      expect(mockOnCloseClicked).toHaveBeenCalled();
+    const { baseElement } = renderComponent();
+    // Dialog renders inside a portal, so query the base element rather than the render container
+    const closeBtn = baseElement.querySelector(".mantine-Dialog-closeButton");
+    if (!closeBtn) {
+      throw new Error("Close button not found");
     }
+    fireEvent.click(closeBtn);
+    expect(mockOnCloseClicked).toHaveBeenCalled();
   });
 
   it("should not render anything when open is false", () => {

@@ -1,6 +1,6 @@
 import { Button, Group, Text } from "@mantine/core";
 import { IconPlayerPause, IconPlayerPlay, IconRotate } from "@tabler/icons-react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface SpeakerTimerProps {
   timerType: "up" | "down";
@@ -9,18 +9,10 @@ interface SpeakerTimerProps {
 }
 
 export function SpeakerTimer({ timerType, timerDuration, timerLimit }: Readonly<SpeakerTimerProps>) {
-  const getInitialTime = useCallback(() => {
-    return timerType === "down" ? timerDuration : 0;
-  }, [timerType, timerDuration]);
+  const initialTime = timerType === "down" ? timerDuration : 0;
 
-  const [time, setTime] = useState(getInitialTime);
+  const [time, setTime] = useState(initialTime);
   const [isRunning, setIsRunning] = useState(true);
-
-  // Reset when winner changes or timer settings change
-  useEffect(() => {
-    setTime(getInitialTime());
-    setIsRunning(true);
-  }, [getInitialTime]);
 
   useEffect(() => {
     if (!isRunning) {
@@ -61,7 +53,7 @@ export function SpeakerTimer({ timerType, timerDuration, timerLimit }: Readonly<
   };
 
   const handleReset = () => {
-    setTime(getInitialTime());
+    setTime(initialTime);
     setIsRunning(true);
   };
 
