@@ -47,7 +47,7 @@
     "@vitest/coverage-v8": "^5.0.1",
     "@vitest/ui": "^5.0.1",
     "archiver": "^8.0.0",
-    "happy-dom": "^20.14.5",
+    "happy-dom": "^21.0.4",
     "knip": "^6.35.1",
     "lefthook": "^2.1.14",
     "postcss": "^8.5.28",
