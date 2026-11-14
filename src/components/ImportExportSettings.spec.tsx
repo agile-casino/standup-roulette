@@ -1,12 +1,12 @@
 import { MantineProvider } from "@mantine/core";
 import { fireEvent, render } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import type { RouletteState } from "../store/roulette/state";
 import type { RouletteStoreType } from "../store/useRouletteStore";
 import { ImportExportSettings } from "./ImportExportSettings";
 
 const mockActions = {
-  importState: vi.fn()
+  importState: vi.fn<(imported: unknown) => void>()
 };
 
 const mockSelectors: RouletteState = {
@@ -29,14 +29,15 @@ vi.mock("../store/useRouletteStore", () => ({
 }));
 
 // Mock FileReader
-let mockFileReaderInstance: MockFileReader | null = null;
 class MockFileReader {
+  static instances: MockFileReader[] = [];
+
   onload: ((e: ProgressEvent<FileReader>) => void) | null = null;
   onerror: ((e: ProgressEvent<FileReader>) => void) | null = null;
   result: string = "";
 
   constructor() {
-    mockFileReaderInstance = this;
+    MockFileReader.instances.push(this);
   }
 
   readAsText() {}
@@ -46,13 +47,13 @@ global.FileReader = MockFileReader as unknown as typeof FileReader;
 describe("ImportExportSettings", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mockFileReaderInstance = null;
-    window.alert = vi.fn();
+    MockFileReader.instances = [];
+    window.alert = vi.fn<(message?: string) => void>();
     vi.spyOn(console, "error").mockImplementation(() => {});
 
     // Mock URL methods
-    global.URL.createObjectURL = vi.fn().mockReturnValue("blob:foo");
-    global.URL.revokeObjectURL = vi.fn();
+    global.URL.createObjectURL = vi.fn<(blob: Blob | MediaSource) => string>().mockReturnValue("blob:foo");
+    global.URL.revokeObjectURL = vi.fn<(url: string) => void>();
 
     // Mock input click to trigger file change with a mock event
     vi.spyOn(HTMLInputElement.prototype, "click").mockImplementation(function (this: HTMLInputElement) {
@@ -122,15 +123,14 @@ describe("ImportExportSettings", () => {
     const importBtn = getByText("Import Settings");
     fireEvent.click(importBtn);
 
-    expect(mockFileReaderInstance).not.toBeNull();
+    expect(MockFileReader.instances.length).toBe(1);
 
     // Simulate successful file read
-    if (mockFileReaderInstance) {
-      mockFileReaderInstance.result = JSON.stringify({ testState: "ok" });
-      mockFileReaderInstance.onload?.({
-        target: { result: mockFileReaderInstance.result }
-      } as unknown as ProgressEvent<FileReader>);
-    }
+    const fileReader = MockFileReader.instances[0];
+    fileReader.result = JSON.stringify({ testState: "ok" });
+    fileReader.onload?.({
+      target: { result: fileReader.result }
+    } as unknown as ProgressEvent<FileReader>);
 
     expect(mockActions.importState).toHaveBeenCalledWith({ testState: "ok" });
   });
@@ -140,15 +140,14 @@ describe("ImportExportSettings", () => {
     const importBtn = getByText("Import Settings");
     fireEvent.click(importBtn);
 
-    expect(mockFileReaderInstance).not.toBeNull();
+    expect(MockFileReader.instances.length).toBe(1);
 
     // Simulate parsing invalid JSON
-    if (mockFileReaderInstance) {
-      mockFileReaderInstance.result = "invalid-json";
-      mockFileReaderInstance.onload?.({
-        target: { result: mockFileReaderInstance.result }
-      } as unknown as ProgressEvent<FileReader>);
-    }
+    const fileReader = MockFileReader.instances[0];
+    fileReader.result = "invalid-json";
+    fileReader.onload?.({
+      target: { result: fileReader.result }
+    } as unknown as ProgressEvent<FileReader>);
 
     expect(window.alert).toHaveBeenCalledWith("Failed to import settings. The file may be corrupted.");
     expect(console.error).toHaveBeenCalled();
@@ -159,10 +158,10 @@ describe("ImportExportSettings", () => {
     const importBtn = getByText("Import Settings");
     fireEvent.click(importBtn);
 
-    expect(mockFileReaderInstance).not.toBeNull();
+    expect(MockFileReader.instances.length).toBe(1);
 
     // Simulate FileReader error
-    mockFileReaderInstance?.onerror?.(new ProgressEvent("error") as unknown as ProgressEvent<FileReader>);
+    MockFileReader.instances[0].onerror?.(new ProgressEvent("error") as unknown as ProgressEvent<FileReader>);
 
     expect(window.alert).toHaveBeenCalledWith("Failed to read the file. Please try again.");
     expect(console.error).toHaveBeenCalled();

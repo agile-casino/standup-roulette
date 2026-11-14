@@ -26,12 +26,9 @@ interface WinnerControlProps {
 
 export function WinnerControl({ name, mascotNumber }: Readonly<WinnerControlProps>) {
   const [data, setData] = useState<MascotData | null>(null);
-  const [isShiny, setIsShiny] = useState(false);
+  const [isShiny] = useState(() => Math.random() < 0.05);
 
   useEffect(() => {
-    setData(null);
-    // Add random chance for shiny (1/20 or 5% chance)
-    setIsShiny(Math.random() < 0.05);
     getData(mascotNumber)
       .then(data => setData(data))
       .catch(console.error);

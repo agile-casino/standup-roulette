@@ -1,6 +1,5 @@
 import { Button, Checkbox, Divider, Group, Input, SegmentedControl, Stack, Text, Title } from "@mantine/core";
 import type { ChangeEvent } from "react";
-import { useRef } from "react";
 import pkg from "../../package.json";
 import { useRouletteStore } from "../store/useRouletteStore";
 import { ImportExportSettings } from "./ImportExportSettings";
@@ -22,17 +21,6 @@ export function SettingsPanel() {
   const wheelType = useRouletteStore(state => state.wheelType);
   const setWheelType = useRouletteStore(state => state.setWheelType);
 
-  const endImageUrlKeys = useRef<string[]>([]);
-  const nextEndImageUrlKey = useRef(0);
-
-  while (endImageUrlKeys.current.length < endImageUrls.length) {
-    endImageUrlKeys.current.push(`end-image-url-${nextEndImageUrlKey.current++}`);
-  }
-
-  if (endImageUrlKeys.current.length > endImageUrls.length) {
-    endImageUrlKeys.current = endImageUrlKeys.current.slice(0, endImageUrls.length);
-  }
-
   const onEndImageUrlChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
     setEndImageUrlValue(index, event.currentTarget.value);
   };
@@ -42,12 +30,10 @@ export function SettingsPanel() {
   };
 
   const onEndImageUrlAdd = () => {
-    endImageUrlKeys.current.push(`end-image-url-${nextEndImageUrlKey.current++}`);
     addEndImageUrl();
   };
 
   const onEndImageUrlRemove = (index: number) => () => {
-    endImageUrlKeys.current.splice(index, 1);
     removeEndImageUrl(index);
   };
 
@@ -64,7 +50,7 @@ export function SettingsPanel() {
           <div className={styles.cardSubtitle}>Configure image URLs to display when a standup roulette finishes.</div>
           <Stack gap={8}>
             {endImageUrls.map((endImageUrl, index) => (
-              <div key={endImageUrlKeys.current[index]} className={styles.urlRow}>
+              <div key={index} className={styles.urlRow}>
                 <Checkbox checked={endImageUrl.enabled} onChange={onEndImageUrlEnabledChange(index)} aria-label={`Enable image url ${index + 1}`} size="sm" />
                 <Input placeholder="https://..." value={endImageUrl.url} onChange={onEndImageUrlChange(index)} style={{ flexGrow: 1 }} size="sm" />
                 <Button variant="light" color="red" onClick={onEndImageUrlRemove(index)} size="xs">

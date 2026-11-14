@@ -60,7 +60,7 @@ export function Header({ toggleShowSettings }: Readonly<HeaderProps>) {
         <ActionIcon style={{ margin: "0 1rem", verticalAlign: "bottom" }} onClick={onNextGameClick} disabled={!canGoNextGame}>
           <IconArrowRight />
         </ActionIcon>
-        {timerType !== "off" && !spinning && !!winningName && remainingUsers.length > 0 && <SpeakerTimer timerType={timerType as "up" | "down"} timerDuration={timerDuration} timerLimit={timerLimit} />}
+        {timerType !== "off" && !spinning && !!winningName && remainingUsers.length > 0 && <SpeakerTimer key={`${timerType}-${timerDuration}`} timerType={timerType as "up" | "down"} timerDuration={timerDuration} timerLimit={timerLimit} />}
       </Title>
     </div>
   );

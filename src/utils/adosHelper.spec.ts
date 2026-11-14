@@ -1,22 +1,22 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { selectPerson, selectTeam } from "./adosHelper";
 
 // Mock delay to avoid waiting 1 second in tests
 vi.mock("./delay", () => ({
-  delay: vi.fn().mockResolvedValue(undefined)
+  delay: vi.fn<(milliseconds: number) => Promise<void>>().mockResolvedValue(undefined)
 }));
 
 // Mock waitForElement to execute callbacks synchronously and instantly
 vi.mock("./waitForElement", () => {
   return {
-    waitFor: vi.fn(async action => {
+    waitFor: vi.fn<(action: () => unknown, maxWaitMilliseconds?: number) => Promise<unknown>>(async action => {
       const res = action();
       if (!res) {
         throw new Error("Mock timeout");
       }
       return res;
     }),
-    waitForElement: vi.fn(async (parent, selector) => {
+    waitForElement: vi.fn<(parent: HTMLElement, selector: string, maxWaitMilliseconds?: number) => Promise<Element>>(async (parent, selector) => {
       const res = parent.querySelector(selector);
       if (!res) {
         throw new Error("Mock element not found");
@@ -126,9 +126,9 @@ describe("adosHelper", () => {
       const rowClickSpy = vi.spyOn(personRow3, "click");
 
       const originalEvaluate = document.evaluate;
-      document.evaluate = vi.fn().mockReturnValue({
+      document.evaluate = vi.fn<typeof document.evaluate>().mockReturnValue({
         iterateNext: () => dropdown
-      });
+      } as unknown as XPathResult);
 
       try {
         const result = await selectPerson("Bob");
@@ -160,9 +160,9 @@ describe("adosHelper", () => {
       const allClickSpy = vi.spyOn(allRow, "click");
 
       const originalEvaluate = document.evaluate;
-      document.evaluate = vi.fn().mockReturnValue({
+      document.evaluate = vi.fn<typeof document.evaluate>().mockReturnValue({
         iterateNext: () => dropdown
-      });
+      } as unknown as XPathResult);
 
       try {
         const result = await selectPerson("Charlie");
@@ -175,7 +175,7 @@ describe("adosHelper", () => {
 
     it("should return false on exception/timeout", async () => {
       const originalEvaluate = document.evaluate;
-      document.evaluate = vi.fn().mockImplementation(() => {
+      document.evaluate = vi.fn<typeof document.evaluate>().mockImplementation(() => {
         throw new Error("Evaluation failed");
       });
 

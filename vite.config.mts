@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, lazyPlugins } from "vite-plus";
 import { analyzer } from "vite-bundle-analyzer";
 import bannerPlugin from "vite-plugin-banner";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
@@ -20,7 +20,27 @@ const banner = `
 `.trim();
 
 export default defineConfig(({ mode }: { mode: string }) => ({
-  plugins: [mode === "development" ? analyzer({ analyzerMode: "static" }) : null, bannerPlugin({ content: banner, verify: false }), cssInjectedByJsPlugin()],
+  fmt: {
+    printWidth: 250,
+    arrowParens: "avoid",
+    trailingComma: "none",
+    quoteProps: "preserve",
+    singleQuote: false,
+    semi: true,
+    sortImports: false,
+    sortPackageJson: false,
+    ignorePatterns: [".vscode/**", "tsconfig.json"]
+  },
+  lint: {
+    plugins: ["typescript", "unicorn", "oxc", "react", "vitest"],
+    jsPlugins: [{ name: "vite-plus", specifier: "vite-plus/oxlint-plugin" }],
+    rules: { "vite-plus/prefer-vite-plus-imports": "error" }
+  },
+  staged: {
+    "*.{js,ts,jsx,tsx,json,css}": "vp check --fix",
+    "*.{md,yml,yaml}": "vp fmt"
+  },
+  plugins: lazyPlugins(() => [mode === "development" ? analyzer({ analyzerMode: "static" }) : null, bannerPlugin({ content: banner, verify: false }), cssInjectedByJsPlugin()]),
   build: {
     manifest: false,
     target: "chrome121",

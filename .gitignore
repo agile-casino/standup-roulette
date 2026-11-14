@@ -357,3 +357,5 @@ coverage/
 
 # Extension packages
 *.zip
+.vitest/
+.vite-hooks/_

@@ -1,6 +1,6 @@
 import { MantineProvider } from "@mantine/core";
 import { fireEvent, render } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import type { RouletteUser } from "../store/roulette/state";
 import type { RouletteStoreType } from "../store/useRouletteStore";
 import { Header } from "./Header";
@@ -17,9 +17,9 @@ const mockSelectors = {
 };
 
 const mockActions = {
-  setGameName: vi.fn(),
-  prevGame: vi.fn(),
-  nextGame: vi.fn()
+  setGameName: vi.fn<(name: string) => void>(),
+  prevGame: vi.fn<() => void>(),
+  nextGame: vi.fn<() => void>()
 };
 
 vi.mock("../store/useRouletteStore", () => ({
@@ -48,7 +48,7 @@ vi.mock("../store/useRouletteStore", () => ({
 }));
 
 describe("Header", () => {
-  const toggleShowSettingsMock = vi.fn();
+  const toggleShowSettingsMock = vi.fn<() => void>();
 
   beforeEach(() => {
     vi.clearAllMocks();

@@ -1,6 +1,6 @@
 import { MantineProvider } from "@mantine/core";
 import { act, fireEvent, render } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { SpeakerTimer } from "./SpeakerTimer";
 
 describe("SpeakerTimer", () => {

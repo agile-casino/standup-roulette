@@ -79,9 +79,9 @@ const state = new SandboxState();
 window.sandboxState = state;
 
 // 1. Polyfill GM_xmlhttpRequest (used by WinnerControl.tsx to fetch Pokemon Mascot data)
-// biome-ignore lint/suspicious/noExplicitAny: override standard tampermonkey type definitions
+// oxlint-disable-next-line no-explicit-any: override standard tampermonkey type definitions
 if (typeof (window as any).GM_xmlhttpRequest === "undefined") {
-  // biome-ignore lint/suspicious/noExplicitAny: override standard tampermonkey type definitions
+  // oxlint-disable-next-line no-explicit-any: override standard tampermonkey type definitions
   (window as any).GM_xmlhttpRequest = (details: any) => {
     state.addLog("API", details.method, `Fetching mascot: ${details.url}`);
 
