@@ -40,7 +40,7 @@
     "@testing-library/react": "^16.3.3",
     "@tsconfig/recommended": "^1.0.13",
     "@types/archiver": "^8.0.0",
-    "@types/node": "^25.9.7",
+    "@types/node": "^26.0.0",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@types/tampermonkey": "^5.5.0",
