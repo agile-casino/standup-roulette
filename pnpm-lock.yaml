@@ -277,7 +277,7 @@ importers:
         version: 0.8.1
       vite-plugin-css-injected-by-js:
         specifier: ^5.0.2
-        version: 5.0.2(vite@8.3.3(@types/node@25.9.9)(jiti@2.7.0)(less@4.9.1(supports-color@7.2.0))(sass@1.104.1)(stylus@0.62.0(supports-color@7.2.0))(sugarss@5.0.1(postcss@8.5.33))(yaml@2.9.1))
+        version: 5.0.3(vite@8.3.3(@types/node@25.9.9)(jiti@2.7.0)(less@4.9.1(supports-color@7.2.0))(sass@1.104.1)(stylus@0.62.0(supports-color@7.2.0))(sugarss@5.0.1(postcss@8.5.33))(yaml@2.9.1))
       vitest:
         specifier: ^5.0.1
         version: 5.0.1(@types/node@25.9.9)(@vitest/coverage-v8@5.0.1)(@vitest/ui@5.0.5)(happy-dom@21.0.4)(vite@8.3.3(@types/node@25.9.9)(jiti@2.7.0)(less@4.9.1(supports-color@7.2.0))(sass@1.104.1)(stylus@0.62.0(supports-color@7.2.0))(sugarss@5.0.1(postcss@8.5.33))(yaml@2.9.1))
@@ -2269,8 +2269,8 @@ packages:
   vite-plugin-banner@0.8.1:
     resolution: {integrity: sha512-0+gGguHk3MH0HvzMSOCJC6fGgH4+jtY9KlKVZh+hwwE+PBkGVzY8xe657JL74vEgbeUJD37XjVqTrmve8XvZBQ==}
 
-  vite-plugin-css-injected-by-js@5.0.2:
-    resolution: {integrity: sha512-Hvg48QfYsCL53ju9T5zTC0Ofg90XLa8t5zhhKmPYbayoMQieNcQDkkRX8pv4TAcKPZwVisLFiwDy5uBjOn+3Ow==}
+  vite-plugin-css-injected-by-js@5.0.3:
+    resolution: {integrity: sha512-K+UsH5DfVtF9DHutSO0msLEysBpaicv/rQteVT4VbKMIUBeD0S3SgOdP5HsVoA9D7wfS94Hp84I1FxOqGfsMnw==}
     peerDependencies:
       vite: '>8.0.0-0'
 
@@ -4237,7 +4237,7 @@ snapshots:
 
   vite-plugin-banner@0.8.1: {}
 
-  vite-plugin-css-injected-by-js@5.0.2(vite@8.3.3(@types/node@25.9.9)(jiti@2.7.0)(less@4.9.1(supports-color@7.2.0))(sass@1.104.1)(stylus@0.62.0(supports-color@7.2.0))(sugarss@5.0.1(postcss@8.5.33))(yaml@2.9.1)):
+  vite-plugin-css-injected-by-js@5.0.3(vite@8.3.3(@types/node@25.9.9)(jiti@2.7.0)(less@4.9.1(supports-color@7.2.0))(sass@1.104.1)(stylus@0.62.0(supports-color@7.2.0))(sugarss@5.0.1(postcss@8.5.33))(yaml@2.9.1)):
     dependencies:
       vite: 8.3.3(@types/node@25.9.9)(jiti@2.7.0)(less@4.9.1(supports-color@7.2.0))(sass@1.104.1)(stylus@0.62.0(supports-color@7.2.0))(sugarss@5.0.1(postcss@8.5.33))(yaml@2.9.1)
 
