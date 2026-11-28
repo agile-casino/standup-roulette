@@ -192,7 +192,7 @@ importers:
         version: 4.3.2(buffer@6.0.3)
       immer:
         specifier: ^11.1.18
-        version: 11.2.10
+        version: 11.2.13
       react:
         specifier: ^19.3.0
         version: 19.3.1
@@ -207,7 +207,7 @@ importers:
         version: 14.0.3
       zustand:
         specifier: ^5.0.15
-        version: 5.1.0(@types/react@19.3.3)(immer@11.2.10)(react@19.3.1)
+        version: 5.1.0(@types/react@19.3.3)(immer@11.2.13)(react@19.3.1)
     devDependencies:
       '@biomejs/biome':
         specifier: 2.6.9
@@ -1462,8 +1462,8 @@ packages:
   ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
 
-  immer@11.2.10:
-    resolution: {integrity: sha512-pzANBj+0A9u+prdhBJ14DVi44vCvVUQzBa8DKt6I0AMCokPHtt722BK9IX5bFC70xUSU9TnzLRIJLTGqIzjEFw==}
+  immer@11.2.13:
+    resolution: {integrity: sha512-APCAndbWjj/fqxe7EXYq1TesdC30XCMPifhd0lyGVELvwLu6d5URaTzdvm6TX78NmuuuMa0/Nxv/D7BcXx5NnQ==}
 
   immutable@5.1.9:
     resolution: {integrity: sha512-m8nVez3rwrgmWxtLMt1ZYXB2Lv7OKYn/disyxAlSDYAlKSlFoPPfIAmAM/M5xqL4m4C/wAPw7S2/CNaUii1Hxg==}
@@ -3427,7 +3427,7 @@ snapshots:
 
   ieee754@1.2.1: {}
 
-  immer@11.2.10: {}
+  immer@11.2.13: {}
 
   immutable@5.1.9: {}
 
@@ -4358,8 +4358,8 @@ snapshots:
 
   zod@4.6.5: {}
 
-  zustand@5.1.0(@types/react@19.3.3)(immer@11.2.10)(react@19.3.1):
+  zustand@5.1.0(@types/react@19.3.3)(immer@11.2.13)(react@19.3.1):
     optionalDependencies:
       '@types/react': 19.3.3
-      immer: 11.2.10
+      immer: 11.2.13
       react: 19.3.1
