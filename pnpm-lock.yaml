@@ -274,7 +274,7 @@ importers:
         version: 6.0.3
       typescript-plugin-css-modules:
         specifier: ^5.2.0
-        version: 5.3.0(supports-color@7.2.0)(typescript@6.0.3)
+        version: 5.3.1(supports-color@7.2.0)(typescript@6.0.3)
       vite:
         specifier: ^8.3.0
         version: 8.3.8(@types/node@25.9.12)(jiti@2.7.0)(less@4.9.1(supports-color@7.2.0))(sass@1.108.2)(stylus@0.62.0(supports-color@7.2.0))(sugarss@5.0.1(postcss@8.5.33))(yaml@2.9.1)
@@ -2234,8 +2234,8 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
-  typescript-plugin-css-modules@5.3.0:
-    resolution: {integrity: sha512-ZCSp+b7MmI2bqvSg55hHUk6XDnRPSsZQnoFacLBLTlNrHmiK/vKDMOfcGg+j5yT8nphah54UBg8EPzf8xCwdcA==}
+  typescript-plugin-css-modules@5.3.1:
+    resolution: {integrity: sha512-H4b2uxM2fI1+NXcOA7MfbSqIrqxxGmfY8PyPa+xpM9dYMjFz/ImW4ra2yCF/UxmN8yFxJ95zNvxDtk0R5Be/4A==}
     engines: {node: '>=20'}
     peerDependencies:
       typescript: '>=4.0.0'
@@ -4207,7 +4207,7 @@ snapshots:
       postcss-modules-values: 4.0.0(postcss@8.5.33)
       yargs: 17.7.3
 
-  typescript-plugin-css-modules@5.3.0(supports-color@7.2.0)(typescript@6.0.3):
+  typescript-plugin-css-modules@5.3.1(supports-color@7.2.0)(typescript@6.0.3):
     dependencies:
       '@types/postcss-modules-local-by-default': 4.0.2
       '@types/postcss-modules-scope': 3.0.4
